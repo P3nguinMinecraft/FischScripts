@@ -225,9 +225,9 @@ function notifygui(text, r, g, b)
         local meteorTP = Instance.new("TextButton")
         meteorTP.Name = "meteorTP"
         meteorTP.Size = UDim2.new(0, 20, 0, 20)
-        meteorTP.Position = UDim2.new(0, 5, 0.5, -10)
-        meteorTP.BackgroundColor3 = Color3.new(1, 0, 0)
-        meteorTP.Text = "Goto Meteor"
+        meteorTP.Position = UDim2.new(0, 25, 0.5, -10)
+        meteorTP.BackgroundColor3 = Color3.new(236/255, 103/255, 44/255)
+        meteorTP.Text = "Goto"
         meteorTP.TextColor3 = Color3.new(1, 1, 1)
         meteorTP.TextScaled = true
         meteorTP.Font = Enum.Font.SourceSans
