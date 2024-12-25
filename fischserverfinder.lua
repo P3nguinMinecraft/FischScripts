@@ -254,6 +254,9 @@ function scan()
     local luckServer = game:GetService("ReplicatedStorage").world.luck_Server
     local luckServerside = game:GetService("ReplicatedStorage").world.luck_ServerSide
     local luck = luckServer.Value + luckServerside.Value
+    if luckServer.Value == 1 then
+        luck = luck - 1
+    end
     local meteor = game:GetService("ReplicatedStorage").world.meteor_active
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
     local notified = false
