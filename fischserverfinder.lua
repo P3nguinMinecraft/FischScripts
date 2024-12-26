@@ -2,7 +2,7 @@
 
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*****/*****"
+webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
 
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
@@ -393,5 +393,6 @@ end
 scan()
 
 if autowebhook then
+    task.wait(5)
     sendwebhook()
 end
