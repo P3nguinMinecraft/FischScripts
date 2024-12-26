@@ -393,6 +393,6 @@ end
 scan()
 
 if autowebhook then
-    task.wait(5)
+    task.wait(1)
     sendwebhook()
 end
