@@ -268,7 +268,7 @@ local notifications = gatherNotifications()
 local events = convertNotificationsToEvents(notifications)
 local count = #game:GetService("Players"):GetPlayers()
 local version = game:GetService("ReplicatedStorage").world.version.Value
-local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16) .. " *NOT RELIABLE*"
 local jobId = game.JobId
 local timestamp = os.time()
 local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
@@ -393,6 +393,5 @@ end
 scan()
 
 if autowebhook then
-    task.wait(1)
     sendwebhook()
 end
