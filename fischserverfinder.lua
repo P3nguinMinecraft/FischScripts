@@ -3,7 +3,6 @@
 autohop = true
 autowebhook = true
 webhookUrl = "https://discord.com/api/webhooks/*****/*****"
-
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
     {name = "Night of the Luminous",    enabled = true},
@@ -18,6 +17,18 @@ weatherList = {
     {name = "Rain",                     enabled = false},
     {name = "Eclipse",                  enabled = false},
     {name = "Aurora Borealis",          enabled = true},
+}
+
+cycleList = {
+    {name = "Day",                      enabled = false},
+    {name = "Night",                    enabled = false},
+}
+
+seasonList = {
+    {name = "Spring",                   enabled = false},
+    {name = "Summer",                   enabled = false},
+    {name = "Fall",                     enabled = false},
+    {name = "Winter",                   enabled = false},
 }
 
 zoneList = {
@@ -251,27 +262,26 @@ function notifygui(text, r, g, b)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-function convertNotificationsToEvents(notifications)
-    local events = ""
-    for _, notification in ipairs(notifications) do
-        events = events .. "- " .. notification.text .. "\n"
+function convertEventString(events)
+    local string = ""
+    for _, event in ipairs(events) do
+        if event.text == "## Events: " then
+            string = string .. event.text .. "\n"
+        else
+            string = string .. "- " .. event.text .. "\n"
+        end
     end
-    if #notifications > 0 then
-        return events
-    else
-        return "Nothing"
-    end
+    return string
 end
 
 function sendwebhook()
-local notifications = gatherNotifications()
-local events = convertNotificationsToEvents(notifications)
 local count = #game:GetService("Players"):GetPlayers()
 local version = game:GetService("ReplicatedStorage").world.version.Value
 local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
 local jobId = game.JobId
 local timestamp = os.time()
 local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
+local events = convertEventString(scanWorld())
 
 local embedData = {
     content = "",
@@ -279,7 +289,7 @@ local embedData = {
     embeds = {
         {
             description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. version .. 
-                          "\n".. uptime .. "\n\n## Events:\n" .. events,
+                          "\n".. uptime .. "\n\n## Info:\n" .. events,
             fields = {
                 {
                     name = "JobId",
@@ -312,10 +322,12 @@ request({
 end
 
 
-function gatherNotifications()
-    local notifications = {}
-    local event = game:GetService("ReplicatedStorage").world.event
+function scanWorld()
+    local events = {}
     local weather = game:GetService("ReplicatedStorage").world.weather
+    local cycle = game:GetService("ReplicatedStorage").world.cycle
+    local season = game:GetService("ReplicatedStorage").world.season
+    local event = game:GetService("ReplicatedStorage").world.event
     local luckServer = game:GetService("ReplicatedStorage").world.luck_Server
     local luckServerside = game:GetService("ReplicatedStorage").world.luck_ServerSide
     local luck = luckServer.Value + luckServerside.Value
@@ -325,31 +337,46 @@ function gatherNotifications()
     local meteor = game:GetService("ReplicatedStorage").world.meteor_active
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
-    for _, eventData in ipairs(eventList) do
-        if eventData.enabled and eventData.name == event.Value then
-            table.insert(notifications, {text = eventData.name, r = 255, g = 255, b = 255})
-        end
-    end
-
     for _, weatherData in ipairs(weatherList) do
-        if weatherData.enabled and weatherData.name == weather.Value then
-            table.insert(notifications, {text = weatherData.name, r = 255, g = 255, b = 255})
+        if  weatherData.name == weather.Value then
+            table.insert(events, {text = "Weather: " .. weatherData.name, r = 255, g = 255, b = 255, enabled = weatherData.enabled})
         end
-        if weather.Value == "Aurora_Borealis" and weatherData.name == "Aurora Borealis" and weatherData.enabled then
-            table.insert(notifications, {text = "Aurora Borealis", r = 160, g = 252, b = 180})
+        if weather.Value == "Aurora_Borealis" and weatherData.name == "Aurora Borealis" then
+            table.insert(events, {text = "Weather: Aurora Borealis", r = 160, g = 252, b = 180, enabled = weatherData.enabled})
         end
     end
 
-    if luck >= luckList.min and luckList.enabled then
-        table.insert(notifications, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91})
+    for _, cycleData in ipairs(cycleList) do
+        if  cycleData.name == cycle.Value then
+            table.insert(events, {text = "Cycle: " .. cycleData.name, r = 255, g = 255, b = 255, enabled = cycleData.enabled})
+        end
     end
 
-    if meteor.Value == true and meteorList.enabled then
-        table.insert(notifications, {text = "Meteor", r = 236, g = 103, b = 44})
+    for _, seasonData in ipairs(seasonList) do
+        if  seasonData.name == season.Value then
+            table.insert(events, {text = "Season: " .. seasonData.name, r = 255, g = 255, b = 255, enabled = seasonData.enabled})
+        end
+    end
+
+    table.insert(events, {text = "## Events: ", r = 255, g = 255, b = 255, enabled = false})
+
+    for _, eventData in ipairs(eventList) do
+        if eventData.name == event.Value then
+            table.insert(events, {text = eventData.name, r = 255, g = 255, b = 255, enabled = eventData.enabled})
+        end
+    end
+
+    if luck > 1 then
+        local send = luck >= luckList.min and luckList.enabled
+        table.insert(events, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91, enabled = send})
+    end
+
+    if meteor.Value == true then
+        table.insert(events, {text = "Meteor", r = 236, g = 103, b = 44, enabled = meteorList.enabled})
     end
 
     for _, zoneData in ipairs(zoneList) do
-        if zoneData.enabled and zones:FindFirstChild(zoneData.name) then
+        if zones:FindFirstChild(zoneData.name) then
             local count = 0
             for _, zone in pairs(zones:GetChildren()) do
                 if zone.Name == zoneData.name then
@@ -366,28 +393,34 @@ function gatherNotifications()
                 if string.find(str, "Megalodon") then
                     r, g, b = 234, 51, 35
                 end
-                table.insert(notifications, {text = str, r = r, g = g, b = b})
+                table.insert(events, {text = str, r = r, g = g, b = b, enabled = zoneData.enabled})
             end
         end
     end
 
-    return notifications
+    return events
 end
 
-function processNotifications(notifications)
-    if #notifications > 0 then
-        for _, notification in ipairs(notifications) do
-            notifygui(notification.text, notification.r, notification.g, notification.b)
+function notify(events)
+    local count = 0
+    for _, event in ipairs(events) do
+        if event.enabled == true then
+            notifygui(event.text, event.r, event.g, event.b)
+            count = count + 1
         end
-    else
+    end
+    if count == 0 then
         notifygui("Nothing", 255, 153, 0)
-        if autohop then teleport() end
+        if autohop then
+            notifygui("Autohopping", 255, 255, 255)
+            teleport() 
+        end
     end
 end
 
 function scan()
-    local notifications = gatherNotifications()
-    processNotifications(notifications)
+    local events = scanWorld()
+    notify(events)
 end
 
 scan()
