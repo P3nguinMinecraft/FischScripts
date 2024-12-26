@@ -1,6 +1,8 @@
 -- CONFIG
 
 autohop = true
+autowebhook = true
+webhookUrl = "https://discord.com/api/webhooks/*****/*****"
 
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
@@ -34,6 +36,8 @@ luckList = {
 meteorList = {
     enabled = true,
 }
+
+
 
 --
 
@@ -247,8 +251,69 @@ function notifygui(text, r, g, b)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-function scan()
+function convertNotificationsToEvents(notifications)
+    local events = ""
+    for _, notification in ipairs(notifications) do
+        events = events .. "- " .. notification.text .. "\n"
+    end
+    if #notifications > 0 then
+        return events
+    else
+        return "Nothing"
+    end
+end
 
+function sendwebhook()
+local notifications = gatherNotifications()
+local events = convertNotificationsToEvents(notifications)
+local count = #game:GetService("Players"):GetPlayers()
+local version = game:GetService("ReplicatedStorage").world.version.Value
+local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+local jobId = game.JobId
+local timestamp = os.time()
+local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
+
+local embedData = {
+    content = "",
+    tts = false,
+    embeds = {
+        {
+            description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. version .. 
+                          "\n".. uptime .. "\n\n## Events:\n" .. events,
+            fields = {
+                {
+                    name = "JobId",
+                    value = "```" .. jobId .. "```"
+                },
+                {
+                    name = "Code",
+                    value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(16732694052, \"" .. 
+                            jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
+                }
+            },
+            footer = {
+                text = "windows1267"
+            },
+            timestamp = timestampfooter,
+            title = "Server Found <t:" .. timestamp ..":R>",
+            color = 53759,
+        }
+    }
+}
+
+local jsonData = HttpService:JSONEncode(embedData)
+request({
+    Url = webhookUrl,
+    Method = "POST",
+    Headers = {["Content-Type"] = "application/json"},
+    Body = jsonData
+})
+
+end
+
+
+function gatherNotifications()
+    local notifications = {}
     local event = game:GetService("ReplicatedStorage").world.event
     local weather = game:GetService("ReplicatedStorage").world.weather
     local luckServer = game:GetService("ReplicatedStorage").world.luck_Server
@@ -259,53 +324,74 @@ function scan()
     end
     local meteor = game:GetService("ReplicatedStorage").world.meteor_active
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
-    local notified = false
-
 
     for _, eventData in ipairs(eventList) do
         if eventData.enabled and eventData.name == event.Value then
-            notifygui(eventData.name, 255, 255, 255)
-            notified = true
+            table.insert(notifications, {text = eventData.name, r = 255, g = 255, b = 255})
         end
     end
 
     for _, weatherData in ipairs(weatherList) do
         if weatherData.enabled and weatherData.name == weather.Value then
-            notifygui(weatherData.name, 255, 255, 255)
-            notified = true
+            table.insert(notifications, {text = weatherData.name, r = 255, g = 255, b = 255})
         end
         if weather.Value == "Aurora_Borealis" and weatherData.name == "Aurora Borealis" and weatherData.enabled then
-            notifygui("Aurora Borealis", 160, 252, 180)
-            notified = true
+            table.insert(notifications, {text = "Aurora Borealis", r = 160, g = 252, b = 180})
         end
     end
 
     if luck >= luckList.min and luckList.enabled then
-        notifygui("Luck: x" .. luck, 88, 162, 91)
-        notified = true
+        table.insert(notifications, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91})
     end
 
     if meteor.Value == true and meteorList.enabled then
-        notifygui("Meteor", 236, 103, 44)
-        notified = true
+        table.insert(notifications, {text = "Meteor", r = 236, g = 103, b = 44})
     end
 
     for _, zoneData in ipairs(zoneList) do
         if zoneData.enabled and zones:FindFirstChild(zoneData.name) then
-            if zoneData.name == "Megalodon Default" or zoneData.name == "Megalodon Ancient" then  
-                notifygui(zoneData.name, 234, 51, 35)
-            else
-                notifygui(zoneData.name, 236, 104, 142)
+            local count = 0
+            for _, zone in pairs(zones:GetChildren()) do
+                if zone.Name == zoneData.name then
+                    count = count + 1
+                end
             end
-            notified = true
+
+            if count > 0 then
+                local str = zoneData.name
+                if count > 1 then
+                    str = tostring(count) .. "X " .. str
+                end
+                local r, g, b = 236, 104, 142
+                if string.find(str, "Megalodon") then
+                    r, g, b = 234, 51, 35
+                end
+                table.insert(notifications, {text = str, r = r, g = g, b = b})
+            end
         end
     end
 
-    if notified == false then
+    return notifications
+end
+
+function processNotifications(notifications)
+    if #notifications > 0 then
+        for _, notification in ipairs(notifications) do
+            notifygui(notification.text, notification.r, notification.g, notification.b)
+        end
+    else
         notifygui("Nothing", 255, 153, 0)
         if autohop then teleport() end
     end
+end
 
+function scan()
+    local notifications = gatherNotifications()
+    processNotifications(notifications)
 end
 
 scan()
+
+if autowebhook then
+    sendwebhook()
+end
