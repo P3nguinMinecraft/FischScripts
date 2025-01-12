@@ -3,7 +3,8 @@
 autoscan = true
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
+webhookUrl = "https://discord.com/api/webhooks/****/*****"
+filename = "servers" -- dont add .json
 
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
@@ -55,53 +56,79 @@ meteorList = {
     enabled = true,
 }
 
-
-
--- code
+-- CODE
 
 repeat task.wait(1) until game:IsLoaded()
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
+filename = filename.. ".json"
 
 function teleport()
-        notifygui("Teleporting", 22, 209, 242)
+    local Server, Next = nil, nil
+    
+    local function ListServers(cursor)
         local ServersAPI = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
-        local Server, Next = nil, nil
+        local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
+        local Decode = HttpService:JSONDecode(Raw)
 
-        local function ListServers(cursor)
-            local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
-            local Decode = HttpService:JSONDecode(Raw)
-            if Decode.errors then
-                notifygui("API Overload", 255, 255, 255)
-                return HttpService:JSONDecode(readfile("servers.json"))
-            else
-                writefile("servers.json", Raw)
-                return Decode
+        if Decode.errors then
+            notifygui("API Overload", 255, 255, 255)
+            if not isfile(filename) then
+                return nil
             end
-        end
-        while Server == nil or Server.playing == nil do
-            local Servers = ListServers(Next)
-            if Servers and Servers.nextPageCursor then
-                Server = Servers.data[math.random(1, 100)]
-                Next = Servers.nextPageCursor
-            else
-            end
-        end
-
-        if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game.Players.LocalPlayer)
+            return readfile(filename)
         else
-            notifygui("Failed Server Hop", 242, 44, 22)
-            print(Server)
-            print(Server.playing)
-            teleport()
+            writefile(filename, Raw)
+            return Raw
         end
+    end
+    
+    local function RemoveServer(serverId)
+        if not isfile(filename) then return end
+
+        local Servers = HttpService:JSONDecode(readfile(filename))
+        local NewData = {}
+        for _, server in ipairs(Servers.data) do
+            if server.id ~= serverId then
+                table.insert(NewData, server)
+            end
+        end
+        Servers.data = NewData
+        writefile(filename, HttpService:JSONEncode(Servers))
+    end
+
+    notifygui("Teleporting", 22, 209, 242)
+
+    while Server == nil or Server.playing == nil do
+        local Raw = ListServers(Next)
+        local Servers = HttpService:JSONDecode(Raw)
+
+        if Servers and Servers.nextPageCursor then
+            Server = Servers.data[math.random(1, #Servers.data)]
+            Next = Servers.nextPageCursor
+        else
+            notifygui("No available servers.", 242, 44, 22)
+            return
+        end
+    end
+
+    if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
+        RemoveServer(Server.id)
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game.Players.LocalPlayer)
+    else
+        notifygui("Failed Server Hop (pls debug)", 242, 44, 22)
+        print(Server)
+        print(Server.playing)
+        return
+    end
 end
 
 
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 60).loading
 function notifygui(text, r, g, b)
+    print(text)
+
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("NotificationGui")
 
