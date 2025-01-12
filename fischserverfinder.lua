@@ -1,13 +1,15 @@
 -- CONFIG
 
+autoscan = true
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*****/*****"
+webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
+
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
-    {name = "Night of the Luminous",    enabled = true},
-    {name = "Shiny Surge",              enabled = true},
-    {name = "Mutation Surge",           enabled = true},
+    {name = "Night of the Luminous",    enabled = false},
+    {name = "Shiny Surge",              enabled = false},
+    {name = "Mutation Surge",           enabled = false},
 }
 
 weatherList = {
@@ -37,6 +39,11 @@ zoneList = {
     {name = "Great White Shark",        enabled = true},
     {name = "Great Hammerhead Shark",   enabled = true},
     {name = "Whale Shark",              enabled = true},
+    {name = "Golden Tide",              enabled = false},
+    {name = "Ancient Algae Pool",       enabled = false},
+    {name = "Forsaken Algae Pool",      enabled = false},
+    {name = "Snowcap Algae Pool",       enabled = false},
+    {name = "Mushgrove Algae Pool",     enabled = false}
 }
 
 luckList = {
@@ -50,7 +57,7 @@ meteorList = {
 
 
 
---
+-- code
 
 repeat task.wait(1) until game:IsLoaded()
 
@@ -88,6 +95,7 @@ function teleport()
             notifygui("Failed Server Hop", 242, 44, 22)
             print(Server)
             print(Server.playing)
+            teleport()
         end
 end
 
@@ -423,7 +431,9 @@ function scan()
     notify(events)
 end
 
-scan()
+if autoscan then
+    scan()
+end
 
 if autowebhook then
     sendwebhook()
