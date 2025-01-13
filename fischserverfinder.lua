@@ -3,7 +3,7 @@
 autoscan = true
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*/*"
+webhookUrl = "https://discord.com/api/webhooks/*****/*****"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -59,6 +59,8 @@ meteorList = {
     {name = "Lapis Lazuli", enabled = true},
     {name = "Moonstone", enabled = true},
 }
+
+alertSunkenChest = true;
 
 -- CODE
 
@@ -419,6 +421,12 @@ function scanWorld()
             end
         end
     end
+
+    game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function()
+        if alertSunkenChest then
+            notifygui("Sunken Chest!", 255, 255, 255)
+        end
+    end)
 
     for _, zoneData in ipairs(zoneList) do
         if zones:FindFirstChild(zoneData.name) then
