@@ -3,7 +3,7 @@
 autoscan = true
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*****/*****"
+webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -39,7 +39,7 @@ zoneList = {
     {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = true},
+    {name = "Whale Shark",              enabled = false},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
@@ -276,8 +276,8 @@ function notifygui(text, r, g, b)
     textLabel.Font = Enum.Font.SourceSans
     textLabel.Parent = frame
     textLabel.ZIndex = 101
-
-    if text == "Meteor" then
+    
+    if string.find(text, "Meteor") then
         local meteorTP = Instance.new("TextButton")
         meteorTP.Name = "meteorTP"
         meteorTP.Size = UDim2.new(0, 20, 0, 20)
@@ -417,16 +417,10 @@ function scanWorld()
         local item = meteoritems[1]
         for _, meteorData in ipairs(meteorList) do
             if meteorData.name == item.Name then
-                table.insert(events, {text = "Meteor: " .. item.Name, r = 236, g = 103, b = 44, enabled = meteorData.enabled})
+                table.insert(events, {text = "Meteor: " .. item.Name, r = 236, g = 103, b = 44, enabled = true})
             end
         end
     end
-
-    game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function()
-        if alertSunkenChest then
-            notifygui("Sunken Chest!", 255, 255, 255)
-        end
-    end)
 
     for _, zoneData in ipairs(zoneList) do
         if zones:FindFirstChild(zoneData.name) then
@@ -478,6 +472,12 @@ end
 
 if autoscan then
     scan()
+
+    game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function()
+        if alertSunkenChest then
+            notifygui("Sunken Chest!", 255, 255, 255)
+        end
+    end)
 end
 
 if autowebhook then
