@@ -3,7 +3,7 @@
 autoscan = true
 autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/****/*****"
+webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -37,14 +37,14 @@ seasonList = {
 zoneList = {
     {name = "Megalodon Default",        enabled = true},
     {name = "Megalodon Ancient",        enabled = true},
-    {name = "Great White Shark",        enabled = true},
-    {name = "Great Hammerhead Shark",   enabled = true},
+    {name = "Great White Shark",        enabled = false},
+    {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = true},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
     {name = "Snowcap Algae Pool",       enabled = false},
-    {name = "Mushgrove Algae Pool",     enabled = false}
+    {name = "Mushgrove Algae Pool",     enabled = false},
 }
 
 luckList = {
@@ -53,7 +53,11 @@ luckList = {
 }
 
 meteorList = {
-    enabled = true,
+    {name = "Amethyst", enabled = true},
+    {name = "Ruby", enabled = true},
+    {name = "Opal", enalbed = true},
+    {name = "Lapis Lazuli", enabled = true},
+    {name = "Moonstone", enabled = true},
 }
 
 -- CODE
@@ -369,7 +373,7 @@ function scanWorld()
     if luckServer.Value == 1 then
         luck = luck - 1
     end
-    local meteor = game:GetService("ReplicatedStorage").world.meteor_active
+    local meteor = game:GetService("Workspace"):WaitForChild("MeteorItems")
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
     for _, weatherData in ipairs(weatherList) do
@@ -406,8 +410,14 @@ function scanWorld()
         table.insert(events, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91, enabled = send})
     end
 
-    if meteor.Value == true then
-        table.insert(events, {text = "Meteor", r = 236, g = 103, b = 44, enabled = meteorList.enabled})
+    local meteoritems = meteor:GetChildren()
+    if #meteoritems > 0 then
+        local item = meteoritems[1]
+        for _, meteorData in ipairs(meteorList) do
+            if meteorData.name == item.Name then
+                table.insert(events, {text = "Meteor: " .. item.Name, r = 236, g = 103, b = 44, enabled = meteorData.enabled})
+            end
+        end
     end
 
     for _, zoneData in ipairs(zoneList) do
