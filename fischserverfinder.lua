@@ -1,7 +1,7 @@
 -- CONFIG
 
 autoscan = true
-autohop = true
+autohop = false
 autowebhook = true
 webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
@@ -276,8 +276,11 @@ function notifygui(text, r, g, b)
     textLabel.Font = Enum.Font.SourceSans
     textLabel.Parent = frame
     textLabel.ZIndex = 101
-    
-    if string.find(text, "Meteor") then
+
+    if string.find(text, "Meteor:") then
+        textLabel.Size = UDim2.new(1, -50, 1, 0)
+        textLabel.Position = UDim2.new(0, 50, 0, 0)
+
         local meteorTP = Instance.new("TextButton")
         meteorTP.Name = "meteorTP"
         meteorTP.Size = UDim2.new(0, 20, 0, 20)
@@ -316,52 +319,54 @@ function convertEventString(events)
 end
 
 function sendwebhook()
-local count = #game:GetService("Players"):GetPlayers()
-local version = game:GetService("ReplicatedStorage").world.version.Value
-local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
-local jobId = game.JobId
-local timestamp = os.time()
-local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
-local events = convertEventString(scanWorld())
+    local count = #game:GetService("Players"):GetPlayers()
+    local version = game:GetService("ReplicatedStorage").world.version.Value
+    local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+    local jobId = game.JobId
+    local timestamp = os.time()
+    local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
+    local events = convertEventString(scanWorld())
 
-local embedData = {
-    content = "",
-    tts = false,
-    embeds = {
-        {
-            description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. version .. 
-                          "\n".. uptime .. "\n\n## Info:\n" .. events,
-            fields = {
-                {
-                    name = "JobId",
-                    value = "```" .. jobId .. "```"
+    local embedData = {
+        content = "",
+        tts = false,
+        embeds = {
+            {
+                description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. version .. 
+                            "\n".. uptime .. "\n\n## Info:\n" .. events,
+                fields = {
+                    {
+                        name = "JobId",
+                        value = "```" .. jobId .. "```"
+                    },
+                    {
+                        name = "Code",
+                        value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(16732694052, \"" .. 
+                                jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
+                    }
                 },
-                {
-                    name = "Code",
-                    value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(16732694052, \"" .. 
-                            jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
-                }
-            },
-            footer = {
-                text = "windows1267"
-            },
-            timestamp = timestampfooter,
-            title = "Server Found <t:" .. timestamp ..":R>",
-            color = 53759,
+                footer = {
+                    text = "windows1267"
+                },
+                timestamp = timestampfooter,
+                title = "Server Found <t:" .. timestamp ..":R>",
+                color = 53759,
+            }
         }
     }
-}
 
-local jsonData = HttpService:JSONEncode(embedData)
-request({
-    Url = webhookUrl,
-    Method = "POST",
-    Headers = {["Content-Type"] = "application/json"},
-    Body = jsonData
-})
-
+    local jsonData = HttpService:JSONEncode(embedData)
+    request({
+        Url = webhookUrl,
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = jsonData
+    })
 end
 
+function haschildren(object)
+    return #Object:GetChildren() > 0;
+end
 
 function scanWorld()
     local events = {}
@@ -472,14 +477,14 @@ end
 
 if autoscan then
     scan()
-
-    game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function()
-        if alertSunkenChest then
-            notifygui("Sunken Chest!", 255, 255, 255)
-        end
-    end)
 end
 
 if autowebhook then
     sendwebhook()
 end
+
+game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function()
+    if alertSunkenChest then
+        notifygui("Sunken Chest!", 255, 255, 255)
+    end
+end)
