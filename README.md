@@ -6,4 +6,4 @@
 #### Breaks if it tries to server hop to a private server, just disconnect and rejoin
 DM windows1267 for issues or suggestions
 
-[Discord Server](https://discord.gg/EhkF4A56cu)
+[Discord Server](https://discord.gg/GhkXV3K5pq)
