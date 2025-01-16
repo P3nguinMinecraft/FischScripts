@@ -1,9 +1,10 @@
 -- CONFIG
 
 autoscan = true
+autouptime = true
 autohop = false
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*/*"
+webhookUrl = "https://discord.com/api/webhooks/*****/*****"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -471,12 +472,17 @@ function notify(events)
 end
 
 function scan()
+    if autouptime then
+        local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+        notifygui(uptime, 255, 255, 255)
+    end
     local events = scanWorld()
     notify(events)
 end
 
 if autoscan then
     scan()
+
 end
 
 if autowebhook then
