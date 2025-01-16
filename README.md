@@ -4,4 +4,6 @@
 ### Place inside autoexecute!
 #### Caches server JobIds in servers.json incase API denies requests (common)
 #### Breaks if it tries to server hop to a private server, just disconnect and rejoin
-DM windows1267 for issues or suggestions cuz half of this is chatgpted
+DM windows1267 for issues or suggestions
+
+[Discord Server](https://discord.gg/EhkF4A56cu)
