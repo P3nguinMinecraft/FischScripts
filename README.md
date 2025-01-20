@@ -11,5 +11,5 @@ Caches server JobIds in servers.json incase API denies requests
 Simple, quick, small gui to grinding angler quests from The Depths
 **Load the Angler NPC to work**
 
-DM windows1267 or join the discord server for issues or suggestions
-[Discord Server](https://discord.gg/GhkXV3K5pq)
+#### DM windows1267 or join the discord server for issues or suggestions
+#### [Discord Server](https://discord.gg/GhkXV3K5pq)
