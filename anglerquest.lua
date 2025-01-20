@@ -151,6 +151,7 @@ function equipfish(fishname)
     if item then
         game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("Net"):WaitForChild("RE/Backpack/Equip"):FireServer(item)
         completequest()
+        game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("Net"):WaitForChild("RE/Backpack/Equip"):FireServer(item)
         titleLabel.Text = "Completed " .. fishname
     else
         toggleautoquest()
