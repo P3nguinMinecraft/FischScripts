@@ -38,9 +38,9 @@ seasonList = {
 zoneList = {
     {name = "Megalodon Default",        enabled = true},
     {name = "Megalodon Ancient",        enabled = true},
-    {name = "Great White Shark",        enabled = false},
-    {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = false},
+    {name = "Great White Shark",        enabled = true},
+    {name = "Great Hammerhead Shark",   enabled = true},
+    {name = "Whale Shark",              enabled = true},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
@@ -134,6 +134,9 @@ end
 
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 60).loading
 function notifygui(text, r, g, b)
+    if not r then r = 255 end
+    if not g then g = 255 end
+    if not b then b = 255 end
     print(text)
 
     local playerGui = game.Players.LocalPlayer.PlayerGui
