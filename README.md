@@ -1,8 +1,7 @@
 # FischScripts
-Some scripts I've coded for Fisch
-
-## Join the discord server for issues or suggestions
-## [Discord Server](https://discord.gg/GhkXV3K5pq)
+#### Some scripts I've coded for Fisch
+#### Join the discord server for issues or suggestions
+[Discord Server](https://discord.gg/GhkXV3K5pq)
 
 ## FischServerFinder
 Automatically server hops to find specific servers
