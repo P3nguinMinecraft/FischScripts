@@ -39,7 +39,7 @@ zoneList = {
     {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = true},
+    {name = "Whale Shark",              enabled = false},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
@@ -71,7 +71,7 @@ repeat task.wait(1) until game:IsLoaded()
 
 local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
 while uptime == "0D 00H 00S" do
-    task.wait(0.5)
+    task.wait(1)
     uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
 end
 
@@ -143,6 +143,7 @@ end
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 60).loading
 
 function creategui()
+    loading.Visible = false
     local playerGui = game.Players.LocalPlayer.PlayerGui
 
     local screenGui = Instance.new("ScreenGui")
