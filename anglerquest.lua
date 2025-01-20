@@ -15,7 +15,7 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "QuestGui"
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
-frame = Instance.new("Frame")
+local frame = Instance.new("Frame")
 frame.Name = "DraggableFrame"
 frame.Size = UDim2.new(0, 220, 0, 250)
 frame.Position = UDim2.new(0.5, -110, 0.5, -100)
@@ -25,7 +25,7 @@ frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
 
-titleLabel = Instance.new("TextLabel")
+local titleLabel = Instance.new("TextLabel")
 titleLabel.Name = "TitleLabel"
 titleLabel.Size = UDim2.new(0, 200, 0, 40)
 titleLabel.Position = UDim2.new(0, 10, 0, 0)
@@ -36,7 +36,7 @@ titleLabel.TextSize = 20
 titleLabel.BackgroundTransparency = 1
 titleLabel.Parent = frame
 
-button1 = Instance.new("TextButton")
+local button1 = Instance.new("TextButton")
 button1.Name = "QuestButton"
 button1.Size = UDim2.new(0, 200, 0, 50)
 button1.Position = UDim2.new(0, 10, 0, 50)
@@ -52,7 +52,7 @@ button1.MouseButton1Click:Connect(function()
     givequest()
 end)
 
-button2 = Instance.new("TextButton")
+local button2 = Instance.new("TextButton")
 button2.Name = "CompleteQuestButton"
 button2.Size = UDim2.new(0, 200, 0, 50)
 button2.Position = UDim2.new(0, 10, 0, 110)
@@ -68,7 +68,7 @@ button2.MouseButton1Click:Connect(function()
     completequest()
 end)
 
-button3 = Instance.new("TextButton")
+local button3 = Instance.new("TextButton")
 button3.Name = "AutoQuestButton"
 button3.Size = UDim2.new(0, 200, 0, 50)
 button3.Position = UDim2.new(0, 10, 0, 170)
@@ -151,7 +151,7 @@ function equipfish(fishname)
     if item then
         game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("Net"):WaitForChild("RE/Backpack/Equip"):FireServer(item)
         completequest()
-        textLabel.Text = "Completed " .. fishname
+        titleLabel.Text = "Completed " .. fishname
     else
         toggleautoquest()
         print("Could not find ".. fishname)
@@ -183,7 +183,8 @@ function startTask()
                 if fish then
                     print("Quest: " .. fish)
                     equipfish(fish)
-                    task.wait(3)
+                    givequest()
+                    task.wait(1)
                 end
                 givequest()
             end
