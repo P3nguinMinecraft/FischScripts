@@ -32,7 +32,7 @@ titleLabel.Position = UDim2.new(0, 10, 0, 0)
 titleLabel.Text = "Welcome to AnglerQuest!"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.Font = Enum.Font.SourceSans
-titleLabel.TextSize = 20
+titleLabel.TextScaled = true
 titleLabel.BackgroundTransparency = 1
 titleLabel.Parent = frame
 
