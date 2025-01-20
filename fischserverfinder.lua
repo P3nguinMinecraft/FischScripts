@@ -3,7 +3,7 @@
 autoscan = true
 autohop = false
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*****/*****"
+webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -37,8 +37,8 @@ seasonList = {
 zoneList = {
     {name = "Megalodon Default",        enabled = true},
     {name = "Megalodon Ancient",        enabled = true},
-    {name = "Great White Shark",        enabled = true},
-    {name = "Great Hammerhead Shark",   enabled = true},
+    {name = "Great White Shark",        enabled = false},
+    {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = true},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
@@ -68,6 +68,11 @@ sunkenchestList = {
 -- CODE
 
 repeat task.wait(1) until game:IsLoaded()
+
+local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+while uptime == "0D 00H 00S" do
+    uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+end
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -551,7 +556,7 @@ end
 function sendwebhook()
     local count = #game:GetService("Players"):GetPlayers()
     local version = game:GetService("ReplicatedStorage").world.version.Value
-    local uptime = "**Server Uptime: **" .. game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+    local uptimestr = "**Server Uptime: **" .. uptime
     local jobId = game.JobId
     local timestamp = os.time()
     local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
@@ -563,7 +568,7 @@ function sendwebhook()
         embeds = {
             {
                 description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. version .. 
-                            "\n".. uptime .. "\n\n## Info:\n" .. events,
+                            "\n".. uptimestr .. "\n\n## Info:\n" .. events,
                 fields = {
                     {
                         name = "JobId",
@@ -595,7 +600,7 @@ function sendwebhook()
 end
 
 function haschildren(object)
-    return #Object:GetChildren() > 0;
+    return #object:GetChildren() > 0;
 end
 
 function scanWorld()
@@ -680,10 +685,6 @@ function scanWorld()
         end
     end
 
-    local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
-    while uptime == "0D 00H 00S" do
-        uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
-    end
     if issunkenchest(uptime) then
         table.insert(events, {text = "Sunken Chest", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
     end
@@ -725,7 +726,7 @@ if autowebhook then
 end
 
 game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function(object)
-    if alertonload then
+    if sunkenchestList.alertonload then
         sunkenchesttp2(object)
     end
 end)
