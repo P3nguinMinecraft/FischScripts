@@ -71,6 +71,7 @@ repeat task.wait(1) until game:IsLoaded()
 
 local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
 while uptime == "0D 00H 00S" do
+    task.wait(0.5)
     uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
 end
 
