@@ -725,8 +725,16 @@ if autowebhook then
     sendwebhook()
 end
 
-game:GetService("Workspace").ActiveChestsFolder.ChildAdded:Connect(function(object)
-    if sunkenchestList.alertonload then
-        sunkenchesttp2(object)
-    end
-end)
+local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
+local connection
+
+function connectChildAdded()
+    if connection then return end
+    connection = activeChestsFolder.ChildAdded:Connect(function(object)
+        if sunkenchestList.alertonload then
+            sunkenchesttp2(object)
+        end
+    end)
+end
+
+connectChildAdded()
