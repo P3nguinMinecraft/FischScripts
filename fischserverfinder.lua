@@ -541,10 +541,10 @@ function issunkenchest(uptime)
     
     local totalMinutes = (hours * 60) + minutes
     
-    local modValue = (totalMinutes - 60 + bufferbefore) % 70
+    local modValue = (totalMinutes - 60 + sunkenchestList.bufferbefore) % 70
 
-    if modValue >= 0 and modValue < (10 + bufferbefore) then
-        return true, (modValue - bufferbefore)
+    if modValue >= 0 and modValue < (10 + sunkenchestList.bufferbefore) then
+        return true, (modValue - sunkenchestList.bufferbefore)
     else
         return false, -1
     end
