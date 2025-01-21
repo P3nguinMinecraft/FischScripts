@@ -467,7 +467,7 @@ end
 
 function sunkenchesttp2(object)
     local position
-    for _, descendant in ipairs(object:FindFirstChild("Chests"):GetDescendants()) do
+    for _, descendant in ipairs(object:GetDescendants()) do
         if descendant:IsA("BasePart") then
             position = descendant.Position
             break
@@ -727,33 +727,21 @@ function scan()
     notify(events)
 end
 
+local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
+
+activeChestsFolder.ChildAdded:Connect(function(object)
+    if sunkenchestList.alertonload then
+        sunkenchesttp2(object)
+        notifygui("Sunken Chest Loaded!", 255, 255, 0)
+    end
+end)
+
 if autoscan then
     scan()
 end
 
 if autowebhook then
     sendwebhook()
-end
-
-local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
-local connection
-
-function connectChildAdded()
-    if connection then return end
-    connection = activeChestsFolder.ChildAdded:Connect(function(object)
-        if sunkenchestList.alertonload then
-            sunkenchesttp2(object)
-        end
-    end)
-end
-
-connectChildAdded()
-
-
-for _, object in pairs(activeChestsFolder:GetChildren()) do
-    if sunkenchestList.alertonload then
-        sunkenchesttp2(object)
-    end
 end
 
 print("[FSF] Loaded In!")
