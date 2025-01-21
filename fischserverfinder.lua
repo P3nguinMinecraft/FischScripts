@@ -62,6 +62,7 @@ meteorList = {
 
 sunkenchestList = {
     enabled = true,
+    bufferbefore = 2,
     alertonload = true,
 }
 
