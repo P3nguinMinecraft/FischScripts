@@ -2,8 +2,8 @@
 
 autoscan = true
 autohop = true
-autowebhook = false
-webhookUrl = "https://discord.com/api/webhooks/*/*"
+autowebhook = true
+webhookUrl = "https://discord.com/api/webhooks/#/#"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -57,12 +57,12 @@ meteorList = {
     {name = "Ruby", enabled = false},
     {name = "Opal", enalbed = false},
     {name = "Lapis Lazuli", enabled = false},
-    {name = "Moonstone", enabled = true},
+    {name = "Moonstone", enabled = false},
 }
 
 sunkenchestList = {
     enabled = true,
-    bufferbefore = 2,
+    bufferbefore = 1,
     alertonload = true,
 }
 
@@ -70,7 +70,7 @@ autouptime = true
 
 -- CODE
 
-local version = "1.0"
+local version = "1.0.1"
 local updversion, updmsg = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_version.lua"))()
 
 repeat task.wait(1) until game:IsLoaded()
@@ -694,9 +694,9 @@ function scanWorld()
             end
         end
     end
-
-    if issunkenchest(uptime) then
-        table.insert(events, {text = "Sunken Chest", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
+    local issc, time = issunkenchest(uptime)
+    if issc then
+        table.insert(events, {text = "Sunken Chest " .. time .. " min", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
     end
 
     return events
@@ -708,7 +708,7 @@ function notify(events)
         if event.enabled == true then
             notifygui(event.text, event.r, event.g, event.b)
             count = count + 1
-            if event.text == "Sunken Chest" then
+            if string.find(event.text, "Sunken Chest") then
                 sunkenchesttp1()
             end
         end
