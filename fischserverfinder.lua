@@ -731,8 +731,8 @@ local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
 activeChestsFolder.ChildAdded:Connect(function(object)
     if sunkenchestList.alertonload then
-        sunkenchesttp2(object)
         notifygui("Sunken Chest Loaded!", 255, 255, 0)
+        sunkenchesttp2(object)
     end
 end)
 
