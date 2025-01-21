@@ -69,6 +69,9 @@ autouptime = true
 
 -- CODE
 
+local version = "1.0"
+local updversion, updmsg = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_version.lua"))()
+
 repeat task.wait(1) until game:IsLoaded()
 print("[FSF] Loading")
 
@@ -537,12 +540,12 @@ function issunkenchest(uptime)
     
     local totalMinutes = (hours * 60) + minutes
     
-    local modValue = totalMinutes % 70
+    local modValue = (totalMinutes - 60 + bufferbefore) % 70
 
-    if modValue >= 60 and modValue < 70 then
-        return true
+    if modValue >= 0 and modValue < (10 + bufferbefore) then
+        return true, (modValue - bufferbefore)
     else
-        return false
+        return false, -1
     end
 end
 
@@ -735,6 +738,12 @@ activeChestsFolder.ChildAdded:Connect(function(object)
         sunkenchesttp2(object)
     end
 end)
+
+
+if not string.match(version, updversion) then
+    notifygui("Outdated Version: " .. updversion, 255, 0, 0)
+    notifygui(updmsg, 255, 255, 255)
+end
 
 if autoscan then
     scan()
