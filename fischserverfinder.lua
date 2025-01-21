@@ -69,6 +69,7 @@ sunkenchestList = {
 
 repeat task.wait(1) until game:IsLoaded()
 
+local uptime
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
 loading.loading.Visible = false
 
@@ -520,7 +521,7 @@ function sunkenchesttp2(object)
     end)
 
     tpButton.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
     end)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
