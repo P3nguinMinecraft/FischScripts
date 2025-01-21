@@ -715,6 +715,7 @@ function notify(events)
 end
 
 function scan()
+    uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
     local events = scanWorld()
     notify(events)
 end
