@@ -35,8 +35,8 @@ seasonList = {
 }
 
 zoneList = {
-    {name = "Megalodon Default",        enabled = true},
-    {name = "Megalodon Ancient",        enabled = true},
+    {name = "Megalodon Default",        enabled = false},
+    {name = "Megalodon Ancient",        enabled = false},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = false},
@@ -53,10 +53,10 @@ luckList = {
 }
 
 meteorList = {
-    {name = "Amethyst", enabled = true},
-    {name = "Ruby", enabled = true},
-    {name = "Opal", enalbed = true},
-    {name = "Lapis Lazuli", enabled = true},
+    {name = "Amethyst", enabled = false},
+    {name = "Ruby", enabled = false},
+    {name = "Opal", enalbed = false},
+    {name = "Lapis Lazuli", enabled = false},
     {name = "Moonstone", enabled = true},
 }
 
@@ -64,6 +64,8 @@ sunkenchestList = {
     enabled = true,
     alertonload = true,
 }
+
+autouptime = true
 
 -- CODE
 
@@ -717,6 +719,9 @@ end
 
 function scan()
     uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
+    if autouptime then
+        notifygui("Uptime: " .. uptime)
+    end
     local events = scanWorld()
     notify(events)
 end
