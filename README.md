@@ -6,8 +6,8 @@
 ## FischServerFinder
 Automatically server hops to find specific servers
 ### Usage
-#### COPY THE [ENTIRE SOURCE CODE](https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder) so you can change the config as needed
-https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder
+#### COPY THE [ENTIRE SOURCE CODE](https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua) so you can change the config as needed
+https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua
 #### Place inside autoexecute!
 #### Caches server JobIds in servers.json incase API denies requests
 
