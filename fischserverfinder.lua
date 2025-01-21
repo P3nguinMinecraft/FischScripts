@@ -1,9 +1,9 @@
 -- CONFIG
 
 autoscan = true
-autohop = false
+autohop = true
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
+webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -68,6 +68,10 @@ sunkenchestList = {
 -- CODE
 
 repeat task.wait(1) until game:IsLoaded()
+
+local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
+loading.loading.Visible = false
+
 task.wait(3)
 local uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
 while uptime == "0D 00H 00S" do
@@ -139,12 +143,7 @@ function teleport()
     end
 end
 
-
-local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
-
 function creategui()
-    loading.loading.Visible = false
-
     local playerGui = game.Players.LocalPlayer.PlayerGui
 
     local screenGui = Instance.new("ScreenGui")
@@ -535,7 +534,7 @@ function issunkenchest(uptime)
     local totalMinutes = (hours * 60) + minutes
     
     local modValue = totalMinutes % 70
-    
+
     if modValue >= 60 and modValue < 70 then
         return true
     else
