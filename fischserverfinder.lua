@@ -2,7 +2,7 @@
 
 autoscan = true
 autohop = true
-autowebhook = true
+autowebhook = false
 webhookUrl = "https://discord.com/api/webhooks/#/#"
 filename = "servers" -- dont add .json
 
@@ -78,7 +78,9 @@ print("[FSF] Loading")
 
 local uptime
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
-loading.loading.Visible = false
+if loading then
+    loading.loading.Visible = false
+end
 
 task.wait(3)
 local uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
@@ -757,4 +759,6 @@ end
 print("[FSF] Loaded In!")
 
 task.wait(20)
-loading.loading.Visible = true
+if loading then 
+    loading.loading.Visible = true
+end
