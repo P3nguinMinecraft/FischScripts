@@ -70,6 +70,7 @@ autouptime = true
 -- CODE
 
 repeat task.wait(1) until game:IsLoaded()
+print("[FSF] Loading")
 
 local uptime
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
@@ -747,6 +748,15 @@ function connectChildAdded()
 end
 
 connectChildAdded()
+
+
+for _, object in pairs(activeChestsFolder:GetChildren()) do
+    if sunkenchestList.alertonload then
+        sunkenchesttp2(object)
+    end
+end
+
+print("[FSF] Loaded In!")
 
 task.wait(20)
 loading.loading.Visible = true
