@@ -2,7 +2,7 @@
 
 autoscan = true
 autohop = true
-autowebhook = true
+autowebhook = false
 webhookUrl = "https://discord.com/api/webhooks/*/*"
 filename = "servers" -- dont add .json
 
@@ -49,7 +49,7 @@ zoneList = {
 
 luckList = {
     min = 2,
-    enabled = true,
+    enabled = false,
 }
 
 meteorList = {
