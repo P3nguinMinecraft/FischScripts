@@ -19,7 +19,7 @@ weatherList = {
     {name = "Windy",                    enabled = false},
     {name = "Rain",                     enabled = false},
     {name = "Eclipse",                  enabled = false},
-    {name = "Aurora Borealis",          enabled = true},
+    {name = "Aurora Borealis",          enabled = false},
 }
 
 cycleList = {
@@ -39,7 +39,7 @@ zoneList = {
     {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = true},
+    {name = "Whale Shark",              enabled = false},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
@@ -463,7 +463,7 @@ end
 
 function sunkenchesttp2(object)
     local position
-    for _, descendant in ipairs(object:GetDescendants()) do
+    for _, descendant in ipairs(object:FindFirstChild("Chests"):GetDescendants()) do
         if descendant:IsA("BasePart") then
             position = descendant.Position
             break
@@ -742,4 +742,4 @@ end
 connectChildAdded()
 
 task.wait(20)
-loading.loading.skip.Visible = true
+loading.loading.Visible = true
