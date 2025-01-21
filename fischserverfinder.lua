@@ -3,7 +3,7 @@
 autoscan = true
 autohop = false
 autowebhook = true
-webhookUrl = "https://discord.com/api/webhooks/*/*"
+webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -39,7 +39,7 @@ zoneList = {
     {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = false},
+    {name = "Whale Shark",              enabled = true},
     {name = "Golden Tide",              enabled = false},
     {name = "Ancient Algae Pool",       enabled = false},
     {name = "Forsaken Algae Pool",      enabled = false},
@@ -68,11 +68,11 @@ sunkenchestList = {
 -- CODE
 
 repeat task.wait(1) until game:IsLoaded()
-
-local uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+task.wait(3)
+local uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
 while uptime == "0D 00H 00S" do
-    task.wait(1)
-    uptime = game:GetService("Players").LocalPlayer.PlayerGui.serverInfo.serverInfo.uptime.Text:sub(16)
+    task.wait()
+    uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
 end
 
 local TeleportService = game:GetService("TeleportService")
@@ -130,7 +130,7 @@ function teleport()
 
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
         RemoveServer(Server.id)
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game.Players.LocalPlayer)
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
     else
         notifygui("Failed Server Hop (pls debug)", 242, 44, 22)
         print(Server)
@@ -140,10 +140,11 @@ function teleport()
 end
 
 
-local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 60).loading
+local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
 
 function creategui()
-    loading.Visible = false
+    loading.loading.Visible = false
+
     local playerGui = game.Players.LocalPlayer.PlayerGui
 
     local screenGui = Instance.new("ScreenGui")
@@ -229,7 +230,7 @@ function creategui()
 
     closeGUI.MouseButton1Click:Connect(function()
         screenGui:Destroy()
-        loading.Visible = true
+        --loading.Visible = true
     end)
 
     Hop.MouseButton1Click:Connect(function()
@@ -701,7 +702,7 @@ function notify(events)
             notifygui(event.text, event.r, event.g, event.b)
             count = count + 1
             if event.text == "Sunken Chest" then
-                sunkenchesttp()
+                sunkenchesttp1()
             end
         end
     end
@@ -740,3 +741,6 @@ function connectChildAdded()
 end
 
 connectChildAdded()
+
+task.wait(20)
+loading.loading.skip.Visible = true
