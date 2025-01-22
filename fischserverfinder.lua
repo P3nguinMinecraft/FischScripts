@@ -70,13 +70,13 @@ autouptime = true
 
 -- CODE
 
-local version = "1.0.1"
-local updversion, updmsg = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_version.lua"))()
+local version = "1.0.2"
+local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
+local checkteleporting = false
 
 repeat task.wait(1) until game:IsLoaded()
 print("[FSF] Loading")
 
-local uptime
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
 if loading then
     loading.loading.Visible = false
@@ -92,6 +92,10 @@ end
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 filename = filename.. ".json"
+
+function tp(x, y, z)
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(x, y, z))
+end
 
 function teleport()
     local Server, Next = nil, nil
@@ -336,6 +340,8 @@ function notifygui(text, r, g, b)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
+local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
+
 function sunkenchesttp1()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("NotificationGui")
@@ -368,104 +374,52 @@ function sunkenchesttp1()
     closeButton.Parent = frame
     closeButton.ZIndex = 101
 
-    local tpButton1 = Instance.new("TextButton")
-    tpButton1.Name = "tpButton1"
-    tpButton1.Size = UDim2.new(0, 20, 0, 20)
-    tpButton1.Position = UDim2.new(0.15, 5, 0.5, -10)
-    tpButton1.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton1.Text = "MW"
-    tpButton1.TextColor3 = Color3.new(1, 1, 1)
-    tpButton1.TextScaled = true
-    tpButton1.Font = Enum.Font.SourceSans
-    tpButton1.Parent = frame
-    tpButton1.ZIndex = 101
+    local tpButton = Instance.new("TextButton")
+    tpButton.Name = "tpButton"
+    tpButton.Size = UDim2.new(0, 50, 0, 30)
+    tpButton.Position = UDim2.new(0.3, 5, 0.5, -15)
+    tpButton.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
+    tpButton.Text = "TP"
+    tpButton.TextColor3 = Color3.new(1, 1, 1)
+    tpButton.TextScaled = true
+    tpButton.Font = Enum.Font.SourceSans
+    tpButton.Parent = frame
+    tpButton.ZIndex = 101
 
-    local tpButton2 = Instance.new("TextButton")
-    tpButton2.Name = "tpButton2"
-    tpButton2.Size = UDim2.new(0, 20, 0, 20)
-    tpButton2.Position = UDim2.new(0.3, 5, 0.5, -10)
-    tpButton2.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton2.Text = "RL"
-    tpButton2.TextColor3 = Color3.new(1, 1, 1)
-    tpButton2.TextScaled = true
-    tpButton2.Font = Enum.Font.SourceSans
-    tpButton2.Parent = frame
-    tpButton2.ZIndex = 101
-
-    local tpButton3 = Instance.new("TextButton")
-    tpButton3.Name = "tpButton3"
-    tpButton3.Size = UDim2.new(0, 20, 0, 20)
-    tpButton3.Position = UDim2.new(0.45, 5, 0.5, -10)
-    tpButton3.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton3.Text = "SS"
-    tpButton3.TextColor3 = Color3.new(1, 1, 1)
-    tpButton3.TextScaled = true
-    tpButton3.Font = Enum.Font.SourceSans
-    tpButton3.Parent = frame
-    tpButton3.ZIndex = 101
- 
-    local tpButton4 = Instance.new("TextButton")
-    tpButton4.Name = "tpButton4"
-    tpButton4.Size = UDim2.new(0, 20, 0, 20)
-    tpButton4.Position = UDim2.new(0.6, 5, 0.5, -10)
-    tpButton4.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton4.Text = "TP"
-    tpButton4.TextColor3 = Color3.new(1, 1, 1)
-    tpButton4.TextScaled = true
-    tpButton4.Font = Enum.Font.SourceSans
-    tpButton4.Parent = frame
-    tpButton4.ZIndex = 101
-
-    local tpButton5 = Instance.new("TextButton")
-    tpButton5.Name = "tpButton5"
-    tpButton5.Size = UDim2.new(0, 20, 0, 20)
-    tpButton5.Position = UDim2.new(0.75, 5, 0.5, -10)
-    tpButton5.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton5.Text = "MG"
-    tpButton5.TextColor3 = Color3.new(1, 1, 1)
-    tpButton5.TextScaled = true
-    tpButton5.Font = Enum.Font.SourceSans
-    tpButton5.Parent = frame
-    tpButton5.ZIndex = 101
-
-    local tpButton6 = Instance.new("TextButton")
-    tpButton6.Name = "tpButton6"
-    tpButton6.Size = UDim2.new(0, 20, 0, 20)
-    tpButton6.Position = UDim2.new(0.9, 5, 0.5, -10)
-    tpButton6.BackgroundColor3 = Color3.new(0.5, 0.9, 0.65)
-    tpButton6.Text = "FS"
-    tpButton6.TextColor3 = Color3.new(1, 1, 1)
-    tpButton6.TextScaled = true
-    tpButton6.Font = Enum.Font.SourceSans
-    tpButton6.Parent = frame
-    tpButton6.ZIndex = 101
+    local rescanButton = Instance.new("TextButton")
+    rescanButton.Name = "rescanButton"
+    rescanButton.Size = UDim2.new(0, 80, 0, 30)
+    rescanButton.Position = UDim2.new(0.6, 5, 0.5, -15)
+    rescanButton.BackgroundColor3 = Color3.new(0.83, 0.5, 0.9)
+    rescanButton.Text = "Rescan"
+    rescanButton.TextColor3 = Color3.new(1, 1, 1)
+    rescanButton.TextScaled = true
+    rescanButton.Font = Enum.Font.SourceSans
+    rescanButton.Parent = frame
+    rescanButton.ZIndex = 101
 
     closeButton.MouseButton1Click:Connect(function()
         frame:Destroy()
     end)
 
-    tpButton1.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(562, 130, 76))
+    tpButton.MouseButton1Click:Connect(function()
+        checkteleporting = true
+        for _, coords in ipairs(sunkenchestcoords) do
+            tp(coords.x, coords.y, coords.z)
+            task.wait(0.5)
+            if not checkteleporting then break end
+        end
+        checkteleporting = false
     end)
 
-    tpButton2.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1854, 165, 404))
-    end)
-
-    tpButton3.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1303, 130, -1140))
-    end)
-
-    tpButton4.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(312, 130, 2128))
-    end)
-
-    tpButton5.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(2573, 133, -974))
-    end)
-
-    tpButton6.MouseButton1Click:Connect(function()
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-2460, 130, 2047))
+    rescanButton.MouseButton1Click:Connect(function()
+        for _, object in pairs(activeChestsFolder:GetChildren()) do
+            if sunkenchestList.alertonload then
+                checkteleporting = false
+                notifygui("Sunken Chest Found!", 255, 255, 0)
+                sunkenchesttp2(object)
+            end
+        end
     end)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
@@ -733,10 +687,9 @@ function scan()
     notify(events)
 end
 
-local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
-
 activeChestsFolder.ChildAdded:Connect(function(object)
     if sunkenchestList.alertonload then
+        checkteleporting = false
         notifygui("Sunken Chest Loaded!", 255, 255, 0)
         sunkenchesttp2(object)
     end
@@ -745,6 +698,8 @@ end)
 
 if not string.match(version, updversion) then
     notifygui("Outdated Version: " .. updversion, 255, 0, 0)
+    notifygui("Go to GitHub (link copied)", 255, 0, 0)
+    setclipboard("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua")
     notifygui(updmsg, 255, 255, 255)
 end
 
