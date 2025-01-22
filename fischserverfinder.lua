@@ -70,7 +70,7 @@ autouptime = true
 
 -- CODE
 
-local version = "1.0.2"
+local version = "1.0.3"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 
@@ -342,6 +342,16 @@ end
 
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
+function scanchest()
+    for _, object in pairs(activeChestsFolder:GetChildren()) do
+        if sunkenchestList.alertonload then
+            checkteleporting = false
+            notifygui("Sunken Chest Found!", 255, 255, 0)
+            sunkenchesttp2(object)
+        end
+    end
+end
+
 function sunkenchesttp1()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("NotificationGui")
@@ -403,23 +413,24 @@ function sunkenchesttp1()
     end)
 
     tpButton.MouseButton1Click:Connect(function()
+        local foundchest = false
         checkteleporting = true
         for _, coords in ipairs(sunkenchestcoords) do
             tp(coords.x, coords.y + 70, coords.z)
             task.wait(0.1)
-            if not checkteleporting then break end
+            if not checkteleporting then
+                foundchest = true
+                break
+            end
+        end
+        if not foundchest then
+            scanchest()
         end
         checkteleporting = false
     end)
 
     rescanButton.MouseButton1Click:Connect(function()
-        for _, object in pairs(activeChestsFolder:GetChildren()) do
-            if sunkenchestList.alertonload then
-                checkteleporting = false
-                notifygui("Sunken Chest Found!", 255, 255, 0)
-                sunkenchesttp2(object)
-            end
-        end
+        scanchest()
     end)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
