@@ -1,12 +1,14 @@
 local on = true
 ----------------
 
+local taskCoroutine
+local isRunning = false
 
-local taskRunning = false
 local gui = game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("QuestGui")
 if gui then
     gui:Destroy()
-    taskRunning = false
+    isRunning = false
+    taskCoroutine = nil
 end
 
 if not on then return end
@@ -177,9 +179,6 @@ function findfishreq()
     end
     return nil
 end
-
-local taskCoroutine
-local isRunning = false
 
 function toggleautoquest()
     if isRunning then
