@@ -406,7 +406,7 @@ function sunkenchesttp1()
         checkteleporting = true
         for _, coords in ipairs(sunkenchestcoords) do
             tp(coords.x, coords.y + 70, coords.z)
-            task.wait(0.5)
+            task.wait(0.1)
             if not checkteleporting then break end
         end
         checkteleporting = false
