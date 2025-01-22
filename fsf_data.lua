@@ -1,5 +1,5 @@
-local version = "1.0.2"
-local msg = "+sunken chest search, +sunken rescan button"
+local version = "1.0.3"
+local msg = "better chest search"
 
 local sunkenchestcoords = {
     {x = 936, y = 130, z = -159},
