@@ -17,7 +17,7 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
 frame.Name = "DraggableFrame"
-frame.Size = UDim2.new(0, 220, 0, 250)
+frame.Size = UDim2.new(0, 220, 0, 300)
 frame.Position = UDim2.new(0.5, -110, 0.5, -100)
 frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 frame.BorderSizePixel = 0
@@ -81,6 +81,21 @@ button3.Parent = frame
 
 button3.MouseButton1Click:Connect(function()
     toggleautoquest()
+end)
+
+local button4 = Instance.new("TextButton")
+button4.Name = "TPButton"
+button4.Size = UDim2.new(0, 200, 0, 50)
+button4.Position = UDim2.new(0, 10, 0, 230)
+button4.BackgroundColor3 = Color3.fromRGB(69, 252, 255)
+button4.Text = "TP To Angler"
+button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+button4.Font = Enum.Font.SourceSans
+button4.TextSize = 24
+button4.Parent = frame
+
+button4.MouseButton1Click:Connect(function()
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(981, -703, 1232))
 end)
 
 local autoquest = false
