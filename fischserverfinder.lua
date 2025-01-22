@@ -243,7 +243,6 @@ function creategui()
 
     closeGUI.MouseButton1Click:Connect(function()
         screenGui:Destroy()
-        --loading.Visible = true
     end)
 
     Hop.MouseButton1Click:Connect(function()
