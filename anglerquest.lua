@@ -118,15 +118,6 @@ function completequest()
     end
 end
 
-function toggleautoquest()
-    autoquest = not autoquest
-    if autoquest then
-        button3.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-    else
-        button3.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    end
-end
-
 function getfish(fishname)
     local plrname = game:GetService("Players").LocalPlayer.Name
     local inventory = game:GetService("ReplicatedStorage").playerstats:WaitForChild(plrname).Inventory:GetChildren()
@@ -188,26 +179,34 @@ function findfishreq()
 end
 
 local taskCoroutine
-function startTask()
-    if taskRunning then return end
-    taskRunning = true
+local isRunning = false
 
-    taskCoroutine = coroutine.create(function()
-        while taskRunning do
-            if autoquest then
-                local fish = findfishreq()
-                if fish then
-                    print("Quest: " .. fish)
-                    equipfish(fish)
+function toggleautoquest()
+    if isRunning then
+        button3.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        
+        isRunning = false
+        taskCoroutine = nil
+    else
+        button3.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+        
+        isRunning = true
+
+        if not taskCoroutine or coroutine.status(taskCoroutine) == "dead" then
+            taskCoroutine = coroutine.create(function()
+                while isRunning do
+                    local fish = findfishreq()
+                    if fish then
+                        equipfish(fish)
+                        givequest()
+                        task.wait(1)
+                    end
                     givequest()
                     task.wait(1)
                 end
-                givequest()
-            end
-            task.wait(1)
+            end)
         end
-    end)
-    coroutine.resume(taskCoroutine)
-end
 
-startTask()
+        coroutine.resume(taskCoroutine)
+    end
+end
