@@ -469,8 +469,8 @@ function sunkenchesttp2(object)
 
     local tpButton = Instance.new("TextButton")
     tpButton.Name = "tpButton"
-    tpButton.Size = UDim2.new(0.8, 0, 0, 20)
-    tpButton.Position = UDim2.new(0.15, 5, 0.5, -10)
+    tpButton.Size = UDim2.new(0.8, 0, 0, 30)
+    tpButton.Position = UDim2.new(0.15, 5, 0.5, -15)
     tpButton.BackgroundColor3 = Color3.new(0.4, 0.6, 1)
     tpButton.Text = "TP to Chest"
     tpButton.TextColor3 = Color3.new(1, 1, 1)
