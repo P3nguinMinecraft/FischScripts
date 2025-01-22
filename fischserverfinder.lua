@@ -405,7 +405,7 @@ function sunkenchesttp1()
     tpButton.MouseButton1Click:Connect(function()
         checkteleporting = true
         for _, coords in ipairs(sunkenchestcoords) do
-            tp(coords.x, coords.y, coords.z)
+            tp(coords.x, coords.y + 70, coords.z)
             task.wait(0.5)
             if not checkteleporting then break end
         end
