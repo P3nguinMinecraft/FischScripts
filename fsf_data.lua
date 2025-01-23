@@ -1,5 +1,5 @@
-local version = "1.0.3"
-local msg = "better chest search"
+local version = "1.1"
+local msg = "Scaling GUI based on screen size, Minimize Option!"
 
 local sunkenchestcoords = {
 -- Moosewood
