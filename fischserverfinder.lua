@@ -75,8 +75,6 @@ local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://r
 local checkteleporting = false
 
 local camera = game.Workspace.CurrentCamera
-local screenX = camera.ViewportSize.X
-local screenY = camera.ViewportSize.Y
 
 repeat task.wait(1) until game:IsLoaded()
 print("[FSF] Loading")
@@ -294,6 +292,8 @@ function creategui()
     Minimize.MouseButton1Click:Connect(function()
         MinimizeGUI()
     end)
+
+
 end
 
 function notifygui(text, r, g, b)
@@ -316,7 +316,7 @@ function notifygui(text, r, g, b)
 
     local frame = Instance.new("Frame")
     frame.Name = "NotificationFrame"
-    frame.Size = UDim2.new(1, 0, 0, screenY * 0.05)
+    frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
     frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     frame.BorderSizePixel = 0
     frame.Parent = scrollFrame
@@ -430,7 +430,7 @@ function sunkenchesttp1()
 
     local frame = Instance.new("Frame")
     frame.Name = "NotificationFrame"
-    frame.Size = UDim2.new(1, 0, 0, screenY * 0.05)
+    frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
     frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     frame.BorderSizePixel = 0
     frame.Parent = scrollFrame
@@ -524,7 +524,7 @@ function sunkenchesttp2(object)
 
     local frame = Instance.new("Frame")
     frame.Name = "NotificationFrame"
-    frame.Size = UDim2.new(1, 0, 0, screenY * 0.05)
+    frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
     frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     frame.BorderSizePixel = 0
     frame.Parent = scrollFrame
@@ -769,7 +769,6 @@ activeChestsFolder.ChildAdded:Connect(function(object)
         sunkenchesttp2(object)
     end
 end)
-
 
 if not string.match(version, updversion) then
     notifygui("Outdated Version: " .. updversion, 255, 0, 0)
