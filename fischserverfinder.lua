@@ -169,7 +169,7 @@ function creategui()
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0.25, 0, 0.5, 0)
-    mainFrame.Position = UDim2.new(0.1, 0, 0.3, 0)
+    mainFrame.Position = UDim2.new(0.1, 0, 0.4, 0)
     mainFrame.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
     mainFrame.BorderSizePixel = 0
     mainFrame.Active = true
