@@ -19,7 +19,7 @@ weatherList = {
     {name = "Windy",                    enabled = false},
     {name = "Rain",                     enabled = false},
     {name = "Eclipse",                  enabled = false},
-    {name = "Aurora Borealis",          enabled = false},
+    {name = "Aurora Borealis",          enabled = true},
 }
 
 cycleList = {
@@ -49,15 +49,15 @@ zoneList = {
 
 luckList = {
     min = 2,
-    enabled = false,
+    enabled = true,
 }
 
 meteorList = {
-    {name = "Amethyst", enabled = false},
-    {name = "Ruby", enabled = false},
-    {name = "Opal", enalbed = false},
-    {name = "Lapis Lazuli", enabled = false},
-    {name = "Moonstone", enabled = false},
+    {name = "Amethyst",                 enabled = false},
+    {name = "Ruby",                     enabled = false},
+    {name = "Opal",                     enabled = false},
+    {name = "Lapis Lazuli",             enabled = false},
+    {name = "Moonstone",                enabled = true},
 }
 
 sunkenchestList = {
