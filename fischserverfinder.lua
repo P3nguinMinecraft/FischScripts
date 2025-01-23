@@ -294,14 +294,6 @@ function creategui()
     Minimize.MouseButton1Click:Connect(function()
         MinimizeGUI()
     end)
-    
-    while task.wait(0.1) do
-        for _, frame in pairs(scrollFrame:GetChildren()) do
-            if frame.Name == "NotificationFrame" then
-                frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
-            end
-        end
-    end
 end
 
 function notifygui(text, r, g, b)
