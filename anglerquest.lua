@@ -1,6 +1,8 @@
 local on = true
 ----------------
 
+repeat task.wait(1) until game:IsLoaded()
+
 local taskCoroutine
 local isRunning = false
 
@@ -19,8 +21,8 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
 local frame = Instance.new("Frame")
 frame.Name = "DraggableFrame"
-frame.Size = UDim2.new(0, 220, 0, 300)
-frame.Position = UDim2.new(0.5, -110, 0.5, -100)
+frame.Size = UDim2.new(0.15, 0, 0.3, 0)
+frame.Position = UDim2.new(0.435, 0, 0.35, 0)
 frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 frame.BorderSizePixel = 0
 frame.Active = true
@@ -29,24 +31,26 @@ frame.Parent = screenGui
 
 local titleLabel = Instance.new("TextLabel")
 titleLabel.Name = "TitleLabel"
-titleLabel.Size = UDim2.new(0, 200, 0, 40)
-titleLabel.Position = UDim2.new(0, 10, 0, 0)
+titleLabel.Size = UDim2.new(0.95, 0, 0.2, 0)
+titleLabel.Position = UDim2.new(0.5, 0, 0, 0)
 titleLabel.Text = "Welcome to AnglerQuest!"
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleLabel.Font = Enum.Font.SourceSans
 titleLabel.TextScaled = true
 titleLabel.BackgroundTransparency = 1
+titleLabel.AnchorPoint = Vector2.new(0.5, 0)
 titleLabel.Parent = frame
 
 local button1 = Instance.new("TextButton")
 button1.Name = "QuestButton"
-button1.Size = UDim2.new(0, 200, 0, 50)
-button1.Position = UDim2.new(0, 10, 0, 50)
+button1.Size = UDim2.new(0.95, 0, 0.2, 0)
+button1.Position = UDim2.new(0.5, 0, 0.2, 0)
 button1.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 button1.Text = "Depths Angler Quest"
 button1.TextColor3 = Color3.fromRGB(255, 255, 255)
 button1.Font = Enum.Font.SourceSans
 button1.TextSize = 24
+button1.AnchorPoint = Vector2.new(0.5, 0)
 button1.Parent = frame
 
 button1.MouseButton1Click:Connect(function()
@@ -56,13 +60,14 @@ end)
 
 local button2 = Instance.new("TextButton")
 button2.Name = "CompleteQuestButton"
-button2.Size = UDim2.new(0, 200, 0, 50)
-button2.Position = UDim2.new(0, 10, 0, 110)
+button2.Size = UDim2.new(0.95, 0, 0.2, 0)
+button2.Position = UDim2.new(0.5, 0, 0.4, 0)
 button2.BackgroundColor3 = Color3.fromRGB(200, 200, 100)
 button2.Text = "Complete Quest"
 button2.TextColor3 = Color3.fromRGB(255, 255, 255)
 button2.Font = Enum.Font.SourceSans
 button2.TextSize = 24
+button2.AnchorPoint = Vector2.new(0.5, 0)
 button2.Parent = frame
 
 button2.MouseButton1Click:Connect(function()
@@ -72,13 +77,14 @@ end)
 
 local button3 = Instance.new("TextButton")
 button3.Name = "AutoQuestButton"
-button3.Size = UDim2.new(0, 200, 0, 50)
-button3.Position = UDim2.new(0, 10, 0, 170)
+button3.Size = UDim2.new(0.95, 0, 0.2, 0)
+button3.Position = UDim2.new(0.5, 0, 0.6, 0)
 button3.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 button3.Text = "Auto Quest"
 button3.TextColor3 = Color3.fromRGB(255, 255, 255)
 button3.Font = Enum.Font.SourceSans
 button3.TextSize = 24
+button3.AnchorPoint = Vector2.new(0.5, 0)
 button3.Parent = frame
 
 button3.MouseButton1Click:Connect(function()
@@ -87,20 +93,19 @@ end)
 
 local button4 = Instance.new("TextButton")
 button4.Name = "TPButton"
-button4.Size = UDim2.new(0, 200, 0, 50)
-button4.Position = UDim2.new(0, 10, 0, 230)
+button4.Size = UDim2.new(0.95, 0, 0.2, 0)
+button4.Position = UDim2.new(0.5, 0, 0.8, 0)
 button4.BackgroundColor3 = Color3.fromRGB(69, 252, 255)
 button4.Text = "TP To Angler"
 button4.TextColor3 = Color3.fromRGB(255, 255, 255)
 button4.Font = Enum.Font.SourceSans
 button4.TextSize = 24
+button4.AnchorPoint = Vector2.new(0.5, 0)
 button4.Parent = frame
 
 button4.MouseButton1Click:Connect(function()
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(981, -703, 1232))
 end)
-
-local autoquest = false
 
 function givequest()
     local angler = game:GetService("Workspace"):WaitForChild("world"):WaitForChild("npcs"):FindFirstChild("The Depths Angler")
