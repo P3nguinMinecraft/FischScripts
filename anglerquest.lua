@@ -43,7 +43,7 @@ titleLabel.Parent = frame
 
 local button1 = Instance.new("TextButton")
 button1.Name = "QuestButton"
-button1.Size = UDim2.new(0.95, 0, 0.2, 0)
+button1.Size = UDim2.new(0.95, 0, 0.18, 0)
 button1.Position = UDim2.new(0.5, 0, 0.2, 0)
 button1.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
 button1.Text = "Depths Angler Quest"
@@ -60,8 +60,8 @@ end)
 
 local button2 = Instance.new("TextButton")
 button2.Name = "CompleteQuestButton"
-button2.Size = UDim2.new(0.95, 0, 0.2, 0)
-button2.Position = UDim2.new(0.5, 0, 0.4, 0)
+button2.Size = UDim2.new(0.95, 0, 0.18, 0)
+button2.Position = UDim2.new(0.5, 0, 0.39, 0)
 button2.BackgroundColor3 = Color3.fromRGB(200, 200, 100)
 button2.Text = "Complete Quest"
 button2.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -77,8 +77,8 @@ end)
 
 local button3 = Instance.new("TextButton")
 button3.Name = "AutoQuestButton"
-button3.Size = UDim2.new(0.95, 0, 0.2, 0)
-button3.Position = UDim2.new(0.5, 0, 0.6, 0)
+button3.Size = UDim2.new(0.95, 0, 0.19, 0)
+button3.Position = UDim2.new(0.5, 0, 0.58, 0)
 button3.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 button3.Text = "Auto Quest"
 button3.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -93,8 +93,8 @@ end)
 
 local button4 = Instance.new("TextButton")
 button4.Name = "TPButton"
-button4.Size = UDim2.new(0.95, 0, 0.2, 0)
-button4.Position = UDim2.new(0.5, 0, 0.8, 0)
+button4.Size = UDim2.new(0.95, 0, 0.19, 0)
+button4.Position = UDim2.new(0.5, 0, 0.77, 0)
 button4.BackgroundColor3 = Color3.fromRGB(69, 252, 255)
 button4.Text = "TP To Angler"
 button4.TextColor3 = Color3.fromRGB(255, 255, 255)
