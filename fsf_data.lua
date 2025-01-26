@@ -1,5 +1,5 @@
-local version = "1.1"
-local msg = "Scaling GUI based on screen size, Minimize Option!"
+local version = "1.1.1"
+local msg = "added kraken zone"
 
 local sunkenchestcoords = {
 -- Moosewood
