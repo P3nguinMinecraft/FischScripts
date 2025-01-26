@@ -1,8 +1,8 @@
 -- CONFIG
 
 autoscan = true
-autohop = true
-autowebhook = false
+autohop = false
+autowebhook = true
 webhookUrl = "https://discord.com/api/webhooks/#/#"
 filename = "servers" -- dont add .json
 
@@ -35,20 +35,23 @@ seasonList = {
 }
 
 zoneList = {
-    {name = "Megalodon Default",        enabled = false},
-    {name = "Megalodon Ancient",        enabled = false},
+    {name = "Megalodon Default",        enabled = true},
+    {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = false},
     {name = "Golden Tide",              enabled = false},
-    {name = "Ancient Algae Pool",       enabled = false},
-    {name = "Forsaken Algae Pool",      enabled = false},
-    {name = "Snowcap Algae Pool",       enabled = false},
-    {name = "Mushgrove Algae Pool",     enabled = false},
+    {name = "The Kraken Pool",          enabled = true},
+    {name = "Ancient Kraken Pool",      enabled = true},
+
+    --{name = "Ancient Algae Pool",       enabled = false},
+    --{name = "Forsaken Algae Pool",      enabled = false},
+    --{name = "Snowcap Algae Pool",       enabled = false},
+    --{name = "Mushgrove Algae Pool",     enabled = false},
 }
 
 luckList = {
-    min = 2,
+    min = 8,
     enabled = true,
 }
 
@@ -70,7 +73,7 @@ autouptime = true
 
 -- CODE
 
-local version = "1.1"
+local version = "1.1.1"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 
