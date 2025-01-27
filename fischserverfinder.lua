@@ -40,10 +40,10 @@ zoneList = {
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = false},
-    {name = "Golden Tide",              enabled = false},
     {name = "The Kraken Pool",          enabled = true},
     {name = "Ancient Kraken Pool",      enabled = true},
 
+    --{name = "Golden Tide",              enabled = false},
     --{name = "Ancient Algae Pool",       enabled = false},
     --{name = "Forsaken Algae Pool",      enabled = false},
     --{name = "Snowcap Algae Pool",       enabled = false},
