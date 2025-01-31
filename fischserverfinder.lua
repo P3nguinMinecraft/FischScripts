@@ -91,6 +91,7 @@ local version = "1.2"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 local loadedmsg = false
+local desireduptime
 
 local camera = game.Workspace.CurrentCamera
 
@@ -763,6 +764,7 @@ end
 
 notify = function(events)
     local count = 0
+    if desireduptime then count = count + 1 end
     for _, event in ipairs(events) do
         if event.enabled == true then
             notifygui(event.text, event.r, event.g, event.b)
@@ -782,11 +784,14 @@ notify = function(events)
 end
 
 scan = function()
+    desireduptime = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
     if uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
+        desireduptime = true
         notifygui("Before: " .. uptime, 52, 168, 255)
     elseif uptimeList.afterTime.enabled and time > (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
+        desireduptime = true
         notifygui("After: " .. uptime, 193, 48, 255)
     end
     local events = scanWorld()
