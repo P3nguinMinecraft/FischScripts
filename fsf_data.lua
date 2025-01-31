@@ -1,5 +1,5 @@
 local version = "1.2"
-local msg = "- Rewrote the function declaration so hopefully they won't just collapse like bricks - Added Uptime Search (for before x:x, and after x:x)"
+local msg = "- Rewrote the function declaration so hopefully they won't just collapse like bricks - Added Uptime Search (for before x:x, and after x:x) - Removed autouptime (complain in discord)"
 
 local sunkenchestcoords = {
 -- Moosewood
