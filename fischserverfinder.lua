@@ -783,9 +783,10 @@ end
 
 scan = function()
     local hour, minute = parseuptime()
-    if uptimeList.beforeTime.enabled and (uptimeList.beforeTime.hour > hour or (uptimeList.beforeTime.hour == hour and uptimeList.beforeTime.minute > minute)) then
+    local time = hour * 60 + minute
+    if uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
         notifygui("Before: " .. uptime, 52, 168, 255)
-    elseif uptimeList.afterTime.enabled and (uptimeList.afterTime.hour < hour or (uptimeList.beforeTime.hour == hour and uptimeList.afterTime.minute < minute)) then
+    elseif uptimeList.afterTime.enabled and time > (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
         notifygui("After: " .. uptime, 193, 48, 255)
     end
     local events = scanWorld()
