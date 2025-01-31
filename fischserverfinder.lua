@@ -787,10 +787,10 @@ scan = function()
     desireduptime = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
-    if uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
+    if uptimeList.beforeTime.enabled and time > (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
         desireduptime = true
         notifygui("Before: " .. uptime, 52, 168, 255)
-    elseif uptimeList.afterTime.enabled and time > (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
+    elseif uptimeList.afterTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
         desireduptime = true
         notifygui("After: " .. uptime, 193, 48, 255)
     end
