@@ -1,8 +1,8 @@
 -- CONFIG
 
 autoscan = true
-autohop = false
-autowebhook = true
+autohop = true
+autowebhook = false
 webhookUrl = "https://discord.com/api/webhooks/#/#"
 filename = "servers" -- dont add .json
 
@@ -69,11 +69,27 @@ sunkenchestList = {
     alertonload = true,
 }
 
-autouptime = true
+uptimeList = {
+    beforeTime = {
+        enabled = false,
+        hour = 0,
+        minute = 0,
+        second = 0,
+    },
+
+    afterTime = {
+        enabled = false,
+        hour = 0,
+        minute = 0,
+        second = 0,
+    },
+}
 
 -- CODE
 
-local version = "1.1.1"
+local parseuptime, tp, teleport, creategui, notifygui, minimizegui, scanchest, potentialsunkenchest, loadedsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+
+local version = "1.2"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 
@@ -98,11 +114,17 @@ local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
 filename = filename.. ".json"
 
-function tp(x, y, z)
+parseuptime = function()
+    local uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
+    local hour, minute = uptime:match("^(%d+):(%d+):%d+$")
+    return tonumber(hour), tonumber(minute)
+end
+
+tp = function(x, y, z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(x, y, z))
 end
 
-function teleport()
+teleport = function()
     local Server, Next = nil, nil
     
     local function ListServers(cursor)
@@ -162,7 +184,7 @@ function teleport()
     end
 end
 
-function creategui()
+creategui = function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
 
     local screenGui = Instance.new("ScreenGui")
@@ -293,13 +315,13 @@ function creategui()
     end)
 
     Minimize.MouseButton1Click:Connect(function()
-        MinimizeGUI()
+        minimizegui()
     end)
 
 
 end
 
-function notifygui(text, r, g, b)
+notifygui = function(text, r, g, b)
     if not r then r = 255 end
     if not g then g = 255 end
     if not b then b = 255 end
@@ -378,7 +400,7 @@ function notifygui(text, r, g, b)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-function MinimizeGUI()
+minimizegui = function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("FischServerFinder")
 
@@ -409,17 +431,17 @@ end
 
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
-function scanchest()
+scanchest = function()
     for _, object in pairs(activeChestsFolder:GetChildren()) do
         if sunkenchestList.alertonload then
             checkteleporting = false
             notifygui("Sunken Chest Found!", 255, 255, 0)
-            sunkenchesttp2(object)
+            loadedsunkenchest(object)
         end
     end
 end
 
-function sunkenchesttp1()
+potentialsunkenchest = function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("FischServerFinder")
 
@@ -503,7 +525,7 @@ function sunkenchesttp1()
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-function sunkenchesttp2(object)
+loadedsunkenchest = function(object)
     local position
     for _, descendant in ipairs(object:GetDescendants()) do
         if descendant:IsA("BasePart") then
@@ -568,10 +590,8 @@ function sunkenchesttp2(object)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-function issunkenchest(uptime)
-    local hours, minutes = uptime:match("^(%d+):(%d+):%d+$")
-    hours = tonumber(hours)
-    minutes = tonumber(minutes)
+issunkenchest = function()
+    local hours, minutes = parseuptime()
 
     local totalMinutes = (hours * 60) + minutes
 
@@ -585,7 +605,7 @@ function issunkenchest(uptime)
 end
 
 
-function convertEventString(events)
+convertEventString = function(events)
     local string = ""
     for _, event in ipairs(events) do
         if event.text == "## Events: " then
@@ -597,7 +617,7 @@ function convertEventString(events)
     return string
 end
 
-function sendwebhook()
+sendwebhook = function()
     local count = #game:GetService("Players"):GetPlayers()
     local version = game:GetService("ReplicatedStorage").world.version.Value
     local uptimestr = "**Server Uptime: **" .. uptime
@@ -643,11 +663,11 @@ function sendwebhook()
     })
 end
 
-function haschildren(object)
+haschildren = function(object)
     return #object:GetChildren() > 0;
 end
 
-function scanWorld()
+scanWorld = function()
     local events = {}
     local weather = game:GetService("ReplicatedStorage").world.weather
     local cycle = game:GetService("ReplicatedStorage").world.cycle
@@ -728,22 +748,22 @@ function scanWorld()
             end
         end
     end
-    local issc, time = issunkenchest(uptime)
-    if issc then
+    local sc, time = issunkenchest()
+    if sc then
         table.insert(events, {text = "Sunken Chest " .. time .. " min", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
     end
 
     return events
 end
 
-function notify(events)
+notify = function(events)
     local count = 0
     for _, event in ipairs(events) do
         if event.enabled == true then
             notifygui(event.text, event.r, event.g, event.b)
             count = count + 1
             if string.find(event.text, "Sunken Chest") then
-                sunkenchesttp1()
+                potentialsunkenchest()
             end
         end
     end
@@ -756,10 +776,12 @@ function notify(events)
     end
 end
 
-function scan()
-    uptime = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("serverInfo").serverInfo.uptime.Text:sub(16)
-    if autouptime then
-        notifygui("Uptime: " .. uptime)
+scan = function()
+    local hour, minute = parseuptime()
+    if uptimeList.beforeTime.enabled and (uptimeList.beforeTime.hour > hour or (uptimeList.beforeTime.hour == hour and uptimeList.beforeTime.minute > minute)) then
+        notifygui("Before: " .. uptime, 52, 168, 255)
+    elseif uptimeList.afterTime.enabled and (uptimeList.afterTime.hour < hour or (uptimeList.beforeTime.hour == hour and uptimeList.afterTime.minute < minute)) then
+        notifygui("After: " .. uptime, 193, 48, 255)
     end
     local events = scanWorld()
     notify(events)
@@ -769,7 +791,7 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     if sunkenchestList.alertonload then
         checkteleporting = false
         notifygui("Sunken Chest Loaded!", 255, 255, 0)
-        sunkenchesttp2(object)
+        loadedsunkenchest(object)
     end
 end)
 
