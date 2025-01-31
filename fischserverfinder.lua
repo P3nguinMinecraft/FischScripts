@@ -436,7 +436,9 @@ scanchest = function()
         if sunkenchestList.alertonload then
             checkteleporting = false
             notifygui("Sunken Chest Found!", 255, 255, 0)
-            loadedsunkenchest(object)
+            spawn(function()
+                loadedsunkenchest(object)
+            end)
         end
     end
 end
@@ -592,7 +594,7 @@ loadedsunkenchest = function(object)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 
-    task.wait(1)
+    task.wait(0.5)
     loadedmsg = false
 end
 
@@ -802,7 +804,9 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     if sunkenchestList.alertonload then
         checkteleporting = false
         notifygui("Sunken Chest Loaded!", 255, 255, 0)
-        loadedsunkenchest(object)
+        task.spawn(function()
+            loadedsunkenchest(object)
+        end)
     end
 end)
 
