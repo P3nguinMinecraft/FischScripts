@@ -90,6 +90,7 @@ local parseuptime, tp, teleport, creategui, notifygui, minimizegui, scanchest, p
 local version = "1.2"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
+local loadedmsg = false
 
 local camera = game.Workspace.CurrentCamera
 
@@ -524,6 +525,9 @@ potentialsunkenchest = function()
 end
 
 loadedsunkenchest = function(object)
+    if loadedmsg then return end
+    loadedmsg = true
+
     local position
     for _, descendant in ipairs(object:GetDescendants()) do
         if descendant:IsA("BasePart") then
@@ -586,6 +590,9 @@ loadedsunkenchest = function(object)
     end)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
+
+    task.wait(1)
+    loadedmsg = false
 end
 
 issunkenchest = function()
@@ -794,7 +801,7 @@ activeChestsFolder.ChildAdded:Connect(function(object)
 end)
 
 if not string.match(version, updversion) then
-    notifygui("Outdated Version: " .. updversion, 255, 0, 0)
+    notifygui("Outdated Version! Current: " .. updversion, 255, 0, 0)
     notifygui("Go to GitHub (link copied)", 255, 0, 0)
     setclipboard("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua")
     notifygui(updmsg, 255, 255, 255)
