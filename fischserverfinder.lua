@@ -775,7 +775,7 @@ notify = function(events)
     if count == 0 then
         notifygui("Nothing", 255, 153, 0)
         if autohop then
-            notifygui("Autohopping", 255, 255, 255)
+            notifygui("Autohopping", 247, 94, 229)
             teleport() 
         end
     end
