@@ -817,12 +817,12 @@ if not string.match(version, updversion) then
     notifygui(updmsg, 255, 255, 255)
 end
 
-if autoscan then
-    scan()
-end
-
 if autowebhook then
     sendwebhook()
+end
+
+if autoscan then
+    scan()
 end
 
 print("[FSF] Loaded In!")
