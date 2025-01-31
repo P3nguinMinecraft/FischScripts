@@ -74,14 +74,12 @@ uptimeList = {
         enabled = false,
         hour = 0,
         minute = 0,
-        second = 0,
     },
 
     afterTime = {
         enabled = false,
         hour = 0,
         minute = 0,
-        second = 0,
     },
 }
 
