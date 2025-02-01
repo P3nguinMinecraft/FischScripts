@@ -1,5 +1,5 @@
-local version = "1.2"
-local msg = "- Rewrote the function declaration - Added Uptime Search - Removed autouptime - Reordered webhook and scan priority - Small fixes"
+local version = "1.2.1"
+local msg = "+Auto Farm Sunken Chest (sunkenchestList.autofarm)"
 
 local sunkenchestcoords = {
 -- Moosewood
