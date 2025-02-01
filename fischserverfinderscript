@@ -4,9 +4,9 @@
 -- CONFIG
 
 autoscan = true
-autohop = true
-autowebhook = false
-webhookUrl = "https://discord.com/api/webhooks/#/#"
+autohop = false
+autowebhook = true
+webhookUrl = "https://discord.com/api/webhooks/1312274005755166830/idzwoxkk4WYi9HU4RAjhalRK3T8J0uA_FsEF6kaRMlbBqpiMx8WP3O1f9lQlu2JnlUbq"
 filename = "servers" -- dont add .json
 
 eventList = {
@@ -22,7 +22,7 @@ weatherList = {
     {name = "Windy",                    enabled = false},
     {name = "Rain",                     enabled = false},
     {name = "Eclipse",                  enabled = false},
-    {name = "Aurora Borealis",          enabled = true},
+    {name = "Aurora Borealis",          enabled = false},
 }
 
 cycleList = {
@@ -38,13 +38,13 @@ seasonList = {
 }
 
 zoneList = {
-    {name = "Megalodon Default",        enabled = true},
-    {name = "Megalodon Ancient",        enabled = true},
+    {name = "Megalodon Default",        enabled = false},
+    {name = "Megalodon Ancient",        enabled = false},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = false},
-    {name = "The Kraken Pool",          enabled = true},
-    {name = "Ancient Kraken Pool",      enabled = true},
+    {name = "The Kraken Pool",          enabled = false},
+    {name = "Ancient Kraken Pool",      enabled = false},
     {name = "Orcas Pool",               enabled = true},
 
     --{name = "Golden Tide",              enabled = false},
@@ -82,10 +82,16 @@ uptimeList = {
     },
 
     afterTime = {
-        enabled = false,
-        hour = 0,
+        enabled = true,
+        hour = 90,
         minute = 0,
     },
 }
-
+local version = "1.2.2"
+local versid = "1aL91nAsbk2ajvJKskjbV"
+local updversid, updversion, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
+if not string.match(versid, updversid) then
+    setclipboard(scriptlink)
+    game:GetService("Players").LocalPlayer:Kick("[FSF] Outdated version! Update link has be copied to your clipboard. You are on " .. version .. " and the most recent version is " .. updversion .. " with " .. updmsg .. "!")
+end
 loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfindercode.lua"))()
