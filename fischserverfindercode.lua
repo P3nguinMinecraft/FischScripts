@@ -1,4 +1,6 @@
 -- CODE
+-- DO NOT RUN THIS ON ITS OWN
+-- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 
