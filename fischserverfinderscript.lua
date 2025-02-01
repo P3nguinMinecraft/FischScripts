@@ -903,6 +903,8 @@ if not string.match(version, updversion) then
     notifygui(updmsg, 255, 255, 255)
 end
 
+notifygui("FischServerFinder by Penguin")
+
 if autowebhook then
     sendwebhook()
 end
