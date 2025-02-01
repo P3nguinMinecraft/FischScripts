@@ -2,9 +2,6 @@
 
 local parseuptime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 
-local version = "1.2.2"
-local versid = "1aL91nAsbk2ajvJKskjbV"
-local updversid, updversion, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
@@ -811,14 +808,6 @@ activeChestsFolder.ChildAdded:Connect(function(object)
 end)
 
 notifygui("FischServerFinder by Penguin: " .. version)
-
-if not string.match(versid, updversid) then
-    notifygui("Outdated Version - " .. version, 255, 0, 0)
-    notifygui("Most recent version is " .. updversion)
-    notifygui(updmsg, 255, 0, 0)
-    notifygui("Go to the copied link to update!", 255, 0, 0)
-    setclipboard(scriptlink)
-end
 
 if autowebhook then
     sendwebhook()
