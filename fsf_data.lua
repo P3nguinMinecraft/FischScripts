@@ -1,6 +1,6 @@
 local version = "1.2.2"
 local msg = "+ Orca's Pool"
-local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript.lua"
+local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {
 -- Moosewood
