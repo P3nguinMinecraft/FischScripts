@@ -1,5 +1,5 @@
-local version = "1.2.1"
-local msg = "+Auto Farm Sunken Chest (sunkenchestList.autofarm)"
+local version = "1.2.2"
+local msg = "+ Orca's Pool"
 
 local sunkenchestcoords = {
 -- Moosewood
