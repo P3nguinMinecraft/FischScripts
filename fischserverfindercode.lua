@@ -809,7 +809,7 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     end
 end)
 
-notifygui("FischServerFinder by Penguin: " .. version)
+notifygui("FischServerFinder by Penguin")
 
 if autowebhook then
     sendwebhook()
