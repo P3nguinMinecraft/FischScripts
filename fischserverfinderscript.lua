@@ -1,3 +1,6 @@
+-- FischServerFinder by Penguin!
+-- https://discord.gg/fWncS2vFxn
+
 -- CONFIG
 
 autoscan = true
@@ -90,7 +93,7 @@ uptimeList = {
 local parseuptime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 
 local version = "1.2.2"
-local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
+local updversion, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
@@ -899,7 +902,7 @@ end)
 if not string.match(version, updversion) then
     notifygui("Outdated Version! Current: " .. updversion, 255, 0, 0)
     notifygui("Go to GitHub (link copied)", 255, 0, 0)
-    setclipboard("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript.lua")
+    setclipboard(scriptlink)
     notifygui(updmsg, 255, 255, 255)
 end
 
