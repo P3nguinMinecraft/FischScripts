@@ -22,7 +22,7 @@ weatherList = {
     {name = "Windy",                    enabled = false},
     {name = "Rain",                     enabled = false},
     {name = "Eclipse",                  enabled = false},
-    {name = "Aurora Borealis",          enabled = false},
+    {name = "Aurora Borealis",          enabled = true},
 }
 
 cycleList = {
@@ -38,13 +38,13 @@ seasonList = {
 }
 
 zoneList = {
-    {name = "Megalodon Default",        enabled = false},
-    {name = "Megalodon Ancient",        enabled = false},
+    {name = "Megalodon Default",        enabled = true},
+    {name = "Megalodon Ancient",        enabled = true},
     {name = "Great White Shark",        enabled = false},
     {name = "Great Hammerhead Shark",   enabled = false},
     {name = "Whale Shark",              enabled = false},
-    {name = "The Kraken Pool",          enabled = false},
-    {name = "Ancient Kraken Pool",      enabled = false},
+    {name = "The Kraken Pool",          enabled = true},
+    {name = "Ancient Kraken Pool",      enabled = true},
     {name = "Orcas Pool",               enabled = true},
 
     --{name = "Golden Tide",              enabled = false},
@@ -82,8 +82,8 @@ uptimeList = {
     },
 
     afterTime = {
-        enabled = true,
-        hour = 90,
+        enabled = false,
+        hour = 0,
         minute = 0,
     },
 }
