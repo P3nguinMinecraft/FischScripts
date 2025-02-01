@@ -67,6 +67,7 @@ sunkenchestList = {
     enabled = true,
     bufferbefore = 1,
     alertonload = true,
+    autofarm = false,
 }
 
 uptimeList = {
@@ -85,15 +86,22 @@ uptimeList = {
 
 -- CODE
 
-local parseuptime, tp, teleport, creategui, notifygui, minimizegui, scanchest, potentialsunkenchest, loadedsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local parseuptime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 
-local version = "1.2"
+local version = "1.2.1"
 local updversion, updmsg, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
-
+local autofarmchesttpscan = 0
+local autofarmchestpotential = false
+local scheduledhop = false
 local camera = game.Workspace.CurrentCamera
+
+if sunkenchestList.enabled and sunkenchestList.autofarm then
+   sunkenchestList.bufferbefore = 0
+   sunkenchestList.alertonload = true
+end
 
 repeat task.wait(1) until game:IsLoaded()
 print("[FSF] Loading")
@@ -126,6 +134,7 @@ end
 
 teleport = function()
     local Server, Next = nil, nil
+    scheduledhop = true
     
     local function ListServers(cursor)
         local ServersAPI = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
@@ -431,6 +440,32 @@ end
 
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
+chesttpscan = function()
+    local foundchest = false
+    checkteleporting = true
+    for _, coords in ipairs(sunkenchestcoords) do
+        tp(coords.x, coords.y + 70, coords.z)
+        task.wait(0.1)
+        if not checkteleporting then
+            foundchest = true
+            break
+        end
+    end
+    if not foundchest then
+        scanchest()
+        if sunkenchestList.autofarm then
+            if autofarmchesttpscan < 3 then
+                chesttpscan()
+                autofarmchesttpscan = autofarmchesttpscan + 1
+            else
+                notifygui("Autohopping", 247, 94, 229)
+                teleport()
+            end
+        end
+    end
+    checkteleporting = false
+end
+
 scanchest = function()
     for _, object in pairs(activeChestsFolder:GetChildren()) do
         if sunkenchestList.alertonload then
@@ -504,20 +539,7 @@ potentialsunkenchest = function()
     end)
 
     tpButton.MouseButton1Click:Connect(function()
-        local foundchest = false
-        checkteleporting = true
-        for _, coords in ipairs(sunkenchestcoords) do
-            tp(coords.x, coords.y + 70, coords.z)
-            task.wait(0.1)
-            if not checkteleporting then
-                foundchest = true
-                break
-            end
-        end
-        if not foundchest then
-            scanchest()
-        end
-        checkteleporting = false
+        chesttpscan()
     end)
 
     rescanButton.MouseButton1Click:Connect(function()
@@ -525,6 +547,12 @@ potentialsunkenchest = function()
     end)
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
+
+    if sunkenchestList.autofarm then
+        notifygui("Autofarm Sunken Chest!", 255, 210, 0)
+        task.wait(5)
+        chesttpscan()
+    end
 end
 
 loadedsunkenchest = function(object)
@@ -574,7 +602,7 @@ loadedsunkenchest = function(object)
 
     local tpButton = Instance.new("TextButton")
     tpButton.Name = "tpButton"
-    tpButton.Size = UDim2.new(0.8, 0, 0.6, 0)
+    tpButton.Size = UDim2.new(0.38, 0, 0.6, 0)
     tpButton.Position = UDim2.new(0.15, 0, 0.2, 0)
     tpButton.BackgroundColor3 = Color3.new(0.4, 0.6, 1)
     tpButton.Text = "TP to Chests"
@@ -584,6 +612,18 @@ loadedsunkenchest = function(object)
     tpButton.Parent = frame
     tpButton.ZIndex = 101
 
+    local claimButton = Instance.new("TextButton")
+    claimButton.Name = "claimButton"
+    claimButton.Size = UDim2.new(0.38, 0, 0.6, 0)
+    claimButton.Position = UDim2.new(0.55, 0, 0.2, 0)
+    claimButton.BackgroundColor3 = Color3.new(0.2, 1, 0.2)
+    claimButton.Text = "Claim Chests"
+    claimButton.TextColor3 = Color3.new(1, 1, 1)
+    claimButton.TextScaled = true
+    claimButton.Font = Enum.Font.SourceSans
+    claimButton.Parent = frame
+    claimButton.ZIndex = 101
+
     closeButton.MouseButton1Click:Connect(function()
         frame:Destroy()
     end)
@@ -592,10 +632,51 @@ loadedsunkenchest = function(object)
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
     end)
 
+    claimButton.MouseButton1Click:Connect(function()
+        claimsunkenchest()
+    end)
+
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 
     task.wait(0.5)
     loadedmsg = false
+
+    if sunkenchestList.autofarm then
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
+        task.wait(1)
+        claimsunkenchest()
+    end
+
+end
+
+claimsunkenchest = function()
+    if not haschildren(activeChestsFolder) then return end
+    local chests = activeChestsFolder:FindFirstChild("Pad").Chests
+    for _, chest in ipairs(chests:GetChildren()) do
+        local root
+        if chest.Name == "Mythical" then
+            root = chest:FindFirstChild("Chest")
+        else
+            root = chest:FindFirstChild("RootPart")
+        end
+        
+        if root then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(root.Position + Vector3.new(0, 6, 0))
+            task.wait(0.2)
+            local highlight = root:FindFirstChild("Main"):FindFirstChild("Highlight")
+            if highlight then
+                local prompt = root:FindFirstChild("Main"):FindFirstChild("Prompt")
+                prompt:InputHoldBegin()
+                task.wait(0.2)
+            end
+        end
+    end
+
+    if sunkenchestList.autofarm then
+        task.wait(5)
+        notifygui("Autohopping", 247, 94, 229)
+        teleport()
+    end
 end
 
 issunkenchest = function()
@@ -758,6 +839,7 @@ scanWorld = function()
     end
     local sc, time = issunkenchest()
     if sc then
+        autofarmchestpotential = true
         table.insert(events, {text = "Sunken Chest " .. time .. " min", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
     end
 
@@ -826,6 +908,11 @@ if autoscan then
 end
 
 print("[FSF] Loaded In!")
+
+if sunkenchestList.autofarm and not autofarmchestpotential and not scheduledhop then
+    notifygui("Autohopping", 247, 94, 229)
+    teleport()
+end
 
 task.wait(20)
 if loading then 
