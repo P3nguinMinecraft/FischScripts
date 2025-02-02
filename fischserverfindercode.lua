@@ -2,8 +2,8 @@
 -- DO NOT RUN THIS ON ITS OWN
 -- PLACE THE CONFIG BEFORE THIS
 
-local parseuptime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-
+local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local scriptvers = "1.2.3"
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
@@ -42,6 +42,10 @@ parseuptime = function()
     local second = math.floor(build % 60)
 
     return hour, minute, second
+end
+
+formattime = function(h, m, s)
+    return string.format("%02d:%02d:%02d", h, m, s)
 end
 
 tp = function(x, y, z)
@@ -625,8 +629,8 @@ end
 sendwebhook = function()
     local count = #game:GetService("Players"):GetPlayers()
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
-    local hr, min, sec = parseuptime()
-    local uptimestr = "**Server Uptime: **" .. hr .. ":" .. min .. ":" .. sec
+    local h, m, s= parseuptime()
+    local uptimestr = "**Server Uptime: **" .. formattime(h, m, s)
     local jobId = game.JobId
     local timestamp = os.time()
     local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
@@ -809,13 +813,17 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     end
 end)
 
-notifygui("FischServerFinder by Penguin")
+notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
 if autowebhook then
     sendwebhook()
 end
 
 if autoscan then
+    if autouptime then
+        local h, m, s = parseuptime()
+        notifygui("Uptime: " .. formattime(h, m, s), 0, 81, 255)
+    end
     scan()
 end
 
