@@ -12,6 +12,10 @@ local autofarmchestpotential = false
 local scheduledhop = false
 local camera = game.Workspace.CurrentCamera
 
+if autohop == nil then
+    game:GetService("Players").LocalPlayer:Kick("[FSF] You did not include the config!")
+end
+
 if sunkenchestList.enabled and sunkenchestList.autofarm then
    sunkenchestList.bufferbefore = 0
    sunkenchestList.alertonload = true
