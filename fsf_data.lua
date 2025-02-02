@@ -37,4 +37,4 @@ local sunkenchestcoords = {
     {x = -2460, y = 130, z = 2047},
 } -- coords sourced from Fisch Wiki
 
-return version, id, msg, link, sunkenchestcoords
+return version, versid, msg, link, sunkenchestcoords
