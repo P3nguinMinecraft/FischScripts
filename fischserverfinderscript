@@ -96,7 +96,7 @@ uptimeList = {
     },
 }
 
-
+repeat task.wait(0.5) until game:IsLoaded()
 local version = "1.2.5"
 local versid = "rvBVZm1WCkCuAAXf"
 local updversion, updversid, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
