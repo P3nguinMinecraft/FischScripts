@@ -108,6 +108,10 @@ teleport = function()
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+
+        task.wait(20)
+        game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
     end
 end
 
@@ -810,6 +814,7 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     end
 end)
 
+task.wait(2)
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
 if autowebhook then
@@ -831,6 +836,6 @@ if sunkenchestList.autofarm and not autofarmchestpotential and not scheduledhop 
 end
 
 task.wait(20)
-if loading then 
+if loading then
     loading.loading.Visible = true
 end
