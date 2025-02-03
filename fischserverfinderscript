@@ -102,7 +102,7 @@ local versid = "rvBVZm1WCkCuAAXf"
 local updversion, updversid, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 if not string.match(versid, updversid) then
     setclipboard(scriptlink)
-    game:GetService("Players").LocalPlayer:Kick("[FSF] Outdated version! Update link has be copied to your clipboard. You are on " .. version .. " and the most recent version is " .. updversion .. " with " .. updmsg .. "!")
+    game:GetService("Players").LocalPlayer:Kick("[FSF] Outdated version! Update link has been copied to your clipboard. You are on " .. version .. " and the most recent version is " .. updversion .. " with " .. updmsg .. "!")
 end
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfindercode.lua"))()
