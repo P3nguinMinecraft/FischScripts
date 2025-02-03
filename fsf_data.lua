@@ -1,6 +1,6 @@
-local version = "1.2.4"
-local versid = "xCxiBUuHcvBa9d4T"
-local msg = "+ancient orca zone"
+local version = "1.2.5"
+local versid = "rvBVZm1WCkCuAAXF"
+local msg = "~fixed autohop working with rescan +forcehop config for sunken chest autofarm"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {

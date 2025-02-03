@@ -3,7 +3,7 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.2.4"
+local scriptvers = "1.2.5"
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
@@ -790,6 +790,9 @@ notify = function(events)
 end
 
 scan = function()
+    if autouptime then
+        notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
+    end
     desireduptime = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
@@ -822,15 +825,12 @@ if autowebhook then
 end
 
 if autoscan then
-    if autouptime then
-        notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
-    end
     scan()
 end
 
 print("[FSF] Loaded In!")
 
-if sunkenchestList.autofarm and not autofarmchestpotential and not scheduledhop then
+if sunkenchestList.autofarm and sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
     notifygui("Autohopping", 247, 94, 229)
     teleport()
 end

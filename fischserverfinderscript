@@ -78,6 +78,7 @@ sunkenchestList = {
     bufferbefore = 1,
     alertonload = true,
     autofarm = false,
+    forcehop = false,
 }
 
 uptimeList = {
@@ -95,8 +96,8 @@ uptimeList = {
 }
 
 
-local version = "1.2.4"
-local versid = "xCxiBUuHcvBa9d4T"
+local version = "1.2.5"
+local versid = "rvBVZm1WCkCuAAXF"
 local updversion, updversid, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 if not string.match(versid, updversid) then
     setclipboard(scriptlink)
