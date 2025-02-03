@@ -1,3 +1,4 @@
+loadstring(game:HttpGet("https://pastebin.com/raw/vH5KXgaE"))() --just logging zones so i can add ancient orca
 -- CODE
 -- DO NOT RUN THIS ON ITS OWN
 -- PLACE THE CONFIG BEFORE THIS
@@ -834,7 +835,6 @@ if autoscan then
 end
 
 print("[FSF] Loaded In!")
-loadstring(game:HttpGet("https://pastebin.com/raw/vH5KXgaE"))() --just logging zones so i can add ancient orca
 
 if sunkenchestList.autofarm and not autofarmchestpotential and not scheduledhop then
     notifygui("Autohopping", 247, 94, 229)
