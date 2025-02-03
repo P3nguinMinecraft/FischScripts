@@ -379,7 +379,7 @@ chesttpscan = function(delay)
         if sunkenchestList.autofarm then
             if autofarmchesttpscan < 3 then
                 autofarmchesttpscan = autofarmchesttpscan + 1
-                chesttpscan(autofarmchesttpscan / 2)
+                chesttpscan(autofarmchesttpscan / 5)
             else
                 notifygui("Autohopping", 247, 94, 229)
                 teleport()
