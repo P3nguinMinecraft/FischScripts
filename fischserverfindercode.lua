@@ -594,7 +594,7 @@ claimsunkenchest = function()
         end
     end
 
-    if sunkenchestList.autofarm and sunkenchestList.forcehop then
+    if sunkenchestList.autofarm and sunkenchestList.hopafterclaim then
         task.wait(4)
         notifygui("Autohopping", 247, 94, 229)
         teleport()
