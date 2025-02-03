@@ -381,8 +381,10 @@ chesttpscan = function(delay)
                 autofarmchesttpscan = autofarmchesttpscan + 1
                 chesttpscan(autofarmchesttpscan / 5)
             else
-                notifygui("Autohopping", 247, 94, 229)
-                teleport()
+                if sunkenchestList.hopafterclaim then
+                    notifygui("Autohopping", 247, 94, 229)
+                    teleport()
+                end
             end
         end
     end
