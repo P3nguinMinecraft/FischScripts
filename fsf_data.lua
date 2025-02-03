@@ -1,4 +1,4 @@
-local version = "1.2.5"
+local version = "1.2.6"
 local versid = "rvBVZm1WCkCuAAXf"
 local msg = "small bugfix"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"

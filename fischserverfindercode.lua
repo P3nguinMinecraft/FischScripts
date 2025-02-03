@@ -3,7 +3,7 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.2.5"
+local scriptvers = "1.2.6"
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime
@@ -14,7 +14,7 @@ local camera = game.Workspace.CurrentCamera
 local _n1, _n2, _n3, link, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 
 if autohop == nil then
-    setclipboard(link)
+   setclipboard(link)
     game:GetService("Players").LocalPlayer:Kick("[FSF] You did not include the config! Copy the ENTIRE script (link copied to clipboard)")
 end
 
@@ -248,8 +248,6 @@ creategui = function()
     Minimize.MouseButton1Click:Connect(function()
         minimizegui()
     end)
-
-
 end
 
 notifygui = function(text, r, g, b)
@@ -362,12 +360,12 @@ end
 
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
-chesttpscan = function()
+chesttpscan = function(delay)
     local foundchest = false
     checkteleporting = true
     for _, coords in ipairs(sunkenchestcoords) do
         tp(coords.x, coords.y + 70, coords.z)
-        task.wait(0.1)
+        task.wait(delay)
         if not checkteleporting then
             foundchest = true
             break
@@ -378,7 +376,7 @@ chesttpscan = function()
         if sunkenchestList.autofarm then
             if autofarmchesttpscan < 3 then
                 autofarmchesttpscan = autofarmchesttpscan + 1
-                chesttpscan()
+                chesttpscan(autofarmchesttpscan / 2)
             else
                 notifygui("Autohopping", 247, 94, 229)
                 teleport()
@@ -461,7 +459,7 @@ potentialsunkenchest = function()
     end)
 
     tpButton.MouseButton1Click:Connect(function()
-        chesttpscan()
+        chesttpscan(0.1)
     end)
 
     rescanButton.MouseButton1Click:Connect(function()
@@ -473,7 +471,7 @@ potentialsunkenchest = function()
     if sunkenchestList.autofarm then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
         task.wait(3)
-        chesttpscan()
+        chesttpscan(0.1)
     end
 end
 
