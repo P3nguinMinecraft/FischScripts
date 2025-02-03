@@ -1,6 +1,6 @@
 local version = "1.2.5"
 local versid = "rvBVZm1WCkCuAAXf"
-local msg = "~fixed autohop working with rescan +forcehop config for sunken chest autofarm"
+local msg = "~fixed autohop working with rescan +hopafterclaim and forcehop config for sunken chest autofarm"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {
