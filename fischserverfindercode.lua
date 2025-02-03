@@ -1,4 +1,3 @@
-loadstring(game:HttpGet("https://pastebin.com/raw/352JpwsU"))() --just logging zones so i can add ancient orca
 -- CODE
 -- DO NOT RUN THIS ON ITS OWN
 -- PLACE THE CONFIG BEFORE THIS
