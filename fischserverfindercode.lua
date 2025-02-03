@@ -23,16 +23,13 @@ if sunkenchestList.enabled and sunkenchestList.autofarm then
    sunkenchestList.alertonload = true
 end
 
-repeat task.wait(1) until game:IsLoaded()
+repeat task.wait(0.5) until game:IsLoaded()
 print("[FSF] Loading")
 
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
 if loading then
     loading.loading.Visible = false
 end
-
-task.wait(3)
-local uptime = game:GetService("ReplicatedStorage").world.uptime
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -110,12 +107,15 @@ teleport = function()
 
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
         RemoveServer(Server.id)
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
-    else
-        notifygui("Failed Server Hop (pls debug)", 242, 44, 22)
-        print(Server)
-        print(Server.playing)
-        return
+        local success, err = pcall(function()
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+        end)
+
+        if not success then
+            task.wait(3)
+            game:GetService("Players").LocalPlayer:Kick("[FSF] Failed Teleport: ".. err .. " Retrying... If this screen stays then you need to rejoin manually.")
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+        end
     end
 end
 
@@ -217,7 +217,7 @@ creategui = function()
     JobId.AnchorPoint = Vector2.new(0, 0.5)
     JobId.Parent = topBar
     JobId.ZIndex = 101
-    
+
     local Minimize = Instance.new("TextButton")
     Minimize.Name = "Minimize"
     Minimize.Size = UDim2.new(0.07, 0, 0.5, 0)
@@ -381,8 +381,8 @@ chesttpscan = function()
         scanchest()
         if sunkenchestList.autofarm then
             if autofarmchesttpscan < 3 then
-                chesttpscan()
                 autofarmchesttpscan = autofarmchesttpscan + 1
+                chesttpscan()
             else
                 notifygui("Autohopping", 247, 94, 229)
                 teleport()
@@ -476,7 +476,7 @@ potentialsunkenchest = function()
 
     if sunkenchestList.autofarm then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
-        task.wait(5)
+        task.wait(3)
         chesttpscan()
     end
 end
@@ -599,7 +599,7 @@ claimsunkenchest = function()
     end
 
     if sunkenchestList.autofarm then
-        task.wait(5)
+        task.wait(4)
         notifygui("Autohopping", 247, 94, 229)
         teleport()
     end
@@ -635,8 +635,7 @@ end
 sendwebhook = function()
     local count = #game:GetService("Players"):GetPlayers()
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
-    local h, m, s= parseuptime()
-    local uptimestr = "**Server Uptime: **" .. formattime(h, m, s)
+    local uptimestr = "**Server Uptime: **" .. formattime(parseuptime())
     local jobId = game.JobId
     local timestamp = os.time()
     local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
@@ -800,10 +799,10 @@ scan = function()
     local time = hour * 60 + minute
     if uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute) then
         desireduptime = true
-        notifygui("Before: " .. uptime, 52, 168, 255)
+        notifygui("Before: " .. formattime(parseuptime()), 52, 168, 255)
     elseif uptimeList.afterTime.enabled and time > (uptimeList.afterTime.hour * 60 + uptimeList.afterTime.minute) then
         desireduptime = true
-        notifygui("After: " .. uptime, 193, 48, 255)
+        notifygui("After: " .. formattime(parseuptime()), 193, 48, 255)
     end
     local events = scanWorld()
     notify(events)
@@ -827,8 +826,7 @@ end
 
 if autoscan then
     if autouptime then
-        local h, m, s = parseuptime()
-        notifygui("Uptime: " .. formattime(h, m, s), 0, 81, 255)
+        notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
     end
     scan()
 end
