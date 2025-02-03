@@ -107,15 +107,7 @@ teleport = function()
 
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
         RemoveServer(Server.id)
-        local success, err = pcall(function()
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
-        end)
-
-        if not success then
-            task.wait(3)
-            game:GetService("Players").LocalPlayer:Kick("[FSF] Failed Teleport: ".. err .. " Retrying... If this screen stays then you need to rejoin manually.")
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
-        end
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
     end
 end
 
@@ -788,7 +780,7 @@ notify = function(events)
         notifygui("Nothing", 255, 153, 0)
         if autohop then
             notifygui("Autohopping", 247, 94, 229)
-            teleport() 
+            teleport()
         end
     end
 end
