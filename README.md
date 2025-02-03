@@ -4,7 +4,7 @@
 [Discord Server](https://discord.gg/fWncS2vFxn)
 
 ## FischServerFinder
-Automatically server hops to find specific servers
+Automatically server hops to find specific servers with desirable events (bonus: AutoSunkenChest with autofarm/claim and server hopping)
 ### Usage
 #### COPY THE [ENTIRE SOURCE CODE](https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua) so you can change the config as needed
 https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder
