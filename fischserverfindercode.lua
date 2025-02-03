@@ -6,7 +6,7 @@ local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, 
 local scriptvers = "1.2.6"
 local checkteleporting = false
 local loadedmsg = false
-local desireduptime
+local desiredserver
 local autofarmchesttpscan = 0
 local autofarmchestpotential = false
 local scheduledhop = false
@@ -109,9 +109,12 @@ teleport = function()
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
 
-        task.wait(20)
-        game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+        task.spawn(function()
+            task.wait(20)
+            game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+            scheduledhop = false
+        end)
     end
 end
 
@@ -768,7 +771,6 @@ end
 
 notify = function(events)
     local count = 0
-    if desireduptime then count = count + 1 end
     for _, event in ipairs(events) do
         if event.enabled == true then
             notifygui(event.text, event.r, event.g, event.b)
@@ -778,7 +780,8 @@ notify = function(events)
             end
         end
     end
-    if count == 0 then
+    if count > 0 then desiredserver = true end
+    if not desiredserver then
         notifygui("Nothing", 255, 153, 0)
         if autohop then
             notifygui("Autohopping", 247, 94, 229)
@@ -791,20 +794,29 @@ scan = function()
     if autouptime then
         notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
     end
-    desireduptime = false
+    desiredserver = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
     local before = uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute)
     local after = uptimeList.afterTime.enabled and time > (uptimeList.afterTime.hour * 60 + uptimeList.afterTime.minute)
+
     if before and after then
+        desiredserver = true
         notifygui("Before/after: " .. formattime(parseuptime()), 46, 232, 21)
-    elseif before then
-        desireduptime = true
+    elseif before and uptimeList.orLogic then
+        desiredserver = true
         notifygui("Before: " .. formattime(parseuptime()), 52, 168, 255)
-    elseif after then
-        desireduptime = true
+    elseif after and uptimeList.orLogic then
+        desiredserver = true
         notifygui("After: " .. formattime(parseuptime()), 193, 48, 255)
     end
+
+    local serverversion = game:GetService("ReplicatedStorage").world.version.Value
+    if versionList.enabled and string.match(versionList.version, serverversion) then
+        desiredserver = true
+        notifygui("Version: " .. serverversion, 151, 36, 227)
+    end
+
     local events = scanWorld()
     notify(events)
 end

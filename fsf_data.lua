@@ -1,6 +1,6 @@
 local version = "1.2.6"
-local versid = "rvBVZm1WCkCuAAXf"
-local msg = "small bugfix"
+local versid = "Qd3GBsneAIgXmBZC"
+local msg = "+uptime logic +version finder"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {
