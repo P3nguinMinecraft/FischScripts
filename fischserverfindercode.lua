@@ -11,9 +11,9 @@ local autofarmchesttpscan = 0
 local autofarmchestpotential = false
 local scheduledhop = false
 local camera = game.Workspace.CurrentCamera
+local _n1, _n2, _n3, link, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 
 if autohop == nil then
-    local _n1, _n2, _n3, link = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
     setclipboard(link)
     game:GetService("Players").LocalPlayer:Kick("[FSF] You did not include the config! Copy the ENTIRE script (link copied to clipboard)")
 end
