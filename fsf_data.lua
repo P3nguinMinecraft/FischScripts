@@ -1,6 +1,6 @@
-local version = "1.2.3"
-local versid = "SJNzvvye0b5rR2Pj"
-local msg = "+ readded autouptime!"
+local version = "1.2.4"
+local versid = "xCxiBUuHcvBa9d4T"
+local msg = "+ancient orca zone"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {

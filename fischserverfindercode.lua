@@ -4,7 +4,7 @@ loadstring(game:HttpGet("https://pastebin.com/raw/vH5KXgaE"))() --just logging z
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.2.3"
+local scriptvers = "1.2.4"
 local checkteleporting = false
 local loadedmsg = false
 local desireduptime

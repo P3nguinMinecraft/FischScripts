@@ -1,3 +1,4 @@
+
 -- FischServerFinder by Penguin!
 -- https://discord.gg/fWncS2vFxn
 
@@ -50,6 +51,7 @@ zoneList = {
     {name = "The Kraken Pool",          enabled = true},
     {name = "Ancient Kraken Pool",      enabled = true},
     {name = "Orcas Pool",               enabled = true},
+    {name = "Ancient Orcas Pool",       enabled = true},
 
     --{name = "Golden Tide",              enabled = false},
     --{name = "Ancient Algae Pool",       enabled = false},
@@ -93,8 +95,8 @@ uptimeList = {
 }
 
 
-local version = "1.2.3"
-local versid = "SJNzvvye0b5rR2Pj"
+local version = "1.2.4"
+local versid = "xCxiBUuHcvBa9d4T"
 local updversion, updversid, updmsg, scriptlink, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 if not string.match(versid, updversid) then
     setclipboard(scriptlink)
