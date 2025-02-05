@@ -640,6 +640,7 @@ end
 sendwebhook = function()
     local count = #game:GetService("Players"):GetPlayers()
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
+    local placeversion = game.PlaceVersion
     local uptimestr = "**Server Uptime: **" .. formattime(parseuptime())
     local jobId = game.JobId
     local timestamp = os.time()
@@ -652,7 +653,7 @@ sendwebhook = function()
         embeds = {
             {
                 description = "**Players:** " .. count .. " / 15\n**Game Version:** " .. serverversion .. 
-                            "\n".. uptimestr .. "\n\n## Info:\n" .. events,
+                    "\n**Place Version:** " .. placeversion .. "\n".. uptimestr .. "\n\n## Info:\n" .. events,
                 fields = {
                     {
                         name = "JobId",
@@ -661,7 +662,7 @@ sendwebhook = function()
                     {
                         name = "Code",
                         value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(16732694052, \"" .. 
-                                jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
+                            jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
                     }
                 },
                 footer = {
