@@ -24,6 +24,11 @@ if sunkenchestList.enabled and sunkenchestList.autofarm then
 end
 
 repeat task.wait(0.5) until game:IsLoaded()
+
+if not game.PlaceId == 16732694052 then
+    return
+end
+
 print("[FSF] Loading")
 
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
