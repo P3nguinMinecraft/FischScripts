@@ -26,6 +26,7 @@ end
 repeat task.wait(0.5) until game:IsLoaded()
 
 if not game.PlaceId == 16732694052 then
+    print("[FSF] You are not in Fisch!")
     return
 end
 
