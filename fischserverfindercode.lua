@@ -3,7 +3,7 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.2.6"
+local scriptvers = "1.2.7"
 local checkteleporting = false
 local loadedmsg = false
 local desiredserver
@@ -817,6 +817,11 @@ scan = function()
     if versionList.enabled and string.match(versionList.version, serverversion) then
         desiredserver = true
         notifygui("Version: " .. serverversion, 151, 36, 227)
+    end
+
+    if placeVersionList.enabled and placeVersionList.version == game.PlaceVersion then
+        desiredserver = true
+        notifygui("Place Version: " .. game.PlaceVersion, 151, 36, 227)
     end
 
     local events = scanWorld()
