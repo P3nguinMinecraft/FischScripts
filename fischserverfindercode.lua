@@ -115,12 +115,12 @@ teleport = function()
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
 
-        task.spawn(function()
-            task.wait(20)
-            game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
-            scheduledhop = false
-        end)
+        --task.spawn(function()
+        --    task.wait(20)
+        --    game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
+        --    TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+        --    scheduledhop = false
+        --end)
     end
 end
 
