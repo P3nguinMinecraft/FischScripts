@@ -1,6 +1,6 @@
-local version = "1.2.7"
-local versid = "of6bmE3QwPyQm0Du"
-local msg = "+ placeversion finder"
+local version = "1.3"
+local versid = "FB8Wj2EiHg9PDBqk"
+local msg = "+auto version +auto placeversion"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {

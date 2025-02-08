@@ -11,7 +11,12 @@ webhookUrl = "https://discord.com/api/webhooks/#/#"
 filename = "servers" -- dont add .json
 
 autohop = true
-autouptime = false
+
+infoList = {
+    autouptime = false,
+    autoversion = false,
+    autoplaceversion = false,
+}
 
 eventList = {
     {name = "Night of the Fireflies",   enabled = false},
@@ -108,8 +113,8 @@ placeVersionList = {
 }
 
 repeat task.wait(0.5) until game:IsLoaded()
-local version = "1.2.7"
-local versid = "of6bmE3QwPyQm0Du"
+local version = "1.3"
+local versid = "FB8Wj2EiHg9PDBqk"
 local updversion, updversid, updmsg, scriptlink = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 if not string.match(versid, updversid) then
     setclipboard(scriptlink)

@@ -3,7 +3,7 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.2.7"
+local scriptvers = "1.3"
 local checkteleporting = false
 local loadedmsg = false
 local desiredserver
@@ -800,9 +800,18 @@ notify = function(events)
 end
 
 scan = function()
-    if autouptime then
+    if infoList.autouptime then
         notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
     end
+
+    if infoList.autoversion then
+        notifygui("Version: " .. game:GetService("ReplicatedStorage").world.version.Value, 18, 180, 201)
+    end
+
+    if infoList.autoplaceversion then
+        notifygui("PlaceVersion: " .. game.PlaceVersion, 224, 64, 245)
+    end
+
     desiredserver = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
