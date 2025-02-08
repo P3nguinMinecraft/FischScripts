@@ -574,7 +574,7 @@ loadedsunkenchest = function(object)
 
     if sunkenchestList.autofarm then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
-        task.wait(1)
+        task.wait(2)
         claimsunkenchest()
     end
 
@@ -593,7 +593,7 @@ claimsunkenchest = function()
         
         if root then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(root.Position + Vector3.new(0, 6, 0))
-            task.wait(0.2)
+            task.wait(0.3)
             local highlight = root:FindFirstChild("Main"):FindFirstChild("Highlight")
             if highlight then
                 local prompt = root:FindFirstChild("Main"):FindFirstChild("Prompt")
