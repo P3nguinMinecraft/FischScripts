@@ -382,9 +382,6 @@ chesttpscan = function(delay)
     end
     if not foundchest then
         scanchest()
-    end
-    task.wait(0.3)
-    if not foundchest then
         if sunkenchestList.autofarm then
             if autofarmchesttpscan < 3 then
                 autofarmchesttpscan = autofarmchesttpscan + 1
@@ -402,8 +399,8 @@ end
 
 scanchest = function()
     for _, object in pairs(activeChestsFolder:GetChildren()) do
+        checkteleporting = false
         if sunkenchestList.alertonload then
-            checkteleporting = false
             notifygui("Sunken Chest Found!", 255, 255, 0)
             task.spawn(function()
                 loadedsunkenchest(object)
@@ -492,6 +489,7 @@ end
 loadedsunkenchest = function(object)
     if loadedmsg then return end
     loadedmsg = true
+    checkteleporting = false
 
     local position
     for _, descendant in ipairs(object:GetDescendants()) do
@@ -580,7 +578,6 @@ loadedsunkenchest = function(object)
         task.wait(2)
         claimsunkenchest()
     end
-
 end
 
 claimsunkenchest = function()
