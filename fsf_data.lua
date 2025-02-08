@@ -1,6 +1,6 @@
-local version = "1.3"
-local versid = "FB8Wj2EiHg9PDBqk"
-local msg = "+auto version +auto placeversion"
+local version = "1.3.1"
+local versid = "Np1kH2PeGqbcEWS3"
+local msg = "+ lovestorm eel zone"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {
