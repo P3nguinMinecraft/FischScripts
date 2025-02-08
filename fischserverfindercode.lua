@@ -382,6 +382,9 @@ chesttpscan = function(delay)
     end
     if not foundchest then
         scanchest()
+    end
+    task.wait(0.3)
+    if not foundchest then
         if sunkenchestList.autofarm then
             if autofarmchesttpscan < 3 then
                 autofarmchesttpscan = autofarmchesttpscan + 1
