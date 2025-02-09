@@ -1,6 +1,6 @@
-local version = "1.3.2"
+local version = "1.4"
 local versid = "HA2kb9CTf5ITS2Fw"
-local msg = "+ lovestorm eel supercharged zone ~ bug fixes for auto sunken chest"
+local msg = "+ lovestorm eel supercharged zone ~ bug fixes for auto sunken chest + GUI CHANGES"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {

@@ -3,7 +3,7 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.3.2"
+local scriptvers = "1.4"
 local checkteleporting = false
 local loadedmsg = false
 local desiredserver
@@ -134,7 +134,7 @@ creategui = function()
 
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0.25, 0, 0.5, 0)
+    mainFrame.Size = UDim2.new(0.25, 0, 0.6, 0)
     mainFrame.Position = UDim2.new(0.1, 0, 0.4, 0)
     mainFrame.BackgroundColor3 = Color3.fromRGB(50, 150, 50)
     mainFrame.BorderSizePixel = 0
@@ -145,7 +145,7 @@ creategui = function()
 
     local topBar = Instance.new("Frame")
     topBar.Name = "TopBar"
-    topBar.Size = UDim2.new(0.95, 0, 0.1, 0)
+    topBar.Size = UDim2.new(0.95, 0, 0.18, 0)
     topBar.Position = UDim2.new(0.5, 0, 0.01, 0)
     topBar.BackgroundColor3 = Color3.fromRGB(140, 140, 140)
     topBar.BorderSizePixel = 0
@@ -156,8 +156,8 @@ creategui = function()
 
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Name = "NotificationContainer"
-    scrollFrame.Size = UDim2.new(0.95, 0, 0.85, 0)
-    scrollFrame.Position = UDim2.new(0.5, 0, 0.13, 0)
+    scrollFrame.Size = UDim2.new(0.95, 0, 0.78, 0)
+    scrollFrame.Position = UDim2.new(0.5, 0, 0.20, 0)
     scrollFrame.AnchorPoint = Vector2.new(0.5, 0)
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
     scrollFrame.ScrollBarThickness = 8
@@ -174,8 +174,8 @@ creategui = function()
 
     local closeGUI = Instance.new("TextButton")
     closeGUI.Name = "CloseGUI"
-    closeGUI.Size = UDim2.new(0.07, 0, 0.5, 0)
-    closeGUI.Position = UDim2.new(0.02, 0, 0.5, 0)
+    closeGUI.Size = UDim2.new(0.07, 0, 0.4, 0)
+    closeGUI.Position = UDim2.new(0.02, 0, 0.25, 0)
     closeGUI.BackgroundColor3 = Color3.new(1, 0, 0)
     closeGUI.Text = "X"
     closeGUI.TextColor3 = Color3.new(1, 1, 1)
@@ -187,8 +187,8 @@ creategui = function()
 
     local hop = Instance.new("TextButton")
     hop.Name = "ServerHop"
-    hop.Size = UDim2.new(0.25, 0, 0.5, 0)
-    hop.Position = UDim2.new(0.1, 0, 0.5, 0)
+    hop.Size = UDim2.new(0.25, 0, 0.4, 0)
+    hop.Position = UDim2.new(0.12, 0, 0.25, 0)
     hop.BackgroundColor3 = Color3.new(0, 1, 1)
     hop.Text = "Server Hop"
     hop.TextColor3 = Color3.new(0.3, 0.3, 0.3)
@@ -200,8 +200,8 @@ creategui = function()
 
     local rescan = Instance.new("TextButton")
     rescan.Name = "Rescan"
-    rescan.Size = UDim2.new(0.2, 0, 0.5, 0)
-    rescan.Position = UDim2.new(0.37, 0, 0.5, 0)
+    rescan.Size = UDim2.new(0.2, 0, 0.4, 0)
+    rescan.Position = UDim2.new(0.39, 0, 0.25, 0)
     rescan.BackgroundColor3 = Color3.new(0.42, 0.75, 0.82)
     rescan.Text = "Rescan"
     rescan.TextColor3 = Color3.new(0, 0, 0)
@@ -213,8 +213,8 @@ creategui = function()
 
     local JobId = Instance.new("TextButton")
     JobId.Name = "JobId"
-    JobId.Size = UDim2.new(0.25, 0, 0.5, 0)
-    JobId.Position = UDim2.new(0.6, 0, 0.5, 0)
+    JobId.Size = UDim2.new(0.25, 0, 0.4, 0)
+    JobId.Position = UDim2.new(0.61, 0, 0.25, 0)
     JobId.BackgroundColor3 = Color3.new(0.11, 0.81, 0.15)
     JobId.Text = "Copy JobId"
     JobId.TextColor3 = Color3.new(0, 0, 0)
@@ -226,8 +226,8 @@ creategui = function()
 
     local Minimize = Instance.new("TextButton")
     Minimize.Name = "Minimize"
-    Minimize.Size = UDim2.new(0.07, 0, 0.5, 0)
-    Minimize.Position = UDim2.new(0.9, 0, 0.5, 0)
+    Minimize.Size = UDim2.new(0.07, 0, 0.4, 0)
+    Minimize.Position = UDim2.new(0.91, 0, 0.25, 0)
     Minimize.BackgroundColor3 = Color3.new(1, 0.93, 0)
     Minimize.Text = "-"
     Minimize.TextColor3 = Color3.new(0, 0, 0)
@@ -236,6 +236,33 @@ creategui = function()
     Minimize.AnchorPoint = Vector2.new(0, 0.5)
     Minimize.Parent = topBar
     Minimize.ZIndex = 101
+
+    local JobIdBox = Instance.new("TextBox")
+    JobIdBox.Name = "JobIdBox"
+    JobIdBox.Size = UDim2.new(0.7, 0, 0.4, 0)
+    JobIdBox.Position = UDim2.new(0.02, 0, 0.75, 0)
+    JobIdBox.BackgroundColor3 = Color3.new(0.93, 0.63, 1)
+    JobIdBox.TextColor3 = Color3.new(0, 0, 0)
+    JobIdBox.TextScaled = true
+    JobIdBox.Font = Enum.Font.SourceSans
+    JobIdBox.Text = "Input JobId"
+    JobIdBox.PlaceholderText = "Input JobId"
+    JobIdBox.AnchorPoint = Vector2.new(0, 0.5)
+    JobIdBox.Parent = topBar
+    JobIdBox.ZIndex = 101
+
+    local TPJobId = Instance.new("TextButton")
+    TPJobId.Name = "TPJobId"
+    TPJobId.Size = UDim2.new(0.24, 0, 0.4, 0)
+    TPJobId.Position = UDim2.new(0.74, 0, 0.75, 0)
+    TPJobId.BackgroundColor3 = Color3.new(0.57, 0.92, 0.63)
+    TPJobId.Text = "Goto JobId"
+    TPJobId.TextColor3 = Color3.new(0, 0, 0)
+    TPJobId.TextScaled = true
+    TPJobId.Font = Enum.Font.SourceSans
+    TPJobId.AnchorPoint = Vector2.new(0, 0.5)
+    TPJobId.Parent = topBar
+    TPJobId.ZIndex = 101
 
     closeGUI.MouseButton1Click:Connect(function()
         screenGui:Destroy()
@@ -256,16 +283,16 @@ creategui = function()
     end)
 
     Minimize.MouseButton1Click:Connect(function()
-        minimizegui()
+        minimizegui(Minimize)
+    end)
+
+    TPJobId.MouseButton1Click:Connect(function()
+        notifygui("TPing to JobId", 255, 255, 255)
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, JobIdBox.Text, game:GetService("Players").LocalPlayer)
     end)
 end
 
-notifygui = function(text, r, g, b)
-    if not r then r = 255 end
-    if not g then g = 255 end
-    if not b then b = 255 end
-    print(text)
-
+createframe = function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("FischServerFinder")
 
@@ -273,7 +300,6 @@ notifygui = function(text, r, g, b)
         creategui()
         screenGui = playerGui:FindFirstChild("FischServerFinder")
     end
-
     local mainFrame = screenGui:FindFirstChild("MainFrame")
     local scrollFrame = mainFrame:FindFirstChild("NotificationContainer")
     local uiListLayout = scrollFrame:FindFirstChild("UIList")
@@ -285,6 +311,19 @@ notifygui = function(text, r, g, b)
     frame.BorderSizePixel = 0
     frame.Parent = scrollFrame
     frame.ZIndex = 101
+
+    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
+
+    return frame
+end
+
+notifygui = function(text, r, g, b)
+    if not r then r = 255 end
+    if not g then g = 255 end
+    if not b then b = 255 end
+    print(text)
+
+    local frame = createframe()
 
     local closeButton = Instance.new("TextButton")
     closeButton.Name = "CloseButton"
@@ -335,18 +374,10 @@ notifygui = function(text, r, g, b)
     closeButton.MouseButton1Click:Connect(function()
         frame:Destroy()
     end)
-
-    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 end
 
-minimizegui = function()
-    local playerGui = game.Players.LocalPlayer.PlayerGui
-    local screenGui = playerGui:FindFirstChild("FischServerFinder")
-
-    if not screenGui then
-        creategui()
-        screenGui = playerGui:FindFirstChild("FischServerFinder")
-    end
+minimizegui = function(Minimize)
+    local screenGui = Minimize.Parent.Parent.Parent
 
     local mainFrame = screenGui:FindFirstChild("MainFrame")
     local scrollFrame = mainFrame:FindFirstChild("NotificationContainer")
@@ -361,32 +392,15 @@ minimizegui = function()
         topBar.Position = UDim2.new(0.5, 0, 0.09, 0)
     else
         Minimize.Text = "-"
-        mainFrame.Size = UDim2.new(0.25, 0, 0.5, 0)
+        mainFrame.Size = UDim2.new(0.25, 0, 0.6, 0)
         scrollFrame.Visible = true
-        topBar.Size = UDim2.new(0.95, 0, 0.1, 0)
+        topBar.Size = UDim2.new(0.95, 0, 0.18, 0)
         topBar.Position = UDim2.new(0.5, 0, 0.01, 0)
     end
 end
 
 potentialsunkenchest = function()
-    local playerGui = game.Players.LocalPlayer.PlayerGui
-    local screenGui = playerGui:FindFirstChild("FischServerFinder")
-
-    if not screenGui then
-        creategui()
-        screenGui = playerGui:FindFirstChild("FischServerFinder")
-    end
-    local mainFrame = screenGui:FindFirstChild("MainFrame")
-    local scrollFrame = mainFrame:FindFirstChild("NotificationContainer")
-    local uiListLayout = scrollFrame:FindFirstChild("UIList")
-
-    local frame = Instance.new("Frame")
-    frame.Name = "NotificationFrame"
-    frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
-    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    frame.BorderSizePixel = 0
-    frame.Parent = scrollFrame
-    frame.ZIndex = 101
+    local frame = createframe()
 
     local closeButton = Instance.new("TextButton")
     closeButton.Name = "CloseButton"
@@ -436,8 +450,6 @@ potentialsunkenchest = function()
     rescanButton.MouseButton1Click:Connect(function()
         scanchest()
     end)
-
-    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 
     if sunkenchestList.autofarm then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
@@ -504,24 +516,7 @@ loadedsunkenchest = function(object)
 
     if not position then return end
 
-    local playerGui = game.Players.LocalPlayer.PlayerGui
-    local screenGui = playerGui:FindFirstChild("FischServerFinder")
-
-    if not screenGui then
-        creategui()
-        screenGui = playerGui:FindFirstChild("FischServerFinder")
-    end
-    local mainFrame = screenGui:FindFirstChild("MainFrame")
-    local scrollFrame = mainFrame:FindFirstChild("NotificationContainer")
-    local uiListLayout = scrollFrame:FindFirstChild("UIList")
-
-    local frame = Instance.new("Frame")
-    frame.Name = "NotificationFrame"
-    frame.Size = UDim2.new(1, 0, 0, camera.ViewportSize.Y * 0.05)
-    frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-    frame.BorderSizePixel = 0
-    frame.Parent = scrollFrame
-    frame.ZIndex = 101
+    local frame = createframe()
 
     local closeButton = Instance.new("TextButton")
     closeButton.Name = "CloseButton"
@@ -570,8 +565,6 @@ loadedsunkenchest = function(object)
     claimButton.MouseButton1Click:Connect(function()
         claimsunkenchest()
     end)
-
-    scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 
     task.wait(0.5)
     loadedmsg = false
