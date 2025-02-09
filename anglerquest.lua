@@ -169,7 +169,9 @@ equipfish = function(fishname)
         game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("Net"):WaitForChild("RE/Backpack/Equip"):FireServer(item)
         titleLabel.Text = "Completed " .. fishname
     else
-        toggleautoquest()
+        if isRunning then
+            toggleautoquest()
+        end
         print("Could not find ".. fishname)
         titleLabel.Text = "Could not find " .. fishname
         print()
