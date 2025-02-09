@@ -374,7 +374,7 @@ chesttpscan = function(delay)
     local foundchest = false
     checkteleporting = true
     for _, coords in ipairs(sunkenchestcoords) do
-        tp(coords.x, coords.y + 70, coords.z)
+        tp(coords.x, coords.y - 50, coords.z)
         task.wait(delay)
         if not checkteleporting then
             foundchest = true
