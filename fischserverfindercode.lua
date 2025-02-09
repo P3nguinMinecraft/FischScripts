@@ -33,10 +33,10 @@ end
 
 print("[FSF] Loading")
 
-local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
-if loading then
-    loading.loading.Visible = false
-end
+--local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 20)
+--if loading then
+--    loading.loading.Visible = false
+--end
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -368,49 +368,6 @@ minimizegui = function()
     end
 end
 
-local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
-
-chesttpscan = function(delay)
-    local foundchest = false
-    checkteleporting = true
-    for _, coords in ipairs(sunkenchestcoords) do
-        tp(coords.x, coords.y - 50, coords.z)
-        task.wait(delay)
-        if not checkteleporting then
-            foundchest = true
-            break
-        end
-    end
-    if not foundchest then
-        scanchest()
-        if sunkenchestList.autofarm and not foundchest then
-            if autofarmchesttpscan < 3 then
-                autofarmchesttpscan = autofarmchesttpscan + 1
-                chesttpscan(autofarmchesttpscan / 5)
-            else
-                notifygui("Failed to find sunken chests!", 199, 29, 10)
-                if sunkenchestList.hopafterclaim then
-                    notifygui("Autohopping", 247, 94, 229)
-                    teleport()
-                end
-            end
-        end
-    end
-    checkteleporting = false
-end
-
-scanchest = function()
-    for _, object in pairs(activeChestsFolder:GetChildren()) do
-        checkteleporting = false
-        if sunkenchestList.alertonload then
-            notifygui("Sunken Chest Found!", 255, 255, 0)
-            task.spawn(function()
-                loadedsunkenchest(object)
-            end)
-        end
-    end
-end
-
 potentialsunkenchest = function()
     local playerGui = game.Players.LocalPlayer.PlayerGui
     local screenGui = playerGui:FindFirstChild("FischServerFinder")
@@ -486,6 +443,49 @@ potentialsunkenchest = function()
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
         task.wait(3)
         chesttpscan(0.1)
+    end
+end
+
+local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
+
+chesttpscan = function(delay)
+    local foundchest = false
+    checkteleporting = true
+    for _, coords in ipairs(sunkenchestcoords) do
+        tp(coords.x, coords.y - 20, coords.z)
+        task.wait(delay)
+        if not checkteleporting then
+            foundchest = true
+            break
+        end
+    end
+    if not foundchest then
+        scanchest()
+        if sunkenchestList.autofarm and not foundchest then
+            if autofarmchesttpscan < 3 then
+                autofarmchesttpscan = autofarmchesttpscan + 1
+                chesttpscan(autofarmchesttpscan / 5)
+            else
+                notifygui("Failed to find sunken chests!", 199, 29, 10)
+                if sunkenchestList.hopafterclaim then
+                    notifygui("Autohopping", 247, 94, 229)
+                    teleport()
+                end
+            end
+        end
+    end
+    checkteleporting = false
+end
+
+scanchest = function()
+    for _, object in pairs(activeChestsFolder:GetChildren()) do
+        checkteleporting = false
+        if sunkenchestList.alertonload then
+            notifygui("Sunken Chest Found!", 255, 255, 0)
+            task.spawn(function()
+                loadedsunkenchest(object)
+            end)
+        end
     end
 end
 
@@ -600,7 +600,7 @@ claimsunkenchest = function()
         end
         
         if root then
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(root.Position + Vector3.new(0, 6, 0))
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(root.Position + Vector3.new(0, 6.6, 0))
             task.wait(0.3)
             local highlight = root:FindFirstChild("Main"):FindFirstChild("Highlight")
             if highlight then
@@ -880,7 +880,7 @@ if sunkenchestList.autofarm and sunkenchestList.forcehop and not autofarmchestpo
     teleport()
 end
 
-task.wait(20)
-if loading then
-    loading.loading.Visible = true
-end
+--task.wait(20)
+--if loading then
+--    loading.loading.Visible = true
+--end
