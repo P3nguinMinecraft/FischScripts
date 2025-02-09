@@ -3,6 +3,8 @@ local on = true
 
 repeat task.wait(1) until game:IsLoaded()
 
+local givequest, completequest, getfish, getitem, equipfish, findfishreq, toggleautoquest
+
 local taskCoroutine
 local isRunning = false
 
@@ -107,7 +109,7 @@ button4.MouseButton1Click:Connect(function()
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(981, -703, 1232))
 end)
 
-function givequest()
+givequest = function()
     local angler = game:GetService("Workspace"):WaitForChild("world"):WaitForChild("npcs"):FindFirstChild("The Depths Angler")
     if angler then
        angler.angler.giveQuest:InvokeServer()
@@ -116,7 +118,7 @@ function givequest()
     end
 end
 
-function completequest()
+completequest = function()
     local angler = game:GetService("Workspace"):WaitForChild("world"):WaitForChild("npcs"):FindFirstChild("The Depths Angler")
     if angler then
         angler.angler.questCompleted:InvokeServer()
@@ -125,7 +127,7 @@ function completequest()
     end
 end
 
-function getfish(fishname)
+getfish = function(fishname)
     local plrname = game:GetService("Players").LocalPlayer.Name
     local inventory = game:GetService("ReplicatedStorage").playerstats:WaitForChild(plrname).Inventory:GetChildren()
 
@@ -142,7 +144,7 @@ function getfish(fishname)
     return nil
 end
 
-function getitem(fishname)
+getitem = function(fishname)
     local id = getfish(fishname)
     if id then
         local backpack = game:GetService("Players").LocalPlayer.Backpack:GetChildren()
@@ -159,7 +161,7 @@ function getitem(fishname)
     return nil
 end
 
-function equipfish(fishname)
+equipfish = function(fishname)
     local item = getitem(fishname)
     if item then
         game:GetService("ReplicatedStorage"):WaitForChild("packages"):WaitForChild("Net"):WaitForChild("RE/Backpack/Equip"):FireServer(item)
@@ -176,7 +178,7 @@ end
 
 local quests = game:GetService("Players").LocalPlayer.PlayerGui.hud.deviceinset.quests
 
-function findfishreq()
+findfishreq = function()
     for _, quest in ipairs(quests:GetChildren()) do
         if quest:FindFirstChild("title") and quest:FindFirstChild("title").Text == "Angler Quest" then
             return tostring(quest.line1.Text)
@@ -185,7 +187,7 @@ function findfishreq()
     return nil
 end
 
-function toggleautoquest()
+toggleautoquest = function()
     if isRunning then
         button3.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
         
@@ -196,9 +198,9 @@ function toggleautoquest()
         
         isRunning = true
 
-        if not taskCoroutine or coroutine.status(taskCoroutine) == "dead" then
+        if not taskCoroutine then
             taskCoroutine = coroutine.create(function()
-                while isRunning do
+                while task.wait(1) do
                     local fish = findfishreq()
                     if fish then
                         equipfish(fish)
@@ -206,7 +208,7 @@ function toggleautoquest()
                         task.wait(1)
                     end
                     givequest()
-                    task.wait(1)
+                    if isRunning == false then coroutine.yield() end
                 end
             end)
         end
