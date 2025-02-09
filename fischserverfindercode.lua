@@ -3,12 +3,13 @@
 -- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.3.1"
+local scriptvers = "1.3.2"
 local checkteleporting = false
 local loadedmsg = false
 local desiredserver
 local autofarmchesttpscan = 0
 local autofarmchestpotential = false
+local autofarmchestclaimed = false
 local scheduledhop = false
 local camera = game.Workspace.CurrentCamera
 local _n1, _n2, _n3, link, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
@@ -382,11 +383,12 @@ chesttpscan = function(delay)
     end
     if not foundchest then
         scanchest()
-        if sunkenchestList.autofarm then
+        if sunkenchestList.autofarm and not foundchest then
             if autofarmchesttpscan < 3 then
                 autofarmchesttpscan = autofarmchesttpscan + 1
                 chesttpscan(autofarmchesttpscan / 5)
             else
+                notifygui("Failed to find sunken chests!", 199, 29, 10)
                 if sunkenchestList.hopafterclaim then
                     notifygui("Autohopping", 247, 94, 229)
                     teleport()
@@ -470,6 +472,7 @@ potentialsunkenchest = function()
     end)
 
     tpButton.MouseButton1Click:Connect(function()
+        autofarmchesttpscan = 0
         chesttpscan(0.1)
     end)
 
@@ -573,10 +576,15 @@ loadedsunkenchest = function(object)
     task.wait(0.5)
     loadedmsg = false
 
-    if sunkenchestList.autofarm then
+    if sunkenchestList.autofarm and not autofarmchestclaimed then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
         task.wait(2)
         claimsunkenchest()
+        autofarmchestclaimed = true
+        task.spawn(function()
+            task.wait(600)
+            autofarmchestclaimed = false
+        end)
     end
 end
 
