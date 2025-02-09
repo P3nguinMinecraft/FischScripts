@@ -444,6 +444,7 @@ potentialsunkenchest = function()
 
     tpButton.MouseButton1Click:Connect(function()
         autofarmchesttpscan = 0
+        if checkteleporting then return end
         chesttpscan(0.1)
     end)
 
@@ -454,6 +455,7 @@ potentialsunkenchest = function()
     if sunkenchestList.autofarm then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
         task.wait(3)
+        if checkteleporting then return end
         chesttpscan(0.1)
     end
 end
@@ -461,7 +463,6 @@ end
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
 chesttpscan = function(delay)
-    if checkteleporting then return end
     local foundchest = false
     checkteleporting = true
     for _, coords in ipairs(sunkenchestcoords) do
