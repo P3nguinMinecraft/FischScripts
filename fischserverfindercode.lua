@@ -118,6 +118,7 @@ teleport = function()
 
         task.spawn(function()
             task.wait(20)
+            notifygui("Hop failed. Retrying...", 242, 44, 22)
             TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
             scheduledhop = false
         end)
