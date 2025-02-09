@@ -142,6 +142,9 @@ local defaultConfig = {
         enabled = false,
         version = 1234,
     },
+
+    version = "1.4.1",
+    versid = "NzD95YZ9eegJEElp",
 }
 
 return version, versid, msg, link, sunkenchestcoords, defaultConfig
