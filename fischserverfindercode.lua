@@ -470,32 +470,29 @@ end
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
 chesttpscan = function(delay)
-    local foundchest = false
     checkteleporting = true
     for _, coords in ipairs(sunkenchestcoords) do
         tp(coords.x, coords.y - 20, coords.z)
         task.wait(delay)
         if not checkteleporting then
-            foundchest = true
+            checkteleporting = false
             break
         end
     end
-    if not foundchest then
+    if checkteleporting then
         scanchest()
-        if sunkenchestList.autofarm and not foundchest then
-            if autofarmchesttpscan < 3 then
-                autofarmchesttpscan = autofarmchesttpscan + 1
-                chesttpscan(autofarmchesttpscan / 5)
-            else
-                notifygui("Failed to find sunken chests!", 199, 29, 10)
-                if sunkenchestList.hopafterclaim then
-                    notifygui("Autohopping", 247, 94, 229)
-                    teleport()
-                end
+        if chesttpscancount < 3 then
+            chesttpscancount = chesttpscancount + 1
+            chesttpscan(chesttpscancount / 5)
+        else
+            notifygui("Failed to find sunken chests!", 199, 29, 10)
+            checkteleporting = false
+            if sunkenchestList.hopafterclaim then
+                notifygui("Autohopping", 247, 94, 229)
+                teleport()
             end
         end
     end
-    checkteleporting = false
 end
 
 scanchest = function()
