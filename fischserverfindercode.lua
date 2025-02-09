@@ -116,6 +116,12 @@ teleport = function()
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
 
+        task.spawn(function()
+            task.wait(20)
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+            scheduledhop = false
+        end)
+
         --task.spawn(function()
         --    task.wait(20)
         --    game:GetService("Players").LocalPlayer:Kick("Retrying teleport...")
@@ -239,7 +245,7 @@ creategui = function()
 
     local JobIdBox = Instance.new("TextBox")
     JobIdBox.Name = "JobIdBox"
-    JobIdBox.Size = UDim2.new(0.7, 0, 0.4, 0)
+    JobIdBox.Size = UDim2.new(0.7, 0, 0.3, 0)
     JobIdBox.Position = UDim2.new(0.02, 0, 0.75, 0)
     JobIdBox.BackgroundColor3 = Color3.new(0.93, 0.63, 1)
     JobIdBox.TextColor3 = Color3.new(0, 0, 0)
@@ -253,7 +259,7 @@ creategui = function()
 
     local TPJobId = Instance.new("TextButton")
     TPJobId.Name = "TPJobId"
-    TPJobId.Size = UDim2.new(0.24, 0, 0.4, 0)
+    TPJobId.Size = UDim2.new(0.24, 0, 0.3, 0)
     TPJobId.Position = UDim2.new(0.74, 0, 0.75, 0)
     TPJobId.BackgroundColor3 = Color3.new(0.57, 0.92, 0.63)
     TPJobId.Text = "Goto JobId"
