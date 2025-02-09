@@ -1,6 +1,6 @@
-local version = "1.4"
-local versid = "HA2kb9CTf5ITS2Fw"
-local msg = "+ lovestorm eel supercharged zone ~ bug fixes for auto sunken chest + GUI CHANGES"
+local version = "1.4.1"
+local versid = "NzD95YZ9eegJEElp"
+local msg = "Config changes!"
 local link = "https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinderscript"
 
 local sunkenchestcoords = {
@@ -37,4 +37,111 @@ local sunkenchestcoords = {
     {x = -2460, y = 130, z = 2047},
 } -- coords sourced from Fisch Wiki
 
-return version, versid, msg, link, sunkenchestcoords
+local defaultConfig = {
+    autoscan = true,
+
+    autowebhook = false,
+    webhookUrl = "https://discord.com/api/webhooks/#/#",
+
+    filename = "servers",
+
+    autohop = false,
+
+    infoList = {
+        autouptime = false,
+        autoversion = false,
+        autoplaceversion = false,
+    },
+
+    eventList = {
+        {name = "Night of the Fireflies",   enabled = false},
+        {name = "Night of the Luminous",    enabled = false},
+        {name = "Shiny Surge",              enabled = false},
+        {name = "Mutation Surge",           enabled = false},
+    },
+
+    weatherList = {
+        {name = "Clear",                    enabled = false},
+        {name = "Foggy",                    enabled = false},
+        {name = "Windy",                    enabled = false},
+        {name = "Rain",                     enabled = false},
+        {name = "Eclipse",                  enabled = false},
+        {name = "Aurora Borealis",          enabled = true},
+    },
+
+    cycleList = {
+        {name = "Day",                      enabled = false},
+        {name = "Night",                    enabled = false},
+    },
+
+    seasonList = {
+        {name = "Spring",                   enabled = false},
+        {name = "Summer",                   enabled = false},
+        {name = "Fall",                     enabled = false},
+        {name = "Winter",                   enabled = false},
+    },
+
+    zoneList = {
+        {name = "Megalodon Default",        enabled = true},
+        {name = "Megalodon Ancient",        enabled = true},
+        {name = "Great White Shark",        enabled = false},
+        {name = "Great Hammerhead Shark",   enabled = false},
+        {name = "Whale Shark",              enabled = false},
+        {name = "The Kraken Pool",          enabled = true},
+        {name = "Ancient Kraken Pool",      enabled = true},
+        {name = "Orcas Pool",               enabled = true},
+        {name = "Ancient Orcas Pool",       enabled = true},
+        {name = "Lovestorm Eel",            enabled = true},
+        {name = "Lovestorm Eel Supercharged", enabled = true},
+    },
+
+    luckList = {
+        min = 8,
+        enabled = true,
+    },
+
+    meteorList = {
+        {name = "Amethyst",                 enabled = false},
+        {name = "Ruby",                     enabled = false},
+        {name = "Opal",                     enabled = false},
+        {name = "Lapis Lazuli",             enabled = false},
+        {name = "Moonstone",                enabled = true},
+    },
+
+    sunkenchestList = {
+        enabled = true,
+        bufferbefore = 1,
+        alertonload = true,
+        autofarm = false,
+        hopafterclaim = false,
+        forcehop = false,
+    },
+
+    uptimeList = {
+        beforeTime = {
+            enabled = false,
+            hour = 0,
+            minute = 0,
+        },
+
+        afterTime = {
+            enabled = false,
+            hour = 8,
+            minute = 0,
+        },
+
+        orLogic = true,
+    },
+
+    versionList = {
+        enabled = false,
+        version = "x.x",
+    },
+
+    placeVersionList = {
+        enabled = false,
+        version = 1234,
+    },
+}
+
+return version, versid, msg, link, sunkenchestcoords, defaultConfig

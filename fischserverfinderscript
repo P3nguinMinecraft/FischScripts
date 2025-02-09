@@ -2,121 +2,122 @@
 -- https://discord.gg/fWncS2vFxn
 
 -- CONFIG
+local config = {
+    autoscan = true
 
-autoscan = true
+    autowebhook = false
+    webhookUrl = "https://discord.com/api/webhooks/#/#"
 
-autowebhook = false
-webhookUrl = "https://discord.com/api/webhooks/#/#"
+    filename = "servers" -- dont add .json
 
-filename = "servers" -- dont add .json
+    autohop = true
 
-autohop = true
+    infoList = {
+        autouptime = false,
+        autoversion = false,
+        autoplaceversion = false,
+    }
 
-infoList = {
-    autouptime = false,
-    autoversion = false,
-    autoplaceversion = false,
-}
+    eventList = {
+        {name = "Night of the Fireflies",   enabled = false},
+        {name = "Night of the Luminous",    enabled = false},
+        {name = "Shiny Surge",              enabled = false},
+        {name = "Mutation Surge",           enabled = false},
+    }
 
-eventList = {
-    {name = "Night of the Fireflies",   enabled = false},
-    {name = "Night of the Luminous",    enabled = false},
-    {name = "Shiny Surge",              enabled = false},
-    {name = "Mutation Surge",           enabled = false},
-}
+    weatherList = {
+        {name = "Clear",                    enabled = false},
+        {name = "Foggy",                    enabled = false},
+        {name = "Windy",                    enabled = false},
+        {name = "Rain",                     enabled = false},
+        {name = "Eclipse",                  enabled = false},
+        {name = "Aurora Borealis",          enabled = false},
+    }
 
-weatherList = {
-    {name = "Clear",                    enabled = false},
-    {name = "Foggy",                    enabled = false},
-    {name = "Windy",                    enabled = false},
-    {name = "Rain",                     enabled = false},
-    {name = "Eclipse",                  enabled = false},
-    {name = "Aurora Borealis",          enabled = false},
-}
+    cycleList = {
+        {name = "Day",                      enabled = false},
+        {name = "Night",                    enabled = false},
+    }
 
-cycleList = {
-    {name = "Day",                      enabled = false},
-    {name = "Night",                    enabled = false},
-}
+    seasonList = {
+        {name = "Spring",                   enabled = false},
+        {name = "Summer",                   enabled = false},
+        {name = "Fall",                     enabled = false},
+        {name = "Winter",                   enabled = false},
+    }
 
-seasonList = {
-    {name = "Spring",                   enabled = false},
-    {name = "Summer",                   enabled = false},
-    {name = "Fall",                     enabled = false},
-    {name = "Winter",                   enabled = false},
-}
+    zoneList = {
+        {name = "Megalodon Default",        enabled = true},
+        {name = "Megalodon Ancient",        enabled = true},
+        {name = "Great White Shark",        enabled = false},
+        {name = "Great Hammerhead Shark",   enabled = false},
+        {name = "Whale Shark",              enabled = false},
+        {name = "The Kraken Pool",          enabled = true},
+        {name = "Ancient Kraken Pool",      enabled = true},
+        {name = "Orcas Pool",               enabled = true},
+        {name = "Ancient Orcas Pool",       enabled = true},
+        {name = "Lovestorm Eel",            enabled = true},
+        {name = "Lovestorm Eel Supercharged", enabled = true},
 
-zoneList = {
-    {name = "Megalodon Default",        enabled = true},
-    {name = "Megalodon Ancient",        enabled = true},
-    {name = "Great White Shark",        enabled = false},
-    {name = "Great Hammerhead Shark",   enabled = false},
-    {name = "Whale Shark",              enabled = false},
-    {name = "The Kraken Pool",          enabled = true},
-    {name = "Ancient Kraken Pool",      enabled = true},
-    {name = "Orcas Pool",               enabled = true},
-    {name = "Ancient Orcas Pool",       enabled = true},
-    {name = "Lovestorm Eel",            enabled = true},
-    {name = "Lovestorm Eel Supercharged", enabled = true},
+        --{name = "Golden Tide",              enabled = false},
+        --{name = "Ancient Algae Pool",       enabled = false},
+        --{name = "Forsaken Algae Pool",      enabled = false},
+        --{name = "Snowcap Algae Pool",       enabled = false},
+        --{name = "Mushgrove Algae Pool",     enabled = false},
+    }
 
-    --{name = "Golden Tide",              enabled = false},
-    --{name = "Ancient Algae Pool",       enabled = false},
-    --{name = "Forsaken Algae Pool",      enabled = false},
-    --{name = "Snowcap Algae Pool",       enabled = false},
-    --{name = "Mushgrove Algae Pool",     enabled = false},
-}
+    luckList = {
+        min = 8,
+        enabled = true,
+    }
 
-luckList = {
-    min = 8,
-    enabled = true,
-}
+    meteorList = {
+        {name = "Amethyst",                 enabled = false},
+        {name = "Ruby",                     enabled = false},
+        {name = "Opal",                     enabled = false},
+        {name = "Lapis Lazuli",             enabled = false},
+        {name = "Moonstone",                enabled = true},
+    }
 
-meteorList = {
-    {name = "Amethyst",                 enabled = false},
-    {name = "Ruby",                     enabled = false},
-    {name = "Opal",                     enabled = false},
-    {name = "Lapis Lazuli",             enabled = false},
-    {name = "Moonstone",                enabled = true},
-}
+    sunkenchestList = {
+        enabled = true,
+        bufferbefore = 1,
+        alertonload = true,
+        autofarm = false,
+        hopafterclaim = false,
+        forcehop = false,
+    }
 
-sunkenchestList = {
-    enabled = true,
-    bufferbefore = 1,
-    alertonload = true,
-    autofarm = false,
-    hopafterclaim = false,
-    forcehop = false,
-}
+    uptimeList = {
+        beforeTime = {
+            enabled = false,
+            hour = 0,
+            minute = 0,
+        },
 
-uptimeList = {
-    beforeTime = {
+        afterTime = {
+            enabled = false,
+            hour = 0,
+            minute = 0,
+        },
+
+        orLogic = true,
+    }
+
+    versionList = {
         enabled = false,
-        hour = 0,
-        minute = 0,
-    },
+        version = "x.x",
+    }
 
-    afterTime = {
+    placeVersionList = {
         enabled = false,
-        hour = 0,
-        minute = 0,
-    },
-
-    orLogic = true,
-}
-
-versionList = {
-    enabled = false,
-    version = "x.x",
-}
-
-placeVersionList = {
-    enabled = false,
-    version = 1234,
+        version = 1234,
+    }
 }
 
 repeat task.wait(0.5) until game:IsLoaded()
-local version = "1.4"
-local versid = "HA2kb9CTf5ITS2Fw"
+local version = "1.4.1"
+local versid = "NzD95YZ9eegJEElp"
 local updversion, updversid, updmsg, scriptlink = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 if not string.match(versid, updversid) then
     setclipboard(scriptlink)

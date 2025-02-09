@@ -1,27 +1,29 @@
+-- TEMP
+
+delfile(config.filename .. ".json")
+
 -- CODE
--- DO NOT RUN THIS ON ITS OWN
--- PLACE THE CONFIG BEFORE THIS
 
 local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local scriptvers = "1.4"
+local scriptvers = "1.4.1"
 local checkteleporting = false
 local loadedmsg = false
 local desiredserver
-local autofarmchesttpscan = 0
+local chesttpscancount = 0
 local autofarmchestpotential = false
 local autofarmchestclaimed = false
 local scheduledhop = false
 local camera = game.Workspace.CurrentCamera
-local _n1, _n2, _n3, link, sunkenchestcoords = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
+local _n1, _n2, _n3, link, sunkenchestcoords, defaultConfig = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fsf_data.lua"))()
 
-if autohop == nil then
-   setclipboard(link)
+if config.autohop == nil then
+    setclipboard(link)
     game:GetService("Players").LocalPlayer:Kick("[FSF] You did not include the config! Copy the ENTIRE script (link copied to clipboard)")
 end
 
-if sunkenchestList.enabled and sunkenchestList.autofarm then
-   sunkenchestList.bufferbefore = 0
-   sunkenchestList.alertonload = true
+if config.sunkenchestList.enabled and config.sunkenchestList.autofarm then
+   config.sunkenchestList.bufferbefore = 0
+   config.sunkenchestList.alertonload = true
 end
 
 repeat task.wait(0.5) until game:IsLoaded()
@@ -40,7 +42,7 @@ print("[FSF] Loading")
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
-filename = filename.. ".json"
+local filename = "FischServerFinder/" .. config.filename.. ".json"
 
 parseuptime = function()
     local uptime = game:GetService("ReplicatedStorage").world.uptime.Value
@@ -450,7 +452,7 @@ potentialsunkenchest = function()
     end)
 
     tpButton.MouseButton1Click:Connect(function()
-        autofarmchesttpscan = 0
+        chesttpscancount = 0
         if checkteleporting then return end
         chesttpscan(0.1)
     end)
@@ -459,7 +461,7 @@ potentialsunkenchest = function()
         scanchest()
     end)
 
-    if sunkenchestList.autofarm then
+    if config.sunkenchestList.autofarm then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
         task.wait(3)
         if checkteleporting then return end
@@ -487,7 +489,7 @@ chesttpscan = function(delay)
         else
             notifygui("Failed to find sunken chests!", 199, 29, 10)
             checkteleporting = false
-            if sunkenchestList.hopafterclaim then
+            if config.sunkenchestList.hopafterclaim then
                 notifygui("Autohopping", 247, 94, 229)
                 teleport()
             end
@@ -498,7 +500,7 @@ end
 scanchest = function()
     for _, object in pairs(activeChestsFolder:GetChildren()) do
         checkteleporting = false
-        if sunkenchestList.alertonload then
+        if config.sunkenchestList.alertonload then
             notifygui("Sunken Chest Found!", 255, 255, 0)
             task.spawn(function()
                 loadedsunkenchest(object)
@@ -575,7 +577,7 @@ loadedsunkenchest = function(object)
     task.wait(0.5)
     loadedmsg = false
 
-    if sunkenchestList.autofarm and not autofarmchestclaimed then
+    if config.sunkenchestList.autofarm and not autofarmchestclaimed then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
         task.wait(2)
         claimsunkenchest()
@@ -610,7 +612,7 @@ claimsunkenchest = function()
         end
     end
 
-    if sunkenchestList.autofarm and sunkenchestList.hopafterclaim then
+    if config.sunkenchestList.autofarm and config.sunkenchestList.hopafterclaim then
         task.wait(4)
         notifygui("Autohopping", 247, 94, 229)
         teleport()
@@ -622,10 +624,10 @@ issunkenchest = function()
 
     local totalMinutes = (hours * 60) + minutes
 
-    local modValue = (totalMinutes - 60 + sunkenchestList.bufferbefore) % 70
+    local modValue = (totalMinutes - 60 + config.sunkenchestList.bufferbefore) % 70
 
-    if modValue >= 0 and modValue < (10 + sunkenchestList.bufferbefore) then
-        return true, (modValue - sunkenchestList.bufferbefore)
+    if modValue >= 0 and modValue < (10 + config.sunkenchestList.bufferbefore) then
+        return true, (modValue - config.sunkenchestList.bufferbefore)
     else
         return false, -1
     end
@@ -684,7 +686,7 @@ sendwebhook = function()
 
     local jsonData = HttpService:JSONEncode(embedData)
     request({
-        Url = webhookUrl,
+        Url = config.webhookUrl,
         Method = "POST",
         Headers = {["Content-Type"] = "application/json"},
         Body = jsonData
@@ -710,7 +712,7 @@ scanWorld = function()
     local meteor = game:GetService("Workspace"):WaitForChild("MeteorItems")
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
-    for _, weatherData in ipairs(weatherList) do
+    for _, weatherData in ipairs(config.weatherList) do
         if  weatherData.name == weather.Value then
             table.insert(events, {text = "Weather: " .. weatherData.name, r = 255, g = 255, b = 255, enabled = weatherData.enabled})
         end
@@ -719,13 +721,13 @@ scanWorld = function()
         end
     end
 
-    for _, cycleData in ipairs(cycleList) do
+    for _, cycleData in ipairs(config.cycleList) do
         if  cycleData.name == cycle.Value then
             table.insert(events, {text = "Cycle: " .. cycleData.name, r = 255, g = 255, b = 255, enabled = cycleData.enabled})
         end
     end
 
-    for _, seasonData in ipairs(seasonList) do
+    for _, seasonData in ipairs(config.seasonList) do
         if  seasonData.name == season.Value then
             table.insert(events, {text = "Season: " .. seasonData.name, r = 255, g = 255, b = 255, enabled = seasonData.enabled})
         end
@@ -733,28 +735,28 @@ scanWorld = function()
 
     table.insert(events, {text = "## Events: ", r = 255, g = 255, b = 255, enabled = false})
 
-    for _, eventData in ipairs(eventList) do
+    for _, eventData in ipairs(config.eventList) do
         if eventData.name == event.Value then
             table.insert(events, {text = eventData.name, r = 255, g = 255, b = 255, enabled = eventData.enabled})
         end
     end
 
     if luck > 1 then
-        local send = luck >= luckList.min and luckList.enabled
+        local send = luck >= config.luckList.min and config.luckList.enabled
         table.insert(events, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91, enabled = send})
     end
 
     local meteoritems = meteor:GetChildren()
     if #meteoritems > 0 then
         local item = meteoritems[1]
-        for _, meteorData in ipairs(meteorList) do
+        for _, meteorData in ipairs(config.meteorList) do
             if meteorData.name == item.Name then
                 table.insert(events, {text = "Meteor: " .. item.Name, r = 236, g = 103, b = 44, enabled = meteorData.enabled})
             end
         end
     end
 
-    for _, zoneData in ipairs(zoneList) do
+    for _, zoneData in ipairs(config.zoneList) do
         if zones:FindFirstChild(zoneData.name) then
             local count = 0
             for _, zone in pairs(zones:GetChildren()) do
@@ -779,7 +781,7 @@ scanWorld = function()
     local sc, time = issunkenchest()
     if sc then
         autofarmchestpotential = true
-        table.insert(events, {text = "Sunken Chest " .. time .. " min", r = 255, g = 255, b = 102, enabled = sunkenchestList.enabled})
+        table.insert(events, {text = "Sunken Chest " .. time .. " min", r = 255, g = 255, b = 102, enabled = config.sunkenchestList.enabled})
     end
 
     return events
@@ -799,7 +801,7 @@ notify = function(events)
     if count > 0 then desiredserver = true end
     if not desiredserver then
         notifygui("Nothing", 255, 153, 0)
-        if autohop then
+        if config.autohop then
             notifygui("Autohopping", 247, 94, 229)
             teleport()
         end
@@ -807,42 +809,42 @@ notify = function(events)
 end
 
 scan = function()
-    if infoList.autouptime then
+    if config.infoList.autouptime then
         notifygui("Uptime: " .. formattime(parseuptime()), 0, 81, 255)
     end
 
-    if infoList.autoversion then
+    if config.infoList.autoversion then
         notifygui("Version: " .. game:GetService("ReplicatedStorage").world.version.Value, 18, 180, 201)
     end
 
-    if infoList.autoplaceversion then
+    if config.infoList.autoplaceversion then
         notifygui("PlaceVersion: " .. game.PlaceVersion, 224, 64, 245)
     end
 
     desiredserver = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
-    local before = uptimeList.beforeTime.enabled and time < (uptimeList.beforeTime.hour * 60 + uptimeList.beforeTime.minute)
-    local after = uptimeList.afterTime.enabled and time > (uptimeList.afterTime.hour * 60 + uptimeList.afterTime.minute)
+    local before = config.uptimeList.beforeTime.enabled and time < (config.uptimeList.beforeTime.hour * 60 + config.uptimeList.beforeTime.minute)
+    local after = config.uptimeList.afterTime.enabled and time > (config.uptimeList.afterTime.hour * 60 + config.uptimeList.afterTime.minute)
 
     if before and after then
         desiredserver = true
         notifygui("Before/after: " .. formattime(parseuptime()), 46, 232, 21)
-    elseif before and uptimeList.orLogic then
+    elseif before and config.uptimeList.orLogic then
         desiredserver = true
         notifygui("Before: " .. formattime(parseuptime()), 52, 168, 255)
-    elseif after and uptimeList.orLogic then
+    elseif after and config.uptimeList.orLogic then
         desiredserver = true
         notifygui("After: " .. formattime(parseuptime()), 193, 48, 255)
     end
 
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
-    if versionList.enabled and string.match(versionList.version, serverversion) then
+    if config.versionList.enabled and string.match(config.versionList.version, serverversion) then
         desiredserver = true
         notifygui("Version: " .. serverversion, 151, 36, 227)
     end
 
-    if placeVersionList.enabled and placeVersionList.version == game.PlaceVersion then
+    if config.placeVersionList.enabled and config.placeVersionList.version == game.PlaceVersion then
         desiredserver = true
         notifygui("Place Version: " .. game.PlaceVersion, 151, 36, 227)
     end
@@ -852,7 +854,7 @@ scan = function()
 end
 
 activeChestsFolder.ChildAdded:Connect(function(object)
-    if sunkenchestList.alertonload then
+    if config.sunkenchestList.alertonload then
         checkteleporting = false
         notifygui("Sunken Chest Loaded!", 255, 255, 0)
         task.spawn(function()
@@ -864,17 +866,17 @@ end)
 task.wait(2)
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
-if autowebhook then
+if config.autowebhook then
     sendwebhook()
 end
 
-if autoscan then
+if config.autoscan then
     scan()
 end
 
 print("[FSF] Loaded In!")
 
-if sunkenchestList.autofarm and sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
+if config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
     notifygui("Autohopping", 247, 94, 229)
     teleport()
 end
