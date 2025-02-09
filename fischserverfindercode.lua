@@ -461,6 +461,7 @@ end
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
 chesttpscan = function(delay)
+    if checkteleporting then return end
     local foundchest = false
     checkteleporting = true
     for _, coords in ipairs(sunkenchestcoords) do
