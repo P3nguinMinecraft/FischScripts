@@ -1,5 +1,5 @@
 local data_version = "2.0"
-local data_versid = "uhbgNaL4Vn5uuvHW"
+local data_versid = "uhbgNaL4Vn5uvsHW"
 local msg = "Config changes!"
 local link = "https://discord.gg/fWncS2vFx"
 
