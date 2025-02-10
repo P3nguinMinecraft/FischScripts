@@ -590,7 +590,7 @@ local EventsDropdown2 = EventsTab:CreateDropdown({
 
 dropdownsetup(config.meteorList, EventsDropdown2)
 
-local checkSunkenChest
+local sunkenSet
 
 local EventsSection1 = EventsTab:CreateSection("Sunken Chests")
 
@@ -602,11 +602,10 @@ local EventsToggle1 = EventsTab:CreateToggle({
     Flag = "EventsToggle1",
     Callback = function(Value)
         if not Value then
-            config.sunkenchestList.alertonload = false
-            config.sunkenchestList.hopafterclaim = false
-            config.sunkenchestList.autofarm = false
-            config.sunkenchestList.forcehop = false
-            checkSunkenChest()
+            sunkenSet(2, false)
+            sunkenSet(3, false)
+            sunkenSet(4, false)
+            sunkenSet(5, false)
         end
         config.sunkenchestList.enabled = Value
         saveConfig()
@@ -630,6 +629,7 @@ local EventsSlider1 = EventsTab:CreateSlider({
                 Duration = 5,
                 Image = nil,
             })
+            sunkenSet(0, 0)
         else
             config.sunkenchestList.bufferbefore = Value
             saveConfig()
@@ -701,6 +701,12 @@ local EventsToggle4 = EventsTab:CreateToggle({
                 Image = nil,
             })
         else
+            if Value then
+                sunkenSet(1, 0)
+                sunkenSet(2, true)
+            else
+                sunkenSet(5, false)
+            end
             config.sunkenchestList.autofarm = Value
             saveConfig()
         end
@@ -728,12 +734,25 @@ local EventsToggle5 = EventsTab:CreateToggle({
     end,
 })
 
-checkSunkenChest = function()
-    EventsToggle2:Set(config.sunkenchestList.alertonload)
-    EventsToggle3:Set(config.sunkenchestList.hopafterclaim)
-    EventsToggle4:Set(config.sunkenchestList.autofarm)
-    EventsToggle5:Set(config.sunkenchestList.forcehop)
+sunkenSet = function(thing, value)
+    local object
+    if thing == 0 then
+        object = EventsToggle1
+    elseif thing == 1 then
+        object = EventsSlider1
+    elseif thing == 2 then
+        object = EventsToggle2
+    elseif thing == 3 then
+        object = EventsToggle3
+    elseif thing == 4 then
+        object = EventsToggle4
+    elseif thing == 5 then
+        object = EventsToggle5
+    end
+
+    object:Set(value)
 end
+
 
 config.version = data.version
 config.versid = data.versid
