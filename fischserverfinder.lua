@@ -31,6 +31,7 @@ loadConfig = function()
             makefolder("FischServerFinder")
         end
         writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-config.lua"))()
     end
     config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
 end

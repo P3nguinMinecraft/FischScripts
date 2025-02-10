@@ -142,8 +142,8 @@ local defaultConfig = {
         forcehop = false,
     },
 
-    version = "Default",
-    versid = "",
+    version = data_version,
+    versid = data_versid,
 }
 
 local data = {
