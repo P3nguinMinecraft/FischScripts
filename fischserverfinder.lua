@@ -3,7 +3,8 @@
 
 repeat task.wait(0.1) until game:IsLoaded()
 
-local parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local loadConfig, parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local config
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 local scriptvers = "2.0"
 local checkteleporting = false
@@ -15,12 +16,6 @@ local autofarmchestpotential = false
 local autofarmchestclaimed = false
 local camera = game.Workspace.CurrentCamera
 
-if not isfile("FischServerFinder/config.json") then
-    writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
-end
-
-local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
-
 repeat task.wait(0.5) until game:IsLoaded()
 
 if not game.PlaceId == 16732694052 then
@@ -29,6 +24,15 @@ if not game.PlaceId == 16732694052 then
 end
 
 print("[FSF] Loading")
+
+loadConfig = function()
+    if not isfile("FischServerFinder/config.json") then
+        writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
+    end
+    config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
+end
+
+loadConfig()
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -269,18 +273,31 @@ creategui = function()
     TPJobId.Parent = topBar
     TPJobId.ZIndex = 101
 
-    local Config = Instance.new("TextButton")
-    Config.Name = "Config"
-    Config.Size = UDim2.new(0.5, 0, 0.3, 0)
-    Config.Position = UDim2.new(0.25, 0, 0.84, 0)
-    Config.BackgroundColor3 = Color3.new(1, 0.22, 0.67)
-    Config.Text = "Open Config"
-    Config.TextColor3 = Color3.new(0, 0, 0)
-    Config.TextScaled = true
-    Config.Font = Enum.Font.SourceSans
-    Config.AnchorPoint = Vector2.new(0, 0.5)
-    Config.Parent = topBar
-    Config.ZIndex = 101
+    local OpenConfig = Instance.new("TextButton")
+    OpenConfig.Name = "OpenConfig"
+    OpenConfig.Size = UDim2.new(0.47, 0, 0.3, 0)
+    OpenConfig.Position = UDim2.new(0.02, 0, 0.84, 0)
+    OpenConfig.BackgroundColor3 = Color3.new(1, 0.22, 0.67)
+    OpenConfig.Text = "Open Config"
+    OpenConfig.TextColor3 = Color3.new(0, 0, 0)
+    OpenConfig.TextScaled = true
+    OpenConfig.Font = Enum.Font.SourceSans
+    OpenConfig.AnchorPoint = Vector2.new(0, 0.5)
+    OpenConfig.Parent = topBar
+    OpenConfig.ZIndex = 101
+
+    local LoadConfig = Instance.new("TextButton")
+    LoadConfig.Name = "LoadConfig"
+    LoadConfig.Size = UDim2.new(0.47, 0, 0.3, 0)
+    LoadConfig.Position = UDim2.new(0.51, 0, 0.84, 0)
+    LoadConfig.BackgroundColor3 = Color3.new(0.16, 0.85, 0.48)
+    LoadConfig.Text = "Load Config"
+    LoadConfig.TextColor3 = Color3.new(0, 0, 0)
+    LoadConfig.TextScaled = true
+    LoadConfig.Font = Enum.Font.SourceSans
+    LoadConfig.AnchorPoint = Vector2.new(0, 0.5)
+    LoadConfig.Parent = topBar
+    LoadConfig.ZIndex = 101
 
     closeGUI.MouseButton1Click:Connect(function()
         screenGui:Destroy()
@@ -306,7 +323,9 @@ creategui = function()
 
     clear.MouseButton1Click:Connect(function()
         for _, notification in ipairs(scrollFrame:GetChildren()) do
-            notification:Destroy()
+            if notification.Name == "NotificationFrame" then
+                notification:Destroy()
+            end
         end
     end)
 
@@ -315,9 +334,14 @@ creategui = function()
         game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, JobIdBox.Text, game:GetService("Players").LocalPlayer)
     end)
 
-    Config.MouseButton1Click:Connect(function()
+    OpenConfig.MouseButton1Click:Connect(function()
         notifygui("Opening Config GUI", 255, 56, 172)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-config.lua"))()
+    end)
+
+    LoadConfig.MouseButton1Click:Connect(function()
+        notifygui("Reloading Config", 41, 217, 123)
+        loadConfig()
     end)
 end
 
