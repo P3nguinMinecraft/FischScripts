@@ -2,7 +2,7 @@
 -- https://discord.gg/fWncS2vFxn
 
 -- CONFIG
-local config = {
+config = {
     autoscan = true
 
     autowebhook = false
