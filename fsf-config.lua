@@ -622,18 +622,8 @@ local EventsSlider1 = EventsTab:CreateSlider({
     CurrentValue = config.sunkenchestList.bufferbefore,
     Flag = "EventsSlider1",
     Callback = function(Value)
-        if Value ~= 0 and config.sunkenchestList.autofarm then
-            Rayfield:Notify({
-                Title = "Buffer Before",
-                Content = "Auto farm is on, buffer before is automatically set to 0!",
-                Duration = 5,
-                Image = nil,
-            })
-            sunkenSet(1, 0)
-        else
-            config.sunkenchestList.bufferbefore = Value
-            saveConfig()
-        end
+        config.sunkenchestList.bufferbefore = Value
+        saveConfig()
     end,
 })
 
@@ -702,7 +692,6 @@ local EventsToggle4 = EventsTab:CreateToggle({
             })
         else
             if Value then
-                sunkenSet(1, 0)
                 sunkenSet(2, true)
             else
                 sunkenSet(5, false)
