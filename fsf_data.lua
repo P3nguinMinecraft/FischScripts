@@ -138,7 +138,7 @@ local defaultConfig = {
         version = "x.x",
     },
 
-    placeversionList = {
+    placeVersionList = {
         enabled = false,
         version = 1234,
     },
