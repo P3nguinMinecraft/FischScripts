@@ -6,6 +6,9 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 
 if not isfile("FischServerFinder/config.json") then
+    if not isfolder("FischServerFinder") then
+        makefolder("FischServerFinder")
+    end
     writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
 end
 local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))

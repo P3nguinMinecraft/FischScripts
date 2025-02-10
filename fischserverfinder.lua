@@ -27,6 +27,9 @@ print("[FSF] Loading")
 
 loadConfig = function()
     if not isfile("FischServerFinder/config.json") then
+        if not isfolder("FischServerFinder") then
+            makefolder("FischServerFinder")
+        end
         writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
     end
     config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
