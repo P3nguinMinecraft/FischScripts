@@ -67,8 +67,8 @@ config = {
     }
 
     luckList = {
-        min = 8,
         enabled = true,
+        min = 8,
     }
 
     meteorList = {

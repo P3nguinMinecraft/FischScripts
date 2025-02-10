@@ -96,8 +96,8 @@ local defaultConfig = {
     },
 
     luckList = {
-        min = 8,
         enabled = true,
+        min = 8,
     },
 
     meteorList = {
