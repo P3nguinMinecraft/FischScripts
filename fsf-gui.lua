@@ -93,6 +93,13 @@ local HomeButton1 = HomeTab:CreateButton({
     end,
 })
 
+local HomeButton2 = HomeTab:CreateButton({
+    Name = "Load Main Script",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fischserverfinder.lua"))()
+    end,
+})
+
 local ToolsTab = Window:CreateTab("Tools", nil)
 
 local ToolsSection1 = ToolsTab:CreateSection("Rendering")
