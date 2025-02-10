@@ -126,7 +126,7 @@ local defaultConfig = {
 
         afterTime = {
             enabled = false,
-            hour = 8,
+            hour = 0,
             minute = 0,
         },
 
