@@ -213,7 +213,7 @@ creategui = function()
 
     local JobId = Instance.new("TextButton")
     JobId.Name = "JobId"
-    JobId.Size = UDim2.new(0.25, 0, 0.3, 0)
+    JobId.Size = UDim2.new(0.28, 0, 0.3, 0)
     JobId.Position = UDim2.new(0.61, 0, 0.16, 0)
     JobId.BackgroundColor3 = Color3.new(0.11, 0.81, 0.15)
     JobId.Text = "Copy JobId"
