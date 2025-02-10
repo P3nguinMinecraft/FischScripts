@@ -885,11 +885,11 @@ end)
 task.wait(2)
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
-if not string.match(config.versid, data.updversid) then
+if not string.match(config.versid, data.versid) then
     notifygui("Your config is outdated!")
     notifygui("Your version: " .. config.version)
-    notifygui("Current version: " .. data.updversion)
-    notifygui(data.updmsg)
+    notifygui("Current version: " .. data.version)
+    notifygui(data.msg)
     loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-config.lua"))()
 end
 
