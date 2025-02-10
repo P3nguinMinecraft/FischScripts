@@ -1,6 +1,6 @@
-local version = "2.0"
-local versid = "uhbgNaL4Vn5uuvHW"
-local msg = "NEW CONFIG/GUI!"
+local data_version = "2.0"
+local data_versid = "uhbgNaL4Vn5uuvHW"
+local msg = "Config changes!"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -39,25 +39,17 @@ local sunkenchestcoords = {
 
 local defaultConfig = {
     autoscan = true,
+    autohop = false,
 
     autowebhook = false,
     webhookUrl = "https://discord.com/api/webhooks/#/#",
 
     filename = "servers",
 
-    autohop = false,
-
     infoList = {
         autouptime = false,
         autoversion = false,
         autoplaceversion = false,
-    },
-
-    eventList = {
-        {name = "Night of the Fireflies",   enabled = false},
-        {name = "Night of the Luminous",    enabled = false},
-        {name = "Shiny Surge",              enabled = false},
-        {name = "Mutation Surge",           enabled = false},
     },
 
     weatherList = {
@@ -69,9 +61,11 @@ local defaultConfig = {
         {name = "Aurora Borealis",          enabled = true},
     },
 
-    cycleList = {
-        {name = "Day",                      enabled = false},
-        {name = "Night",                    enabled = false},
+    eventList = {
+        {name = "Night of the Fireflies",   enabled = false},
+        {name = "Night of the Luminous",    enabled = false},
+        {name = "Shiny Surge",              enabled = false},
+        {name = "Mutation Surge",           enabled = false},
     },
 
     seasonList = {
@@ -79,6 +73,42 @@ local defaultConfig = {
         {name = "Summer",                   enabled = false},
         {name = "Fall",                     enabled = false},
         {name = "Winter",                   enabled = false},
+    },
+
+    cycleList = {
+        {name = "Day",                      enabled = false},
+        {name = "Night",                    enabled = false},
+    },
+
+    luckList = {
+        enabled = true,
+        min = 8,
+    },
+
+    versionList = {
+        enabled = false,
+        version = "x.x",
+    },
+
+    placeVersionList = {
+        enabled = false,
+        version = 1234,
+    },
+    
+    uptimeList = {
+        beforeTime = {
+            enabled = false,
+            hour = 0,
+            minute = 0,
+        },
+
+        afterTime = {
+            enabled = false,
+            hour = 0,
+            minute = 0,
+        },
+
+        orLogic = true,
     },
 
     zoneList = {
@@ -93,11 +123,6 @@ local defaultConfig = {
         {name = "Ancient Orcas Pool",       enabled = true},
         {name = "Lovestorm Eel",            enabled = true},
         {name = "Lovestorm Eel Supercharged", enabled = true},
-    },
-
-    luckList = {
-        enabled = true,
-        min = 8,
     },
 
     meteorList = {
@@ -117,34 +142,17 @@ local defaultConfig = {
         forcehop = false,
     },
 
-    uptimeList = {
-        beforeTime = {
-            enabled = false,
-            hour = 0,
-            minute = 0,
-        },
-
-        afterTime = {
-            enabled = false,
-            hour = 0,
-            minute = 0,
-        },
-
-        orLogic = true,
-    },
-
-    versionList = {
-        enabled = false,
-        version = "x.x",
-    },
-
-    placeVersionList = {
-        enabled = false,
-        version = 1234,
-    },
-
-    version = "1.4.1",
-    versid = "NzD95YZ9eegJEElp",
+    version = data_version,
+    versid = data_versid,
 }
 
-return version, versid, msg, link, sunkenchestcoords, defaultConfig
+local data = {
+    version = data_version,
+    versid = data_versid,
+    msg = msg,
+    link = link,
+    sunkenchestcoords = sunkenchestcoords,
+    defaultConfig = defaultConfig,
+}
+
+return data

@@ -6,8 +6,9 @@
 ## FischServerFinder
 Automatically server hops to find specific servers with desirable events (bonus: AutoSunkenChest with autofarm/claim and server hopping)
 ### Usage
-#### COPY THE [ENTIRE SOURCE CODE](https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder.lua) so you can change the config as needed
-https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/fischserverfinder
+```lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fischserverfinder.lua"))()
+```
 #### Place inside autoexecute!
 #### Caches server JobIds in servers.json incase API denies requests
 
