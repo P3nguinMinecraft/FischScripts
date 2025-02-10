@@ -602,12 +602,14 @@ local EventsToggle1 = EventsTab:CreateToggle({
     Flag = "EventsToggle1",
     Callback = function(Value)
         if not Value then
-            config.sunkenchestList.autofarm = false
             config.sunkenchestList.alertonload = false
+            config.sunkenchestList.hopafterclaim = false
+            config.sunkenchestList.autofarm = false
             config.sunkenchestList.forcehop = false
+            checkSunkenChest()
         end
         config.sunkenchestList.enabled = Value
-        checkSunkenChest()
+        saveConfig()
     end,
 })
 
@@ -630,8 +632,8 @@ local EventsSlider1 = EventsTab:CreateSlider({
             })
         else
             config.sunkenchestList.bufferbefore = Value
+            saveConfig()
         end
-        checkSunkenChest()
     end,
 })
 
@@ -658,8 +660,8 @@ local EventsToggle2 = EventsTab:CreateToggle({
             })
         else
             config.sunkenchestList.alertonload = Value
+            saveConfig()
         end
-        checkSunkenChest()
     end,
 })
 
@@ -679,8 +681,8 @@ local EventsToggle3 = EventsTab:CreateToggle({
             })
         else
             config.sunkenchestList.hopafterclaim = Value
+            saveConfig()
         end
-        checkSunkenChest()
     end,
 })
 
@@ -700,8 +702,8 @@ local EventsToggle4 = EventsTab:CreateToggle({
             })
         else
             config.sunkenchestList.autofarm = Value
+            saveConfig()
         end
-        checkSunkenChest()
     end,
 })
 
@@ -721,34 +723,16 @@ local EventsToggle5 = EventsTab:CreateToggle({
             })
         else
             config.sunkenchestList.forcehop = Value
+            saveConfig()
         end
-        checkSunkenChest()
     end,
 })
 
 checkSunkenChest = function()
-    if not config.sunkenchestList.enabled then
-        config.sunkenchestList.alertonload = false
-        config.sunkenchestList.autofarm = false
-        config.sunkenchestList.hopafterclaim = false
-    end
-    
-    if config.sunkenchestList.autofarm then
-       config.sunkenchestList.bufferbefore = 0
-       config.sunkenchestList.alertonload = true
-    end
-    
-    if not config.autofarm then
-        config.sunkenchestList.forcehop = false
-    end
-
-    EventsSlider1:Set(config.sunkenchestList.bufferbefore)
     EventsToggle2:Set(config.sunkenchestList.alertonload)
     EventsToggle3:Set(config.sunkenchestList.hopafterclaim)
     EventsToggle4:Set(config.sunkenchestList.autofarm)
     EventsToggle5:Set(config.sunkenchestList.forcehop)
-
-    saveConfig()
 end
 
 config.version = data.version
