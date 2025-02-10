@@ -177,10 +177,10 @@ local ScriptParagraph5 = ScriptTab:CreateParagraph({Title = "Auto Uptime", Conte
 
 local ScriptToggle4 = ScriptTab:CreateToggle({
     Name = "Auto Uptime",
-    CurrentValue = config.autouptime,
+    CurrentValue = config.infoList.autouptime,
     Flag = "ScriptToggle4",
     Callback = function(Value)
-        config.autouptime = Value
+        config.infoList.autouptime = Value
         saveConfig()
     end,
 })
@@ -191,10 +191,10 @@ local ScriptParagraph6 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Cont
 
 local ScriptToggle5 = ScriptTab:CreateToggle({
     Name = "Auto Version",
-    CurrentValue = config.autoversion,
+    CurrentValue = config.infoList.autoversion,
     Flag = "ScriptToggle5",
     Callback = function(Value)
-        config.autoversion = Value
+        config.infoList.autoversion = Value
         saveConfig()
     end,
 })
@@ -205,10 +205,10 @@ local ScriptParagraph7 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Cont
 
 local ScriptToggle6 = ScriptTab:CreateToggle({
     Name = "Auto PlaceVersion",
-    CurrentValue = config.autoplaceversion,
+    CurrentValue = config.infoList.autoplaceversion,
     Flag = "ScriptToggle6",
     Callback = function(Value)
-        config.autoplaceversion = Value
+        config.infoList.autoplaceversion = Value
         saveConfig()
     end,
 })
