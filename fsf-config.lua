@@ -629,7 +629,7 @@ local EventsSlider1 = EventsTab:CreateSlider({
                 Duration = 5,
                 Image = nil,
             })
-            sunkenSet(0, 0)
+            sunkenSet(1, 0)
         else
             config.sunkenchestList.bufferbefore = Value
             saveConfig()
