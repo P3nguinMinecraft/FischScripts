@@ -83,6 +83,13 @@ local HomeLabel1 = HomeTab:CreateLabel("Config GUI for FischServerFinder")
 
 local HomeLabel2 = HomeTab:CreateLabel("Explore the various Tabs to change configs!")
 
+local HomeButton1 = HomeTab:CreateButton({
+    Name = "Close GUI (Destroy)",
+    Callback = function()
+        Rayfield:Destroy()
+    end,
+})
+
 local ScriptTab = Window:CreateTab("Script Config", nil)
 
 local ScriptParagraph1 = ScriptTab:CreateParagraph({Title = "Auto Scan", Content = "Automatically scans the server for desired features on join"})
