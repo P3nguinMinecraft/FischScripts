@@ -1,4 +1,4 @@
-print("[FSF-C] Loading Config GUI")
+print("[FSF-G] Loading GUI")
 
 getgenv().SecureMode = true
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
@@ -49,7 +49,7 @@ end
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
     Icon = 0,
-    LoadingTitle = "FischServerFinder Config GUI",
+    LoadingTitle = "FischServerFinder GUI",
     LoadingSubtitle = "by Penguin",
     Theme = "Default",
  
@@ -82,7 +82,7 @@ local Window = Rayfield:CreateWindow({
 
 local HomeTab = Window:CreateTab("Home", nil)
 
-local HomeLabel1 = HomeTab:CreateLabel("Config GUI for FischServerFinder")
+local HomeLabel1 = HomeTab:CreateLabel("GUI for FischServerFinder")
 
 local HomeLabel2 = HomeTab:CreateLabel("Explore the various Tabs to change configs!")
 
@@ -92,6 +92,103 @@ local HomeButton1 = HomeTab:CreateButton({
         Rayfield:Destroy()
     end,
 })
+
+local ToolsTab = Window:CreateTab("Tools", nil)
+
+local ToolsSection1 = ToolsTab:CreateSection("Rendering")
+
+local ToolsButton1 = ToolsTab:CreateButton({
+    Name = "Remove Fog (Permanent)",
+    Callback = function()
+        local Sky = game:GetService("Lighting"):FindFirstChild("Sky")
+        if Sky then Sky:Destroy() end
+    end,
+})
+
+local disablewater
+local function disablewaterfunc()
+    local blur = game:GetService("Lighting"):FindFirstChild("underwaterbl")
+    local constrast =  game:GetService("Lighting"):FindFirstChild("underwatercc")
+    blur.Enabled = false
+    constrast.Enabled = false
+end
+
+local ToolsDivider1 = ToolsTab:CreateDivider()
+
+local ToolsToggle1 = ToolsTab:CreateToggle({
+    Name = "Disable Water Fog",
+    CurrentValue = false,
+    Flag = "ToolsToggle1",
+    Callback = function(Value)
+        if Value then
+            disablewater = game:GetService("RunService").RenderStepped:Connect(disablewaterfunc)
+        else
+            disablewater:Disconnect()
+        end
+    end,
+})
+
+local ToolsDivider2 = ToolsTab:CreateDivider()
+
+local fullbright
+
+local function fullbrightfunc()
+    local Lighting = game:GetService("Lighting")
+    Lighting.Brightness = 2
+    Lighting.ClockTime = 14
+    Lighting.FogEnd = 100000
+    Lighting.GlobalShadows = false
+    Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+    Lighting.location.Brightness = 0
+end
+
+local ToolsToggle2 = ToolsTab:CreateToggle({
+    Name = "Fullbright",
+    CurrentValue = false,
+    Flag = "ToolsToggle2",
+    Callback = function(Value)
+        if Value then
+            fullbright = game:GetService("RunService").RenderStepped:Connect(fullbrightfunc)
+        else
+            fullbright:Disconnect()
+        end
+    end
+})
+
+local ToolsDivider3 = ToolsTab:CreateDivider()
+
+local orcaTP = false
+local stopOrca
+
+local ToolsToggle3 = ToolsTab:CreateToggle({
+    Name = "Loop TP to Orca",
+    CurrentValue = false,
+    Flag = "ToolsToggle3",
+    Callback = function(Value)
+        orcaTP = Value
+        if not Value then return end
+        local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
+        while orcaTP do
+            local pool = fishing:FindFirstChild("Ancient Orcas Pool") or fishing:FindFirstChild("Orcas Pool")
+            if pool then
+                local orca = pool.Orcas:GetChildren()[3].Orca.PrimaryPart
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(orca.Position + Vector3.new(0, -5, 0))
+            else
+                Rayfield:Notify({
+                    Title = "Loop TP to Orca",
+                    Content = "No Orca Found!",
+                    Duration = 5,
+                    Image = nil,
+                })
+                stopOrca()
+            end
+        end
+    end,
+})
+
+stopOrca = function()
+    ToolsToggle3:Set(false)
+end
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 
@@ -748,4 +845,4 @@ config.versid = data.versid
 
 saveConfig()
 
-print("[FSF-C] Loaded!")
+print("[FSF-G] Loaded!")

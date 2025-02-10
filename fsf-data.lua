@@ -1,6 +1,6 @@
-local data_version = "2.0"
+local data_version = "2.0.1"
 local data_versid = "uhbgNaL4Vn5uvsHW"
-local msg = "Config changes!"
+local msg = "Features in GUI"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
