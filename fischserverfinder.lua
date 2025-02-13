@@ -34,7 +34,9 @@ loadConfig = function()
         end
         writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
         notifygui("Welcome to FSF! Change config as needed")
-        task.spawn(loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))())
+        task.spawn(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
+        end)
     end
 
     if not string.match(config.versid, data.versid) then
@@ -66,7 +68,9 @@ loadConfig = function()
         if data.settingchanged then
             notifygui("Settings have changed!")
             notifygui(data.settingmsg)
-            task.spawn(loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))())
+            task.spawn(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
+            end)
         end
     end
 end
