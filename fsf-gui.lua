@@ -41,6 +41,8 @@ end
 
 local function mergeConfig()
     config = updateTable(data.defaultConfig, config)
+    config.version = data.version
+    config.versid = data.versid
     saveConfig()
 end
 

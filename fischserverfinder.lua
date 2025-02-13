@@ -34,7 +34,7 @@ loadConfig = function()
         end
         writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
         notifygui("Welcome to FSF! Change config as needed")
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
+        task.spawn(loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))())
     end
 
     if not string.match(config.versid, data.versid) then
@@ -55,6 +55,8 @@ loadConfig = function()
         end
         local function mergeConfig()
             config = updateTable(data.defaultConfig, config)
+            config.version = data.version
+            config.versid = data.versid
             local encode = game:GetService("HttpService"):JSONEncode(config)
             writefile("FischServerFinder/config.json", encode)
         end
@@ -64,12 +66,10 @@ loadConfig = function()
         if data.settingchanged then
             notifygui("Settings have changed!")
             notifygui(data.settingmsg)
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
+            task.spawn(loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))())
         end
     end
 end
-
-loadConfig()
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
@@ -957,6 +957,8 @@ end)
 
 task.wait(2)
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
+
+loadConfig()
 
 if config.autowebhook then
     sendwebhook()

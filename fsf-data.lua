@@ -1,8 +1,8 @@
 local data_version = "2.1"
 local data_versid = "r0yiIGZ1KlieTNey"
 local updmsg = "Features in GUI"
+local settingchanged = false
 local settingmsg = ""
-local settingchanged = true
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -152,8 +152,8 @@ local data = {
     version = data_version,
     versid = data_versid,
     updmsg = updmsg,
-    settingmsg = settingmsg,
     settingchanged = settingchanged,
+    settingmsg = settingmsg,
     link = link,
     sunkenchestcoords = sunkenchestcoords,
     defaultConfig = defaultConfig,
