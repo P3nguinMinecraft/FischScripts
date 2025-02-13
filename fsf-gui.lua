@@ -47,7 +47,7 @@ local function mergeConfig()
 end
 
 local function dropdownconvert(list, options)
-    for name, _ in ipairs(list) do
+    for name, _ in pairs(list) do
         local enabled = false
         for optionName, optionValue in ipairs(options) do
             if optionName == name and optionValue then
@@ -64,7 +64,7 @@ local function dropdownsetup(list, dropdown)
     local allThing = {}
     local selectedThing = {}
 
-    for name, enabled in ipairs(list) do
+    for name, enabled in pairs(list) do
         table.insert(allThing, name)
         if enabled then
             table.insert(selectedThing, name)

@@ -808,7 +808,7 @@ scanWorld = function()
     local meteor = game:GetService("Workspace"):WaitForChild("MeteorItems")
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
-    for name, enabled in ipairs(config.weatherList) do
+    for name, enabled in pairs(config.weatherList) do
         if name == weather.Value then
             table.insert(events, {text = "Weather: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
         end
@@ -817,13 +817,13 @@ scanWorld = function()
         end
     end
 
-    for name, enabled in ipairs(config.cycleList) do
+    for name, enabled in pairs(config.cycleList) do
         if name == cycle.Value then
             table.insert(events, {text = "Cycle: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
         end
     end
 
-    for name, enabled in ipairs(config.seasonList) do
+    for name, enabled in pairs(config.seasonList) do
         if name == season.Value then
             table.insert(events, {text = "Season: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
         end
@@ -831,7 +831,7 @@ scanWorld = function()
 
     table.insert(events, {text = "## Events: ", r = 255, g = 255, b = 255, enabled = false})
 
-    for name, enabled in ipairs(config.eventList) do
+    for name, enabled in pairs(config.eventList) do
         if name == event.Value then
             table.insert(events, {text = name, r = 255, g = 255, b = 255, enabled = enabled})
         end
@@ -845,14 +845,14 @@ scanWorld = function()
     local meteoritems = meteor:GetChildren()
     if #meteoritems > 0 then
         local item = meteoritems[1]
-        for name, enabled in ipairs(config.meteorList) do
+        for name, enabled in pairs(config.meteorList) do
             if name == item.Name then
                 table.insert(events, {text = "Meteor: " .. name, r = 236, g = 103, b = 44, enabled = enabled})
             end
         end
     end
 
-    for name, enabled in ipairs(config.zoneList) do
+    for name, enabled in pairs(config.zoneList) do
         if zones:FindFirstChild(name) then
             local count = 0
             for _, zone in pairs(zones:GetChildren()) do
