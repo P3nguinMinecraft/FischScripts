@@ -3,12 +3,13 @@
 
 repeat task.wait(0.1) until game:IsLoaded()
 
-local loadConfig, parseuptime, formattime, tp, teleport, creategui, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 local config
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
-local scriptvers = "2.0.1"
+local scriptvers = "2.0.2"
 local checkteleporting = false
 local loadedmsg = false
+local chestfound = false
 local desiredserver = false
 local scheduledhop = false
 local chesttpscancount = 0
@@ -508,7 +509,7 @@ potentialsunkenchest = function()
         scanchest()
     end)
 
-    if config.sunkenchestList.autofarm then
+    if config.sunkenchestList.autofarm and not chestfound then
         notifygui("Autofarm Sunken Chest!", 255, 210, 0)
         task.wait(3)
         if checkteleporting then return end
@@ -557,6 +558,13 @@ scanchest = function()
 end
 
 loadedsunkenchest = function(object)
+    if not chestfound then
+        task.spawn(function()
+            chestfound = true
+            task.wait(600)
+            chestfound = false
+        end)
+    end
     if loadedmsg then return end
     loadedmsg = true
     checkteleporting = false
@@ -646,7 +654,7 @@ claimsunkenchest = function()
         else
             root = chest:FindFirstChild("RootPart")
         end
-        
+
         if root then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(root.Position + Vector3.new(0, 6.6, 0))
             task.wait(0.3)
