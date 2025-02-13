@@ -1,7 +1,7 @@
 local on = true
 ----------------
 
-repeat task.wait(1) until game:IsLoaded()
+if not game:IsLoaded() then game.Loaded:Wait() end
 
 local givequest, completequest, getfish, getitem, equipfish, findfishreq, toggleautoquest
 

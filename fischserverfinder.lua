@@ -1,7 +1,7 @@
 -- FischServerFinder by Penguin!
 -- https://discord.gg/fWncS2vFx
 
-repeat task.wait(0.1) until game:IsLoaded()
+if not game:IsLoaded() then game.Loaded:Wait() end
 
 local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 local config
