@@ -109,7 +109,7 @@ teleport = function()
         local Decode = HttpService:JSONDecode(Raw)
 
         if Decode.errors then
-            if not writefile or isfile(serversfilename) then
+            if not isfile(serversfilename) then
                 return nil
             else
                 return readfile(serversfilename)
