@@ -1,6 +1,8 @@
-local data_version = "2.0.2"
+local data_version = "2.1"
 local data_versid = "uhbgNaL4Vn5uvsHW"
-local msg = "Features in GUI"
+local updmsg = "Features in GUI"
+local settingmsg = ""
+local settingchanged = true
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -53,31 +55,31 @@ local defaultConfig = {
     },
 
     weatherList = {
-        {name = "Clear",                    enabled = false},
-        {name = "Foggy",                    enabled = false},
-        {name = "Windy",                    enabled = false},
-        {name = "Rain",                     enabled = false},
-        {name = "Eclipse",                  enabled = false},
-        {name = "Aurora Borealis",          enabled = true},
+        ["Clear"] = false,
+        ["Foggy"] = false,
+        ["Windy"] = false,
+        ["Rain"] = false,
+        ["Eclipse"] = false,
+        ["Aurora Borealis"] = true,
     },
 
     eventList = {
-        {name = "Night of the Fireflies",   enabled = false},
-        {name = "Night of the Luminous",    enabled = false},
-        {name = "Shiny Surge",              enabled = false},
-        {name = "Mutation Surge",           enabled = false},
+        ["Night of the Fireflies"] = false,
+        ["Night of the Luminous"] = false,
+        ["Shiny Surge"] = false,
+        ["Mutation Surge"] = false,
     },
 
     seasonList = {
-        {name = "Spring",                   enabled = false},
-        {name = "Summer",                   enabled = false},
-        {name = "Fall",                     enabled = false},
-        {name = "Winter",                   enabled = false},
+        ["Spring"] = false,
+        ["Summer"] = false,
+        ["Fall"] = false,
+        ["Winter"] = false,
     },
 
     cycleList = {
-        {name = "Day",                      enabled = false},
-        {name = "Night",                    enabled = false},
+        ["Day"] = false,
+        ["Night"] = false,
     },
 
     luckList = {
@@ -112,25 +114,25 @@ local defaultConfig = {
     },
 
     zoneList = {
-        {name = "Megalodon Default",        enabled = true},
-        {name = "Megalodon Ancient",        enabled = true},
-        {name = "Great White Shark",        enabled = false},
-        {name = "Great Hammerhead Shark",   enabled = false},
-        {name = "Whale Shark",              enabled = false},
-        {name = "The Kraken Pool",          enabled = true},
-        {name = "Ancient Kraken Pool",      enabled = true},
-        {name = "Orcas Pool",               enabled = true},
-        {name = "Ancient Orcas Pool",       enabled = true},
-        {name = "Lovestorm Eel",            enabled = true},
-        {name = "Lovestorm Eel Supercharged", enabled = true},
+        ["Megalodon Default"] = true,
+        ["Megalodon Ancient"] = true,
+        ["Great White Shark"] = false,
+        ["Great Hammerhead Shark"] = false,
+        ["Whale Shark"] = false,
+        ["The Kraken Pool"] = true,
+        ["Ancient Kraken Pool"] = true,
+        ["Orcas Pool"] = true,
+        ["Ancient Orcas Pool"] = true,
+        ["Lovestorm Eel"] = true,
+        ["Lovestorm Eel Supercharged"] = true,
     },
 
     meteorList = {
-        {name = "Amethyst",                 enabled = false},
-        {name = "Ruby",                     enabled = false},
-        {name = "Opal",                     enabled = false},
-        {name = "Lapis Lazuli",             enabled = false},
-        {name = "Moonstone",                enabled = true},
+        ["Amethyst"] = false,
+        ["Ruby"] = false,
+        ["Opal"] = false,
+        ["Lapis Lazuli"] = false,
+        ["Moonstone"] = true,
     },
 
     sunkenchestList = {
@@ -149,7 +151,9 @@ local defaultConfig = {
 local data = {
     version = data_version,
     versid = data_versid,
-    msg = msg,
+    updmsg = updmsg,
+    settingmsg = settingmsg,
+    settingchanged = settingchanged,
     link = link,
     sunkenchestcoords = sunkenchestcoords,
     defaultConfig = defaultConfig,

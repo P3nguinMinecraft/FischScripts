@@ -6,7 +6,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 local config
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
-local scriptvers = "2.0.2"
+local scriptvers = "2.1"
 local checkteleporting = false
 local loadedmsg = false
 local chestfound = false
@@ -17,8 +17,6 @@ local autofarmchestpotential = false
 local autofarmchestclaimed = false
 local camera = game.Workspace.CurrentCamera
 
-repeat task.wait(0.5) until game:IsLoaded()
-
 if not game.PlaceId == 16732694052 then
     print("[FSF] You are not in Fisch!")
     return
@@ -27,21 +25,55 @@ end
 print("[FSF] Loading")
 
 loadConfig = function()
-    if not isfile("FischServerFinder/config.json") then
+    config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json")) or data.defaultConfig
+    if not writefile then return end
+
+    if not isfile("FischServerFinder/config.json") and writefile then
         if not isfolder("FischServerFinder") then
             makefolder("FischServerFinder")
         end
         writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
+        notifygui("Welcome to FSF! Change config as needed")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
     end
-    config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
+
+    if not string.match(config.versid, data.versid) then
+        local function updateTable(default, previous)
+            local updated = {}
+
+            for key, value in pairs(default) do
+                if type(value) == "table" and type(previous[key]) == "table" then
+                    updated[key] = updateTable(value, previous[key])
+                elseif previous[key] ~= nil then
+                    updated[key] = previous[key]
+                else
+                    updated[key] = value
+                end
+            end
+
+            return updated
+        end
+        local function mergeConfig()
+            config = updateTable(data.defaultConfig, config)
+            local encode = game:GetService("HttpService"):JSONEncode(config)
+            writefile("FischServerFinder/config.json", encode)
+        end
+        notifygui("Script updated from " .. config.version .. " to " .. data.version)
+        notifygui(data.updmsg)
+        mergeConfig()
+        if data.settingchanged then
+            notifygui("Settings have changed!")
+            notifygui(data.settingmsg)
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
+        end
+    end
 end
 
 loadConfig()
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
-local filename = "FischServerFinder/" .. config.filename.. ".json"
+local serversfilename = "FischServerFinder/servers.json"
 
 parseuptime = function()
     local uptime = game:GetService("ReplicatedStorage").world.uptime.Value
@@ -73,21 +105,23 @@ teleport = function()
         local Decode = HttpService:JSONDecode(Raw)
 
         if Decode.errors then
-            notifygui("API Overload", 255, 255, 255)
-            if not isfile(filename) then
+            if not writefile or isfile(serversfilename) then
                 return nil
+            else
+                return readfile(serversfilename)
             end
-            return readfile(filename)
         else
-            writefile(filename, Raw)
+            if writefile then
+                writefile(serversfilename, Raw)
+            end
             return Raw
         end
     end
 
     local function RemoveServer(serverId)
-        if not isfile(filename) then return end
+        if not isfile(serversfilename) then return end
 
-        local Servers = HttpService:JSONDecode(readfile(filename))
+        local Servers = HttpService:JSONDecode(readfile(serversfilename))
         local NewData = {}
         for _, server in ipairs(Servers.data) do
             if server.id ~= serverId then
@@ -95,7 +129,7 @@ teleport = function()
             end
         end
         Servers.data = NewData
-        writefile(filename, HttpService:JSONEncode(Servers))
+        writefile(serversfilename, HttpService:JSONEncode(Servers))
     end
 
     notifygui("Teleporting", 22, 209, 242)
@@ -108,7 +142,7 @@ teleport = function()
             Server = Servers.data[math.random(1, #Servers.data)]
             Next = Servers.nextPageCursor
         else
-            notifygui("No available servers.", 242, 44, 22)
+            notifygui("No available servers!", 242, 44, 22)
             return
         end
     end
@@ -341,6 +375,9 @@ creategui = function()
 
     OpenGUI.MouseButton1Click:Connect(function()
         notifygui("Opening GUI", 255, 56, 172)
+        if not writefile then
+            notifygui("You cannot change configs because your executor does not support files!")
+        end
         loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
     end)
 
@@ -630,7 +667,7 @@ loadedsunkenchest = function(object)
     end)
 
     task.wait(0.5)
-    loadedmsg = false
+    loaded = false
 
     if config.sunkenchestList.autofarm and not autofarmchestclaimed then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
@@ -767,32 +804,32 @@ scanWorld = function()
     local meteor = game:GetService("Workspace"):WaitForChild("MeteorItems")
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
-    for _, weatherData in ipairs(config.weatherList) do
-        if  weatherData.name == weather.Value then
-            table.insert(events, {text = "Weather: " .. weatherData.name, r = 255, g = 255, b = 255, enabled = weatherData.enabled})
+    for name, enabled in ipairs(config.weatherList) do
+        if name == weather.Value then
+            table.insert(events, {text = "Weather: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
         end
-        if weather.Value == "Aurora_Borealis" and weatherData.name == "Aurora Borealis" then
-            table.insert(events, {text = "Weather: Aurora Borealis", r = 160, g = 252, b = 180, enabled = weatherData.enabled})
-        end
-    end
-
-    for _, cycleData in ipairs(config.cycleList) do
-        if  cycleData.name == cycle.Value then
-            table.insert(events, {text = "Cycle: " .. cycleData.name, r = 255, g = 255, b = 255, enabled = cycleData.enabled})
+        if weather.Value == "Aurora_Borealis" and name == "Aurora Borealis" then
+            table.insert(events, {text = "Weather: Aurora Borealis", r = 160, g = 252, b = 180, enabled = enabled})
         end
     end
 
-    for _, seasonData in ipairs(config.seasonList) do
-        if  seasonData.name == season.Value then
-            table.insert(events, {text = "Season: " .. seasonData.name, r = 255, g = 255, b = 255, enabled = seasonData.enabled})
+    for name, enabled in ipairs(config.cycleList) do
+        if name == cycle.Value then
+            table.insert(events, {text = "Cycle: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
+        end
+    end
+
+    for name, enabled in ipairs(config.seasonList) do
+        if name == season.Value then
+            table.insert(events, {text = "Season: " .. name, r = 255, g = 255, b = 255, enabled = enabled})
         end
     end
 
     table.insert(events, {text = "## Events: ", r = 255, g = 255, b = 255, enabled = false})
 
-    for _, eventData in ipairs(config.eventList) do
-        if eventData.name == event.Value then
-            table.insert(events, {text = eventData.name, r = 255, g = 255, b = 255, enabled = eventData.enabled})
+    for name, enabled in ipairs(config.eventList) do
+        if name == event.Value then
+            table.insert(events, {text = name, r = 255, g = 255, b = 255, enabled = enabled})
         end
     end
 
@@ -804,24 +841,24 @@ scanWorld = function()
     local meteoritems = meteor:GetChildren()
     if #meteoritems > 0 then
         local item = meteoritems[1]
-        for _, meteorData in ipairs(config.meteorList) do
-            if meteorData.name == item.Name then
-                table.insert(events, {text = "Meteor: " .. item.Name, r = 236, g = 103, b = 44, enabled = meteorData.enabled})
+        for name, enabled in ipairs(config.meteorList) do
+            if name == item.Name then
+                table.insert(events, {text = "Meteor: " .. name, r = 236, g = 103, b = 44, enabled = enabled})
             end
         end
     end
 
-    for _, zoneData in ipairs(config.zoneList) do
-        if zones:FindFirstChild(zoneData.name) then
+    for name, enabled in ipairs(config.zoneList) do
+        if zones:FindFirstChild(name) then
             local count = 0
             for _, zone in pairs(zones:GetChildren()) do
-                if zone.Name == zoneData.name then
+                if zone.Name == name then
                     count = count + 1
                 end
             end
 
             if count > 0 then
-                local str = zoneData.name
+                local str = name
                 if count > 1 then
                     str = tostring(count) .. "X " .. str
                 end
@@ -829,7 +866,7 @@ scanWorld = function()
                 if string.find(str, "Megalodon") then
                     r, g, b = 234, 51, 35
                 end
-                table.insert(events, {text = str, r = r, g = g, b = b, enabled = zoneData.enabled})
+                table.insert(events, {text = str, r = r, g = g, b = b, enabled = enabled})
             end
         end
     end
@@ -920,14 +957,6 @@ end)
 
 task.wait(2)
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
-
-if not string.match(config.versid, data.versid) then
-    notifygui("Your config is outdated!")
-    notifygui("Your version: " .. config.version)
-    notifygui("Current version: " .. data.version)
-    notifygui(data.msg)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
-end
 
 if config.autowebhook then
     sendwebhook()

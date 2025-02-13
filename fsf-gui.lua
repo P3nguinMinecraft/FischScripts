@@ -1,47 +1,71 @@
-print("[FSF-G] Loading GUI")
-
 if not game:IsLoaded() then game.Loaded:Wait() end
+
+if not writefile then print("You cannot change configs because your executor does not support files!") end
+
+print("[FSF-G] Loading GUI")
 
 getgenv().SecureMode = true
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 
-if not isfile("FischServerFinder/config.json") then
+if not isfile("FischServerFinder/config.json") and writefile then
     if not isfolder("FischServerFinder") then
         makefolder("FischServerFinder")
     end
     writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
 end
-local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
+local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json")) or data.defaultConfig
 
 local function saveConfig()
+    if not writefile then return end
     local encode = game:GetService("HttpService"):JSONEncode(config)
     writefile("FischServerFinder/config.json", encode)
 end
 
-local function dropdownconvert(list, options)
-    for _, thing in ipairs(list) do
-        thing.enabled = false
+local function updateTable(default, previous)
+    local updated = {}
+
+    for key, value in pairs(default) do
+        if type(value) == "table" and type(previous[key]) == "table" then
+            updated[key] = updateTable(value, previous[key])
+        elseif previous[key] ~= nil then
+            updated[key] = previous[key]
+        else
+            updated[key] = value
+        end
     end
-    for _, option in ipairs(options) do
-        for __, thing in ipairs(list) do
-            if option == thing.name then
-                thing.enabled = true
+
+    return updated
+end
+
+local function mergeConfig()
+    config = updateTable(data.defaultConfig, config)
+    saveConfig()
+end
+
+local function dropdownconvert(list, options)
+    for name, _ in ipairs(list) do
+        local enabled = false
+        for optionName, optionValue in ipairs(options) do
+            if optionName == name and optionValue then
+                enabled = true
+                break
             end
         end
+        name = enabled
     end
     saveConfig()
 end
-    
+
 local function dropdownsetup(list, dropdown)
     local allThing = {}
     local selectedThing = {}
-    
-    for _, thing in ipairs(list) do
-        table.insert(allThing, thing.name)
-        if thing.enabled then
-            table.insert(selectedThing, thing.name)
+
+    for name, enabled in ipairs(list) do
+        table.insert(allThing, name)
+        if enabled then
+            table.insert(selectedThing, name)
         end
     end
     dropdown:Refresh(allThing)
@@ -87,6 +111,8 @@ local HomeTab = Window:CreateTab("Home", nil)
 local HomeLabel1 = HomeTab:CreateLabel("GUI for FischServerFinder")
 
 local HomeLabel2 = HomeTab:CreateLabel("Explore the various Tabs to change configs!")
+
+if not writefile then HomeLabel2:Set("You cannot change configs because your executor does not support files!") end
 
 local HomeButton1 = HomeTab:CreateButton({
     Name = "Close GUI (Destroy)",
@@ -255,38 +281,6 @@ local ScriptInput1 = ScriptTab:CreateInput({
 
 local ScriptDivider3 = ScriptTab:CreateDivider()
 
-local ScriptParagraph4 = ScriptTab:CreateParagraph({Title = "Servers Filename", Content = "The script caches servers to serverhop to if the Roblox API is down. The name of file is [FischServerFinder > '{filename}.json']"})
-
-local resetFilename
-
-local ScriptInput2 = ScriptTab:CreateInput({
-    Name = "Servers Filename",
-    CurrentValue = config.filename,
-    PlaceholderText = "{filename}.json",
-    RemoveTextAfterFocusLost = false,
-    Flag = "ScriptInput2",
-    Callback = function(Text)
-        if not Text == "" then
-            config.filename = Text
-            saveConfig()
-        else
-            Rayfield:Notify({
-                Title = "Servers Filename",
-                Content = "The name cannot be blank!",
-                Duration = 5,
-                Image = nil,
-            })
-            resetFilename()
-        end
-    end,
-})
-
-resetFilename = function()
-    ScriptInput2:Set(config.filename)
-end
-
-local ScriptDivider4 = ScriptTab:CreateDivider()
-
 local ScriptSection1 = ScriptTab:CreateSection("Auto Display")
 
 local ScriptParagraph5 = ScriptTab:CreateParagraph({Title = "Auto Uptime", Content = "Automatically displays the server's uptime when you scan"})
@@ -301,7 +295,7 @@ local ScriptToggle4 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider5 = ScriptTab:CreateDivider()
+local ScriptDivider4 = ScriptTab:CreateDivider()
 
 local ScriptParagraph6 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Content = "Automatically displays the server's ingame Fisch version when you scan"})
 
@@ -315,7 +309,7 @@ local ScriptToggle5 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider6 = ScriptTab:CreateDivider()
+local ScriptDivider5 = ScriptTab:CreateDivider()
 
 local ScriptParagraph7 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Content = "Automatically displays the server's Roblox PlaceVersion when you scan"})
 
@@ -848,10 +842,6 @@ sunkenSet = function(thing, value)
     object:Set(value)
 end
 
-
-config.version = data.version
-config.versid = data.versid
-
-saveConfig()
+mergeConfig()
 
 print("[FSF-G] Loaded!")
