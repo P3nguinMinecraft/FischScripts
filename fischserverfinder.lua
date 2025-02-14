@@ -557,6 +557,11 @@ end
 local activeChestsFolder = game:GetService("Workspace").ActiveChestsFolder
 
 chesttpscan = function(delay)
+    if not issunkenchest() then
+        checkteleporting = false
+        notifygui("Chest Despawned!")
+        return
+    end
     checkteleporting = true
     for _, coords in ipairs(data.sunkenchestcoords) do
         tp(coords.x, coords.y - 20, coords.z)
