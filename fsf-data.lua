@@ -148,6 +148,21 @@ local defaultConfig = {
     versid = data_versid,
 }
 
+local ordered = {
+    weatherList = {"Clear", "Foggy", "Windy", "Rain", "Eclipse", "Aurora Borealis",},
+    eventList = {"Night of the Fireflies", "Night of the Luminous", "Shiny Surge", "Mutation Surge",},
+    seasonList = {"Spring", "Summer", "Fall", "Winter",},
+    cycleList = {"Day", "Night",},
+    zoneList = { 
+        "Megalodon Default", "Megalodon Ancient",
+        "Great White Shark", "Great Hammerhead Shark", "Whale Shark", 
+        "The Kraken Pool", "Ancient Kraken Pool",
+        "Orcas Pool", "Ancient Orcas Pool",
+        "Lovestorm Eel", "Lovestorm Eel Supercharged",
+    },
+    meteorList = { "Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone" }
+}
+
 local data = {
     version = data_version,
     versid = data_versid,
@@ -157,6 +172,7 @@ local data = {
     link = link,
     sunkenchestcoords = sunkenchestcoords,
     defaultConfig = defaultConfig,
+    ordered = ordered,
 }
 
 return data
