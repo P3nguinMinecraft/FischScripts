@@ -16,6 +16,7 @@ if not isfile("FischServerFinder/config.json") and writefile then
     writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
 end
 local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json")) or data.defaultConfig
+local ordered = data.ordered
 
 local function saveConfig()
     if not writefile then return end
@@ -46,7 +47,8 @@ local function mergeConfig()
     saveConfig()
 end
 
-local function dropdownconvert(list, options)
+local function dropdownconvert(listName, options)
+    local list = config[listName]
     for name, _ in pairs(list) do
         local enabled = false
         for optionName, optionValue in ipairs(options) do
@@ -60,16 +62,20 @@ local function dropdownconvert(list, options)
     saveConfig()
 end
 
-local function dropdownsetup(list, dropdown)
+local function dropdownsetup(listName, dropdown)
     local allThing = {}
     local selectedThing = {}
+    local list = config[listName]
+    local order = ordered[listName]
 
-    for name, enabled in pairs(list) do
+    for _, name in ipairs(order) do
+        local enabled = list[name]
         table.insert(allThing, name)
         if enabled then
             table.insert(selectedThing, name)
         end
     end
+
     dropdown:Refresh(allThing)
     dropdown:Set(selectedThing)
 end
@@ -336,11 +342,11 @@ local ServerDropdown1 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown1",
     Callback = function(Options)
-        dropdownconvert(config.weatherList, Options)
+        dropdownconvert("weatherList", Options)
     end,
 })
 
-dropdownsetup(config.weatherList, ServerDropdown1)
+dropdownsetup("weatherList", ServerDropdown1)
 
 local ServerDivider1 = ServerTab:CreateDivider()
 
@@ -353,11 +359,11 @@ local ServerDropdown2 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown2",
     Callback = function(Options)
-        dropdownconvert(config.eventList, Options)
+        dropdownconvert("eventList", Options)
     end,
 })
 
-dropdownsetup(config.eventList, ServerDropdown2)
+dropdownsetup("eventList", ServerDropdown2)
 
 local ServerDivider2 = ServerTab:CreateDivider()
 
@@ -370,11 +376,11 @@ local ServerDropdown3 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown3",
     Callback = function(Options)
-        dropdownconvert(config.seasonList, Options)
+        dropdownconvert("seasonList", Options)
     end,
 })
 
-dropdownsetup(config.seasonList, ServerDropdown3)
+dropdownsetup("seasonList", ServerDropdown3)
 
 local ServerDivider3 = ServerTab:CreateDivider()
 
@@ -387,11 +393,11 @@ local ServerDropdown4 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown4",
     Callback = function(Options)
-        dropdownconvert(config.cycleList, Options)
+        dropdownconvert("cycleList", Options)
     end,
 })
 
-dropdownsetup(config.cycleList, ServerDropdown4)
+dropdownsetup("cycleList", ServerDropdown4)
 
 local ServerDivider4 = ServerTab:CreateDivider()
 
@@ -671,11 +677,11 @@ local EventsDropdown1 = EventsTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "EventsDropdown1",
     Callback = function(Options)
-        dropdownconvert(config.zoneList, Options)
+        dropdownconvert("zoneList", Options)
     end,
 })
 
-dropdownsetup(config.zoneList, EventsDropdown1)
+dropdownsetup("zoneList", EventsDropdown1)
 
 local EventsParagraph2 = EventsTab:CreateParagraph({Title = "Meteor Items", Content = "Select the Meteor Items that are desired"})
 
@@ -686,11 +692,11 @@ local EventsDropdown2 = EventsTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "EventsDropdown2",
     Callback = function(Options)
-        dropdownconvert(config.meteorList, Options)
+        dropdownconvert("meteorList", Options)
     end,
 })
 
-dropdownsetup(config.meteorList, EventsDropdown2)
+dropdownsetup("meteorList", EventsDropdown2)
 
 local sunkenSet
 
