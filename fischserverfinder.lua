@@ -146,7 +146,7 @@ teleport = function()
 
     notifygui("Teleporting", 22, 209, 242)
 
-    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= "" do
+    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= nil do
         local Servers = ListServers(Next)
 
         if Servers and Servers.nextPageCursor then
@@ -428,6 +428,7 @@ createframe = function()
 end
 
 notifygui = function(text, r, g, b)
+    text = tostring(text)
     if not r then r = 255 end
     if not g then g = 255 end
     if not b then b = 255 end
