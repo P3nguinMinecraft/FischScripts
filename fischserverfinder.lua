@@ -653,7 +653,6 @@ scanchest = function()
     for _, object in pairs(activeChestsFolder:GetChildren()) do
         checkteleporting = false
         if config.sunkenchestList.alertonload then
-            notifygui("Sunken Chest Found!", 255, 255, 0)
             task.spawn(function()
                 loadedsunkenchest(object)
             end)
@@ -664,6 +663,7 @@ end
 loadedsunkenchest = function(object)
     if not chestfound then
         task.spawn(function()
+            notifygui("Sunken Chest Found!", 255, 255, 0)
             chestfound = true
             task.wait(600)
             chestfound = false
