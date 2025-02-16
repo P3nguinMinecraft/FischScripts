@@ -118,12 +118,15 @@ teleport = function()
         local Decode = HttpService:JSONDecode(Raw)
 
         if Decode.errors then
-            return readfile(serversfilename) or nil
+            if isfile(serversfilename) then
+                return HttpService:JSONDecode(readfile(serversfilename))
+            end
+            return nil
         else
             if writefile then
                 writefile(serversfilename, Raw)
             end
-            return Raw
+            return HttpService:JSONDecode(Raw)
         end
     end
 
@@ -144,8 +147,7 @@ teleport = function()
     notifygui("Teleporting", 22, 209, 242)
 
     while Server == nil or Server.playing == nil or Server.PrivateServerId ~= "" do
-        local Raw = ListServers(Next)
-        local Servers = HttpService:JSONDecode(Raw)
+        local Servers = ListServers(Next)
 
         if Servers and Servers.nextPageCursor then
             Server = Servers.data[math.random(1, #Servers.data)]
