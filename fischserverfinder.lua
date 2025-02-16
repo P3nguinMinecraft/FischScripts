@@ -3,8 +3,8 @@
 
 if not game:IsLoaded() then game.Loaded:Wait() end
 
-local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
-local config
+local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, askautohop,chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
+local config, cacheFile
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 local scriptvers = "2.1"
 local checkteleporting = false
@@ -18,14 +18,23 @@ local autofarmchestclaimed = false
 local camera = game.Workspace.CurrentCamera
 
 if not game.PlaceId == 16732694052 then
-    print("[FSF] You are not in Fisch!")
+    warn("[FSF] You are not in Fisch!")
     return
 end
 
 print("[FSF] Loading")
 
+local cache = {
+    autohop = false,
+}
+
 loadConfig = function()
-    config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json")) or data.defaultConfig
+    if isfile("FischServerFinder/config.json") then
+        config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
+    else
+        config = data.defaultConfig
+    end
+
     if not writefile then return end
 
     if not isfile("FischServerFinder/config.json") and writefile then
@@ -134,7 +143,7 @@ teleport = function()
 
     notifygui("Teleporting", 22, 209, 242)
 
-    while Server == nil or Server.playing == nil do
+    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= "" do
         local Raw = ListServers(Next)
         local Servers = HttpService:JSONDecode(Raw)
 
@@ -148,6 +157,10 @@ teleport = function()
     end
 
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
+        if cacheFile.autohop then
+            cache.autohop = true
+            writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
+        end
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
 
@@ -493,6 +506,47 @@ minimizegui = function(minimizeButton)
     end
 end
 
+askautohop = function()
+    local frame = createframe()
+
+    local closeButton = Instance.new("TextButton")
+    closeButton.Name = "CloseButton"
+    closeButton.Size = UDim2.new(0.06, 0, 0.4, 0)
+    closeButton.Position = UDim2.new(0.015, 0, 0.3, 0)
+    closeButton.BackgroundColor3 = Color3.new(1, 0, 0)
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Color3.new(1, 1, 1)
+    closeButton.TextScaled = true
+    closeButton.Font = Enum.Font.SourceSans
+    closeButton.Parent = frame
+    closeButton.ZIndex = 101
+
+    local autohopButton = Instance.new("TextButton")
+    autohopButton.Name = "autohopButton"
+    autohopButton.Size = UDim2.new(0.5, 0, 0.6, 0)
+    autohopButton.Position = UDim2.new(0.25, 0, 0.2, 0)
+    autohopButton.BackgroundColor3 = Color3.new(0.5, 0.85, 0.9)
+    autohopButton.Text = "Start Autohop"
+    autohopButton.TextColor3 = Color3.new(0, 0, 0)
+    autohopButton.TextScaled = true
+    autohopButton.Font = Enum.Font.SourceSans
+    autohopButton.Parent = frame
+    autohopButton.ZIndex = 101
+
+
+    closeButton.MouseButton1Click:Connect(function()
+        frame:Destroy()
+    end)
+
+    autohopButton.MouseButton1Click:Connect(function()
+       notifygui("Starting autohop! DC to stop")
+       task.wait(3)
+       cache.autohop = true
+       writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
+       teleport()
+    end)
+end
+
 potentialsunkenchest = function()
     local frame = createframe()
 
@@ -580,7 +634,7 @@ chesttpscan = function(delay)
             notifygui("Failed to find sunken chests!", 199, 29, 10)
             checkteleporting = false
             if config.sunkenchestList.hopafterclaim then
-                notifygui("Autohopping", 247, 94, 229)
+                notifygui("Hop After Claim - Hopping", 247, 94, 229)
                 teleport()
             end
         end
@@ -672,7 +726,6 @@ loadedsunkenchest = function(object)
     end)
 
     task.wait(0.5)
-    loaded = false
 
     if config.sunkenchestList.autofarm and not autofarmchestclaimed then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(position + Vector3.new(0, 10, 0))
@@ -711,7 +764,7 @@ claimsunkenchest = function()
 
     if config.sunkenchestList.hopafterclaim then
         task.wait(4)
-        notifygui("Autohopping", 247, 94, 229)
+        notifygui("Claimed, autohoppping", 247, 94, 229)
         teleport()
     end
 end
@@ -898,7 +951,7 @@ notify = function(events)
     if count > 0 then desiredserver = true end
     if not desiredserver then
         notifygui("Nothing", 255, 153, 0)
-        if config.autohop then
+        if cacheFile.autohop and config.autohop then
             notifygui("Autohopping", 247, 94, 229)
             teleport()
         end
@@ -961,9 +1014,23 @@ activeChestsFolder.ChildAdded:Connect(function(object)
 end)
 
 task.wait(2)
+
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
 loadConfig()
+
+if isfile("FischServerFinder/cache.json") then
+    cacheFile = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/cache.json"))
+else
+    cacheFile.autohop = config.autohop
+end
+
+if writefile then
+    writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
+    if not cacheFile.autohop and config.autohop then
+        askautohop()
+    end
+end
 
 if config.autowebhook then
     sendwebhook()
@@ -975,7 +1042,7 @@ end
 
 print("[FSF] Loaded!")
 
-if config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
-    notifygui("Autohopping", 247, 94, 229)
+if cacheFile.autohop and config.autohop and config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
+    notifygui("Force hopping", 247, 94, 229)
     teleport()
 end

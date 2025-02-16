@@ -15,7 +15,13 @@ if not isfile("FischServerFinder/config.json") and writefile then
     end
     writefile("FischServerFinder/config.json", game:GetService("HttpService"):JSONEncode(data.defaultConfig))
 end
-local config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json")) or data.defaultConfig
+local config
+if isfile("FischServerFinder/config.json") then
+    config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
+else
+    config = data.defaultConfig
+end
+
 local ordered = data.ordered
 
 local function saveConfig()
@@ -133,6 +139,16 @@ local HomeButton2 = HomeTab:CreateButton({
     Name = "Load Main Script",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fischserverfinder.lua"))()
+    end,
+})
+
+local HomeButton3 = HomeTab:CreateButton({
+    Name = "Reset Config",
+    Callback = function()
+        config = data.defaultConfig
+        saveConfig()
+        Rayfield:Destroy()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
     end,
 })
 
@@ -810,7 +826,7 @@ local EventsToggle4 = EventsTab:CreateToggle({
     end,
 })
 
-local EventsParagraph8 = EventsTab:CreateParagraph({Title = "Sunken Chest Force Hop", Content = "Server hops even if there are other desired features, requires Auto Farm (regardless of Auto Hop)"})
+local EventsParagraph8 = EventsTab:CreateParagraph({Title = "Sunken Chest Force Hop", Content = "Server hops even if there are other desired features, requires Auto Farm and Auto Hop!"})
 
 local EventsToggle5 = EventsTab:CreateToggle({
     Name = "Force Hop",
@@ -821,6 +837,13 @@ local EventsToggle5 = EventsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "Force Hop",
                 Content = "Auto Farm is off!",
+                Duration = 5,
+                Image = nil,
+            })
+        elseif Value and not config.autohop then
+            Rayfield:Notify({
+                Title = "Force Hop",
+                Content = "Auto Hop is off!",
                 Duration = 5,
                 Image = nil,
             })

@@ -1,8 +1,8 @@
-local data_version = "2.1"
-local data_versid = "r0yiIGZ1KlieTNey"
-local updmsg = "Features in GUI"
-local settingchanged = true
-local settingmsg = "Changed name system so many settings are wiped!"
+local data_version = "2.2"
+local data_versid = "Pb8ea0eyhYVvMwpE"
+local updmsg = "Failsafe autohop!"
+local settingchanged = false
+local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
