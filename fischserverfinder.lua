@@ -543,7 +543,7 @@ askautohop = function()
 
     autohopButton.MouseButton1Click:Connect(function()
        notifygui("Starting autohop! DC to stop")
-       task.wait(3)
+       task.wait(2)
        cache.autohop = true
        writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
        teleport()
@@ -1016,7 +1016,7 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     end
 end)
 
-task.wait(2)
+--task.wait(2)
 
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 
@@ -1030,13 +1030,6 @@ else
     }
 end
 
-if writefile then
-    writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
-    if not cacheFile.autohop and config.autohop then
-        askautohop()
-    end
-end
-
 if config.autowebhook then
     sendwebhook()
 end
@@ -1046,6 +1039,13 @@ if config.autoscan then
 end
 
 print("[FSF] Loaded!")
+
+if writefile and not cache.autohop then
+    writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
+    if not cacheFile.autohop and config.autohop then
+        askautohop()
+    end
+end
 
 if cacheFile.autohop and config.autohop and config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
     notifygui("Force hopping", 247, 94, 229)
