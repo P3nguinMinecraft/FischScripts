@@ -32,7 +32,6 @@ end
 
 local function updateTable(default, previous)
     local updated = {}
-
     for key, value in pairs(default) do
         if type(value) == "table" and type(previous[key]) == "table" then
             updated[key] = updateTable(value, previous[key])
@@ -56,14 +55,13 @@ end
 local function dropdownconvert(listName, options)
     local list = config[listName]
     for name, _ in pairs(list) do
-        local enabled = false
-        for optionName, optionValue in ipairs(options) do
-            if optionName == name and optionValue then
-                enabled = true
+        list[name] = false
+        for _, optionName in ipairs(options) do
+            if optionName == name then
+                list[name] = true
                 break
             end
         end
-        name = enabled
     end
     saveConfig()
 end
