@@ -1024,7 +1024,9 @@ loadConfig()
 if isfile("FischServerFinder/cache.json") then
     cacheFile = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/cache.json"))
 else
-    cacheFile.autohop = config.autohop
+    cacheFile = {
+        autohop = config.autohop,
+    }
 end
 
 if writefile then
