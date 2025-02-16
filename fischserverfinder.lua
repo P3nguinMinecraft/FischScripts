@@ -28,6 +28,11 @@ local cache = {
     autohop = false,
 }
 
+local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 3)
+if loading then
+    loading.loading.Visible = false
+end
+
 loadConfig = function()
     if isfile("FischServerFinder/config.json") then
         config = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/config.json"))
@@ -1042,7 +1047,7 @@ print("[FSF] Loaded!")
 
 if writefile and not cache.autohop then
     writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
-    if not cacheFile.autohop and config.autohop then
+    if config.autohop then
         askautohop()
     end
 end
@@ -1050,4 +1055,9 @@ end
 if cacheFile.autohop and config.autohop and config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
     notifygui("Force hopping", 247, 94, 229)
     teleport()
+end
+
+task.wait(20)
+if loading then 
+    loading.loading.Visible = true
 end
