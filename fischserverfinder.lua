@@ -21,7 +21,7 @@ end
 local loadConfig, parseuptime, formattime, tp, teleport, creategui, createframe, notifygui, minimizegui, askautohop,chesttpscan, scanchest, potentialsunkenchest, loadedsunkenchest, claimsunkenchest, issunkenchest, convertEventString, sendwebhook, haschildren, scanWorld, notify, scan
 local config
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
-local scriptvers = data.data_version
+local scriptvers = data.version
 local checkteleporting = false
 local loadedmsg = false
 local chestfound = false
