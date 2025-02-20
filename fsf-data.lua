@@ -1,5 +1,5 @@
-local data_version = "2.2"
-local data_versid = "Pb8ea0eyhYVvMwpE"
+local data_version = "2.2.1"
+local data_versid = "zwmocvC79VOjIqIv"
 local updmsg = "Failsafe autohop!"
 local settingchanged = false
 local settingmsg = ""
