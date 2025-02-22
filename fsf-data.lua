@@ -1,5 +1,5 @@
 local data_version = "2.2.2"
-local data_versid = "BUxqvXL9NWckyLAE"
+local data_versid = "p3AWYJYzT1KQ0die"
 local updmsg = "Update setting"
 local settingchanged = true
 local settingmsg = "+ Scylla pool (idk if it works)"
@@ -123,6 +123,7 @@ local defaultConfig = {
         ["Ancient Kraken Pool"] = true,
         ["Orcas Pool"] = true,
         ["Ancient Orcas Pool"] = true,
+        ["Forsaken Veil - Scylla"] = true,
         ["Lovestorm Eel"] = true,
         ["Lovestorm Eel Supercharged"] = true,
     },
