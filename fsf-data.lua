@@ -1,8 +1,8 @@
-local data_version = "2.2.1"
-local data_versid = "zwmocvC79VOjIqIv"
-local updmsg = "Failsafe autohop!"
-local settingchanged = false
-local settingmsg = ""
+local data_version = "2.2.2"
+local data_versid = "BUxqvXL9NWckyLAE"
+local updmsg = "Update setting"
+local settingchanged = true
+local settingmsg = "+ Scylla pool (idk if it works)"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
