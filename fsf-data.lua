@@ -159,6 +159,7 @@ local ordered = {
         "Great White Shark", "Great Hammerhead Shark", "Whale Shark", 
         "The Kraken Pool", "Ancient Kraken Pool",
         "Orcas Pool", "Ancient Orcas Pool",
+        "Forsaken Veil - Scylla",
         "Lovestorm Eel", "Lovestorm Eel Supercharged",
     },
     meteorList = { "Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone" }
