@@ -333,7 +333,7 @@ local ScriptToggle5 = ScriptTab:CreateToggle({
 
 local ScriptDivider5 = ScriptTab:CreateDivider()
 
-local ScriptParagraph7 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Content = "Automatically displays the server's Roblox PlaceVersion when you scan"})
+local ScriptParagraph7 = ScriptTab:CreateParagraph({Title = "Auto PlaceVersion", Content = "Automatically displays the server's Roblox PlaceVersion when you scan"})
 
 local ScriptToggle6 = ScriptTab:CreateToggle({
     Name = "Auto PlaceVersion",
