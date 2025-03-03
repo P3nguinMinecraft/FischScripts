@@ -395,6 +395,7 @@ creategui = function()
                 notification:Destroy()
             end
         end
+        scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
     end)
 
     TPJobId.MouseButton1Click:Connect(function()
