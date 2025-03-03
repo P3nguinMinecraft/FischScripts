@@ -2,7 +2,7 @@ local data_version = "2.2.3"
 local data_versid = "rWJb2G4xuI1GCUkM"
 local updmsg = "Update setting"
 local settingchanged = true
-local settingmsg = "+ Whale Pool IM NOT LATE TRUST"
+local settingmsg = "+ Whale Pool"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
