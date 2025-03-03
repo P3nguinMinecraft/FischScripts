@@ -1,8 +1,8 @@
-local data_version = "2.2.2"
-local data_versid = "p3AWYJYzT1KQ0die"
+local data_version = "2.2.3"
+local data_versid = "rWJb2G4xuI1GCUkM"
 local updmsg = "Update setting"
 local settingchanged = true
-local settingmsg = "+ Scylla pool (idk if it works)"
+local settingmsg = "+ Whale Pool IM NOT LATE TRUST"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -124,8 +124,7 @@ local defaultConfig = {
         ["Orcas Pool"] = true,
         ["Ancient Orcas Pool"] = true,
         ["Forsaken Veil - Scylla"] = true,
-        ["Lovestorm Eel"] = true,
-        ["Lovestorm Eel Supercharged"] = true,
+        ["Whales Pool"] = true,
     },
 
     meteorList = {
@@ -160,9 +159,9 @@ local ordered = {
         "The Kraken Pool", "Ancient Kraken Pool",
         "Orcas Pool", "Ancient Orcas Pool",
         "Forsaken Veil - Scylla",
-        "Lovestorm Eel", "Lovestorm Eel Supercharged",
+        "Whales Pool",
     },
-    meteorList = { "Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone" }
+    meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 }
 
 local data = {
