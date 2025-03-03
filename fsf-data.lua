@@ -1,4 +1,4 @@
-local data_version = "2.2.4"
+local data_version = "2.2.3"
 local data_versid = "2QChWpw4X3qFEzgT"
 local updmsg = "Update setting"
 local settingchanged = true
