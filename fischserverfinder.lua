@@ -946,8 +946,8 @@ scanWorld = function()
                 table.insert(events, {text = str, r = r, g = g, b = b, enabled = enabled})
             end
         elseif name == "Moby" then
-            local whale = zones:FindFirstChild("Whales Pool")
-            if whale and whale:FindFirstChild("MobySpawn") and whale:FindFirstChild("MobySpawn"):FindFirstChildOfClass("Model") then
+            local mobySpawn = zones:FindFirstChild("Whales Pool") and zones["Whales Pool"]:FindFirstChild("MobySpawn")
+            if mobySpawn and mobySpawn:FindFirstChildOfClass("Model") then
                 table.insert(events, {text = "Moby", r = 146, g = 143, b = 179, enabled = enabled})
             end
         end
