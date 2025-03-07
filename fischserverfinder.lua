@@ -248,6 +248,7 @@ creategui = function()
     closeGUI.AnchorPoint = Vector2.new(0, 0.5)
     closeGUI.Parent = topBar
     closeGUI.ZIndex = 101
+    closeGUI.Selectable = false
 
     local hop = Instance.new("TextButton")
     hop.Name = "ServerHop"
@@ -261,6 +262,7 @@ creategui = function()
     hop.AnchorPoint = Vector2.new(0, 0.5)
     hop.Parent = topBar
     hop.ZIndex = 101
+    hop.Selectable = false
 
     local rescan = Instance.new("TextButton")
     rescan.Name = "Rescan"
@@ -274,6 +276,7 @@ creategui = function()
     rescan.AnchorPoint = Vector2.new(0, 0.5)
     rescan.Parent = topBar
     rescan.ZIndex = 101
+    rescan.Selectable = false
 
     local JobId = Instance.new("TextButton")
     JobId.Name = "JobId"
@@ -287,6 +290,7 @@ creategui = function()
     JobId.AnchorPoint = Vector2.new(0, 0.5)
     JobId.Parent = topBar
     JobId.ZIndex = 101
+    JobId.Selectable = false
 
     local minimizeButton = Instance.new("TextButton")
     minimizeButton.Name = "minimizeButton"
@@ -300,6 +304,7 @@ creategui = function()
     minimizeButton.AnchorPoint = Vector2.new(0, 0.5)
     minimizeButton.Parent = topBar
     minimizeButton.ZIndex = 101
+    minimizeButton.Selectable = false
 
     local clear = Instance.new("TextButton")
     clear.Name = "clear"
@@ -313,6 +318,7 @@ creategui = function()
     clear.AnchorPoint = Vector2.new(0, 0.5)
     clear.Parent = topBar
     clear.ZIndex = 101
+    clear.Selectable = false
 
     local JobIdBox = Instance.new("TextBox")
     JobIdBox.Name = "JobIdBox"
@@ -340,6 +346,7 @@ creategui = function()
     TPJobId.AnchorPoint = Vector2.new(0, 0.5)
     TPJobId.Parent = topBar
     TPJobId.ZIndex = 101
+    TPJobId.Selectable = false
 
     local OpenGUI = Instance.new("TextButton")
     OpenGUI.Name = "OpenGUI"
@@ -353,6 +360,7 @@ creategui = function()
     OpenGUI.AnchorPoint = Vector2.new(0, 0.5)
     OpenGUI.Parent = topBar
     OpenGUI.ZIndex = 101
+    OpenGUI.Selectable = false
 
     local ReloadConfig = Instance.new("TextButton")
     ReloadConfig.Name = "ReloadConfig"
@@ -366,6 +374,7 @@ creategui = function()
     ReloadConfig.AnchorPoint = Vector2.new(0, 0.5)
     ReloadConfig.Parent = topBar
     ReloadConfig.ZIndex = 101
+    ReloadConfig.Selectable = false
 
     closeGUI.MouseButton1Click:Connect(function()
         screenGui:Destroy()
@@ -462,6 +471,7 @@ notifygui = function(text, r, g, b)
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
     closeButton.ZIndex = 101
+    closeButton.Selectable = false
 
     local textLabel = Instance.new("TextLabel")
     textLabel.Name = "NotificationText"
@@ -490,6 +500,7 @@ notifygui = function(text, r, g, b)
         meteorTP.Font = Enum.Font.SourceSans
         meteorTP.Parent = frame
         meteorTP.ZIndex = 101
+        meteorTP.Selectable = false
 
         meteorTP.MouseButton1Click:Connect(function()
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(5694, 174, 632))
@@ -538,6 +549,7 @@ askautohop = function()
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
     closeButton.ZIndex = 101
+    closeButton.Selectable = false
 
     local autohopButton = Instance.new("TextButton")
     autohopButton.Name = "autohopButton"
@@ -550,6 +562,7 @@ askautohop = function()
     autohopButton.Font = Enum.Font.SourceSans
     autohopButton.Parent = frame
     autohopButton.ZIndex = 101
+    autohopButton.Selectable = false
 
 
     closeButton.MouseButton1Click:Connect(function()
@@ -578,6 +591,7 @@ potentialsunkenchest = function()
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
     closeButton.ZIndex = 101
+    closeButton.Selectable = false
 
     local tpButton = Instance.new("TextButton")
     tpButton.Name = "tpButton"
@@ -590,6 +604,7 @@ potentialsunkenchest = function()
     tpButton.Font = Enum.Font.SourceSans
     tpButton.Parent = frame
     tpButton.ZIndex = 101
+    tpButton.Selectable = false
 
     local rescanButton = Instance.new("TextButton")
     rescanButton.Name = "rescanButton"
@@ -602,6 +617,7 @@ potentialsunkenchest = function()
     rescanButton.Font = Enum.Font.SourceSans
     rescanButton.Parent = frame
     rescanButton.ZIndex = 101
+    rescanButton.Selectable = false
 
     closeButton.MouseButton1Click:Connect(function()
         frame:Destroy()
@@ -717,6 +733,7 @@ loadedsunkenchest = function(object)
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
     closeButton.ZIndex = 101
+    closeButton.Selectable = false
 
     local tpButton = Instance.new("TextButton")
     tpButton.Name = "tpButton"
@@ -729,6 +746,7 @@ loadedsunkenchest = function(object)
     tpButton.Font = Enum.Font.SourceSans
     tpButton.Parent = frame
     tpButton.ZIndex = 101
+    tpButton.Selectable = false
 
     local claimButton = Instance.new("TextButton")
     claimButton.Name = "claimButton"
@@ -741,6 +759,7 @@ loadedsunkenchest = function(object)
     claimButton.Font = Enum.Font.SourceSans
     claimButton.Parent = frame
     claimButton.ZIndex = 101
+    claimButton.Selectable = false
 
     closeButton.MouseButton1Click:Connect(function()
         frame:Destroy()
