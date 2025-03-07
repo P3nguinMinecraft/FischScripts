@@ -1,8 +1,8 @@
-local data_version = "2.2.3"
-local data_versid = "2QChWpw4X3qFEzgT"
-local updmsg = "Update setting"
-local settingchanged = true
-local settingmsg = "+ Whale Pool, + Moby"
+local data_version = "2.2.4"
+local data_versid = "CJj5k18uEQEzoLzc"
+local updmsg = "Added anti-gamepaused for sunken chests!"
+local settingchanged = false
+local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {

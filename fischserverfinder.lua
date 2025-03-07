@@ -635,7 +635,17 @@ chesttpscan = function(delay)
         notifygui("Chest Despawned!")
         return
     end
-    checkteleporting = true
+    if not checkteleporting then
+        checkteleporting = true
+        task.spawn(function()
+            local plr = game:GetService("Players").LocalPlayer
+            while checkteleporting do
+                plr.GameplayPaused = false
+                task.wait()
+            end
+        end)
+    end
+
     for _, coords in ipairs(data.sunkenchestcoords) do
         tp(coords.x, coords.y - 20, coords.z)
         task.wait(delay)
@@ -761,6 +771,16 @@ end
 claimsunkenchest = function()
     if not haschildren(activeChestsFolder) then return end
     local chests = activeChestsFolder:FindFirstChild("Pad").Chests
+    local antigp = true
+
+    task.spawn(function()
+        local plr = game:GetService("Players").LocalPlayer
+        while antigp do
+            plr.GameplayPaused = false
+            task.wait()
+        end
+    end)
+
     for _, chest in ipairs(chests:GetChildren()) do
         local root
         if chest.Name == "Mythical" then
@@ -780,6 +800,8 @@ claimsunkenchest = function()
             end
         end
     end
+
+    antigp = false
 
     if config.sunkenchestList.hopafterclaim then
         task.wait(4)
