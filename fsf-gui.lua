@@ -226,6 +226,7 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
         if not Value then return end
         local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
         while orcaTP do
+            task.wait()
             local pool = fishing:FindFirstChild("Ancient Orcas Pool") or fishing:FindFirstChild("Orcas Pool")
             if pool then
                 local orca = pool.Orcas:GetChildren()[3].Orca.PrimaryPart
@@ -245,6 +246,40 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
 
 stopOrca = function()
     ToolsToggle3:Set(false)
+end
+
+local whaleTP = false
+local stopWhale
+
+local ToolsToggle4 = ToolsTab:CreateToggle({
+    Name = "Loop TP to Whale",
+    CurrentValue = false,
+    Flag = "ToolsToggle4",
+    Callback = function(Value)
+        whaleTP = Value
+        if not Value then return end
+        local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
+        while whaleTP do
+            task.wait()
+            local pool = fishing:FindFirstChild("Whales Pool")
+            if pool then
+                local tpSpot = pool:FindFirstDescendantWhichIsA("Part")
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = tpSpot.CFrame
+            else
+                Rayfield:Notify({
+                    Title = "Loop TP to Whale",
+                    Content = "No Orca Found!",
+                    Duration = 5,
+                    Image = nil,
+                })
+                stopWhale()
+            end
+        end
+    end,
+})
+
+stopWhale = function()
+    ToolsToggle4:Set(false)
 end
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
