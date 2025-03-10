@@ -173,8 +173,8 @@ local defaultFishConfig = {
     instantreel = false,
     castpower = 0,
     shakenav = true,
-    reelSelect = "None",
     perfectCatch = false,
+    reelSelect = "None",
     reelWhitelistStr = "",
     reelBlacklistStr = "",
 }
