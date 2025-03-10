@@ -214,13 +214,32 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
 
 local ToolsDivider3 = ToolsTab:CreateDivider()
 
+local antigp
+
+local ToolsToggle3 = ToolsTab:CreateToggle({
+    Name = "Anti Game Paused",
+    CurrentValue = false,
+    Flag = "ToolsToggle3",
+    Callback = function(Value)
+        antigp = Value
+        local plr = game:GetService("Players").LocalPlayer
+
+        while antigp do
+            plr.GameplayPaused = false
+            task.wait()
+        end
+    end,
+})
+
+local ToolsDivider4 = ToolsTab:CreateDivider()
+
 local orcaTP = false
 local stopOrca
 
-local ToolsToggle3 = ToolsTab:CreateToggle({
+local ToolsToggle4 = ToolsTab:CreateToggle({
     Name = "Loop TP to Orca",
     CurrentValue = false,
-    Flag = "ToolsToggle3",
+    Flag = "ToolsToggle4",
     Callback = function(Value)
         orcaTP = Value
         if not Value then return end
@@ -245,16 +264,16 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
 })
 
 stopOrca = function()
-    ToolsToggle3:Set(false)
+    ToolsToggle4:Set(false)
 end
 
 local whaleTP = false
 local stopWhale
 
-local ToolsToggle4 = ToolsTab:CreateToggle({
+local ToolsToggle5 = ToolsTab:CreateToggle({
     Name = "Loop TP to Whale",
     CurrentValue = false,
-    Flag = "ToolsToggle4",
+    Flag = "ToolsToggle5",
     Callback = function(Value)
         whaleTP = Value
         if not Value then return end
@@ -279,7 +298,7 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
 })
 
 stopWhale = function()
-    ToolsToggle4:Set(false)
+    ToolsToggle5:Set(false)
 end
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
