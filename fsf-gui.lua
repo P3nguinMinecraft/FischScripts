@@ -1083,7 +1083,7 @@ end
 
 mergeConfig(data.defaultConfig, config)
 saveConfig()
-mergeConfig(data.autofish, fishConfig)
+mergeConfig(data.defaultFishConfig, fishConfig)
 saveFishConfig()
 
 print("[FSF-G] Loaded!")
