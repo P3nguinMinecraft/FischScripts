@@ -1,6 +1,6 @@
-local data_version = "2.2.4"
+local data_version = "2.2.5"
 local data_versid = "CJj5k18uEQEzoLzc"
-local updmsg = "Added anti-gamepaused for sunken chests!"
+local updmsg = "Fixed some sunken chest errors"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"

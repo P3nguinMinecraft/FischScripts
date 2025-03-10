@@ -672,7 +672,7 @@ chesttpscan = function(delay)
     end
     if checkteleporting then
         scanchest()
-        if chesttpscancount < 3 then
+        if chesttpscancount < 2 then
             chesttpscancount = chesttpscancount + 1
             chesttpscan(chesttpscancount / 5)
         else
@@ -698,16 +698,16 @@ scanchest = function()
 end
 
 loadedsunkenchest = function(object)
+    notifygui("Sunken Chest Found!", 255, 255, 0)
+    
     if not chestfound then
         task.spawn(function()
-            notifygui("Sunken Chest Found!", 255, 255, 0)
             chestfound = true
             task.wait(600)
             chestfound = false
         end)
     end
-    if loadedmsg then return end
-    loadedmsg = true
+
     checkteleporting = false
 
     local position
