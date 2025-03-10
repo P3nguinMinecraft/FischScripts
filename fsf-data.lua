@@ -165,6 +165,20 @@ local ordered = {
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 }
 
+local defaultFishConfig = {
+    autocast = true,
+    dropbobber = true,
+    autoshake = true,
+    autoreel = true,
+    instantreel = false,
+    castpower = 0,
+    shakenav = true,
+    reelSelect = "None",
+    perfectCatch = false,
+    reelWhitelistStr = "",
+    reelBlacklistStr = "",
+}
+
 local data = {
     version = data_version,
     versid = data_versid,
@@ -175,6 +189,7 @@ local data = {
     sunkenchestcoords = sunkenchestcoords,
     defaultConfig = defaultConfig,
     ordered = ordered,
+    defaultFishConfig = defaultFishConfig,
 }
 
 return data
