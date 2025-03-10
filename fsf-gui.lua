@@ -45,11 +45,11 @@ local function updateTable(default, previous)
     return updated
 end
 
-local function mergeConfig()
-    config = updateTable(data.defaultConfig, config)
-    config.version = data.version
-    config.versid = data.versid
-    saveConfig()
+local function mergeConfig(default, conf)
+    conf = updateTable(default, conf)
+    conf.version = data.version
+    conf.versid = data.versid
+    return conf
 end
 
 local function dropdownconvert(listName, options)
@@ -84,6 +84,21 @@ local function dropdownsetup(listName, dropdown)
     dropdown:Set(selectedThing)
 end
 
+local autofish = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
+
+local fishConfig
+if isfile("FischServerFinder/fishconfig.json") then
+    fishConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/fishconfig.json"))
+else
+    fishConfig = data.defaultFishConfig
+end
+
+local function saveFishConfig()
+    writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
+    autofish()
+end
+
+
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
     Icon = 0,
@@ -101,9 +116,9 @@ local Window = Rayfield:CreateWindow({
     },
  
     Discord = {
-       Enabled = false,
-       Invite = "noinvitelink",
-       RememberJoins = false,
+       Enabled = true,
+       Invite = "fWncS2vFx",
+       RememberJoins = true,
     },
  
     KeySystem = false,
@@ -300,6 +315,147 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
 stopWhale = function()
     ToolsToggle5:Set(false)
 end
+
+local FishTab = Window:CreateTab("Auto Fish", nil)
+
+local FishToggle1 = FishTab:CreateToggle({
+    Name = "Auto Fish",
+    CurrentValue = fishConfig.autocast,
+    Flag = "FishToggle1",
+    Callback = function(Value)
+        fishConfig.autocast = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider1 = FishTab:CreateDivider()
+
+local FishToggle2 = FishTab:CreateToggle({
+    Name = "Drop Bobber",
+    CurrentValue = fishConfig.dropbobber,
+    Flag = "FishToggle2",
+    Callback = function(Value)
+        fishConfig.dropbobber = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider2 = FishTab:CreateDivider()
+
+local FishToggle3 = FishTab:CreateToggle({
+    Name = "Auto Shake",
+    CurrentValue = fishConfig.autoshake,
+    Flag = "FishToggle3",
+    Callback = function(Value)
+        fishConfig.autoshake = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider3 = FishTab:CreateDivider()
+
+local FishToggle4 = FishTab:CreateToggle({
+    Name = "Auto Reel",
+    CurrentValue = fishConfig.autoreel,
+    Flag = "FishToggle4",
+    Callback = function(Value)
+        fishConfig.autoreel = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider4 = FishTab:CreateDivider()
+
+local FishToggle5 = FishTab:CreateToggle({
+    Name = "Instant Reel",
+    CurrentValue = fishConfig.instantreel,
+    Flag = "FishToggle5",
+    Callback = function(Value)
+        fishConfig.instantreel = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider5 = FishTab:CreateDivider()
+
+local FishSlider1 = FishTab:CreateSlider({
+    Name = "Cast Power",
+    Range = {0, 100},
+    Increment = 1,
+    Suffix = "%",
+    CurrentValue = fishConfig.castpower,
+    Flag = "FishSlider1",
+    Callback = function(Value)
+        fishConfig.castpower = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider6 = FishTab:CreateDivider()
+
+local FishToggle6 = FishTab:CreateToggle({
+    Name = "Shake Navigation",
+    CurrentValue = fishConfig.shakenav,
+    Flag = "FishToggle6",
+    Callback = function(Value)
+        fishConfig.shakenav = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider7 = FishTab:CreateDivider()
+
+local FishToggle7 = FishTab:CreateToggle({
+    Name = "Perfect Catch",
+    CurrentValue = fishConfig.perfectCatch,
+    Flag = "FishToggle7",
+    Callback = function(Value)
+        fishConfig.perfectCatch = Value
+        saveFishConfig()
+    end,
+})
+
+local FishDivider8 = FishTab:CreateDivider()
+
+local FishDropdown1 = FishTab:CreateDropdown({
+    Name = "Reel Select",
+    Options = {"None", "Whitelist", "Blacklist"},
+    CurrentOption = {fishConfig.reelSelect},
+    MultipleOptions = false,
+    Flag = "FishDropdown1",
+    Callback = function(Option)
+        fishConfig.reelSelect = Option[1]
+        saveFishConfig()
+    end,
+})
+
+local FishDivider9 = FishTab:CreateDivider()
+
+local FishInput1 = FishTab:CreateInput({
+    Name = "Whitelist",
+    CurrentValue = "",
+    PlaceholderText = "Phantom Megalodon, The Kraken",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput1",
+    Callback = function(Text)
+        fishConfig.reelWhitelistStr = Text
+        saveFishConfig()
+    end,
+})
+
+local FishDivider10 = FishTab:CreateDivider()
+
+local FishInput2 = FishTab:CreateInput({
+    Name = "Blacklist",
+    CurrentValue = fishConfig.reelBlacklistStr,
+    PlaceholderText = "Common Crate, Sardine",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput2",
+    Callback = function(Text)
+        fishConfig.reelBlacklistStr = Text
+        saveFishConfig()
+    end,
+})
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 
@@ -925,6 +1081,9 @@ sunkenSet = function(thing, value)
     object:Set(value)
 end
 
-mergeConfig()
+mergeConfig(data.defaultConfig, config)
+saveConfig()
+mergeConfig(data.autofish, fishConfig)
+saveFishConfig()
 
 print("[FSF-G] Loaded!")

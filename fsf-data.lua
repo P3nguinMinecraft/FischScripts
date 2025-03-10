@@ -1,6 +1,6 @@
-local data_version = "2.2.5"
-local data_versid = "CJj5k18uEQEzoLzc"
-local updmsg = "Fixed some sunken chest errors"
+local data_version = "2.3"
+local data_versid = "Jo8mr4qhI4WZkfPu"
+local updmsg = "+ Autofish! Check it out in the GUI"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
