@@ -199,7 +199,7 @@ local ToolsDivider1 = ToolsTab:CreateDivider()
 
 local ToolsToggle1 = ToolsTab:CreateToggle({
     Name = "Disable Water Fog",
-    CurrentValue = guiConfig.ToolsToggle1,
+    CurrentValue = false,
     Flag = "ToolsToggle1",
     Callback = function(Value)
         guiConfig.ToolsToggle1 = Value
@@ -211,6 +211,8 @@ local ToolsToggle1 = ToolsTab:CreateToggle({
         end
     end,
 })
+
+ToolsToggle1:Set(guiConfig.ToolsToggle1)
 
 local ToolsDivider2 = ToolsTab:CreateDivider()
 
@@ -228,7 +230,7 @@ end
 
 local ToolsToggle2 = ToolsTab:CreateToggle({
     Name = "Fullbright",
-    CurrentValue = guiConfig.ToolsToggle2,
+    CurrentValue = false,
     Flag = "ToolsToggle2",
     Callback = function(Value)
         guiConfig.ToolsToggle2 = Value
@@ -241,13 +243,15 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
     end
 })
 
+ToolsToggle2:Set(guiConfig.ToolsToggle2)
+
 local ToolsDivider3 = ToolsTab:CreateDivider()
 
 local antigp
 
 local ToolsToggle3 = ToolsTab:CreateToggle({
     Name = "Anti Game Paused",
-    CurrentValue = guiConfig.ToolsToggle3,
+    CurrentValue = false,
     Flag = "ToolsToggle3",
     Callback = function(Value)
         guiConfig.ToolsToggle3 = Value
@@ -261,6 +265,8 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
         end
     end,
 })
+
+ToolsToggle3:Set(guiConfig.ToolsToggle3)
 
 local ToolsDivider4 = ToolsTab:CreateDivider()
 
