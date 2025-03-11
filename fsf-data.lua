@@ -1,8 +1,8 @@
-local data_version = "2.3"
-local data_versid = "Jo8mr4qhI4WZkfPu"
-local updmsg = "+ Autofish! Check it out in the GUI"
-local settingchanged = false
-local settingmsg = ""
+local data_version = "2.3.1"
+local data_versid = "kSw1dauH7Xo42AO3"
+local updmsg = "+GUI Saved Config +Autofish"
+local settingchanged = true
+local settingmsg = "+Autofish! Check it out in the GUI"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -179,6 +179,12 @@ local defaultFishConfig = {
     reelBlacklistStr = "",
 }
 
+local defaultGuiConfig = {
+    ToolsToggle1 = false,
+    ToolsToggle2 = false,
+    ToolsToggle3 = false,
+}
+
 local data = {
     version = data_version,
     versid = data_versid,
@@ -190,6 +196,7 @@ local data = {
     defaultConfig = defaultConfig,
     ordered = ordered,
     defaultFishConfig = defaultFishConfig,
+    defaultGuiConfig = defaultGuiConfig,
 }
 
 return data

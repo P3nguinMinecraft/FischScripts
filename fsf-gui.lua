@@ -98,6 +98,16 @@ local function saveFishConfig()
     autofish()
 end
 
+local guiConfig
+if isfile("FischServerFinder/guiconfig.json") then
+    guiConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/guiconfig.json"))
+else
+    guiConfig = data.defaultGuiConfig
+end
+
+local function saveGuiConfig()
+    writefile("FischServerFinder/guiconfig.json", game:GetService("HttpService"):JSONEncode(guiConfig))
+end
 
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
@@ -105,22 +115,22 @@ local Window = Rayfield:CreateWindow({
     LoadingTitle = "FischServerFinder GUI",
     LoadingSubtitle = "by Penguin",
     Theme = "Default",
- 
+
     DisableRayfieldPrompts = false,
     DisableBuildWarnings = false,
 
     ConfigurationSaving = {
        Enabled = false,
        FolderName = "FischServerFinder",
-       FileName = "config"
+       FileName = "rf_config"
     },
- 
+
     Discord = {
        Enabled = true,
        Invite = "fWncS2vFx",
        RememberJoins = true,
     },
- 
+
     KeySystem = false,
     KeySettings = {
        Title = "Untitled",
@@ -189,9 +199,11 @@ local ToolsDivider1 = ToolsTab:CreateDivider()
 
 local ToolsToggle1 = ToolsTab:CreateToggle({
     Name = "Disable Water Fog",
-    CurrentValue = false,
+    CurrentValue = guiConfig.ToolsToggle1,
     Flag = "ToolsToggle1",
     Callback = function(Value)
+        guiConfig.ToolsToggle1 = Value
+        saveGuiConfig()
         if Value then
             disablewater = game:GetService("RunService").RenderStepped:Connect(disablewaterfunc)
         else
@@ -216,9 +228,11 @@ end
 
 local ToolsToggle2 = ToolsTab:CreateToggle({
     Name = "Fullbright",
-    CurrentValue = false,
+    CurrentValue = guiConfig.ToolsToggle2,
     Flag = "ToolsToggle2",
     Callback = function(Value)
+        guiConfig.ToolsToggle2 = Value
+        saveGuiConfig()
         if Value then
             fullbright = game:GetService("RunService").RenderStepped:Connect(fullbrightfunc)
         else
@@ -233,9 +247,11 @@ local antigp
 
 local ToolsToggle3 = ToolsTab:CreateToggle({
     Name = "Anti Game Paused",
-    CurrentValue = false,
+    CurrentValue = guiConfig.ToolsToggle3,
     Flag = "ToolsToggle3",
     Callback = function(Value)
+        guiConfig.ToolsToggle3 = Value
+        saveGuiConfig()
         antigp = Value
         local plr = game:GetService("Players").LocalPlayer
 
@@ -1085,5 +1101,7 @@ mergeConfig(data.defaultConfig, config)
 saveConfig()
 mergeConfig(data.defaultFishConfig, fishConfig)
 saveFishConfig()
+mergeConfig(data.defaultGuiConfig, guiConfig)
+saveGuiConfig()
 
 print("[FSF-G] Loaded!")
