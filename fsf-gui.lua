@@ -327,7 +327,7 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
             else
                 Rayfield:Notify({
                     Title = "Loop TP to Whale",
-                    Content = "No Orca Found!",
+                    Content = "No Whale Found!",
                     Duration = 5,
                     Image = nil,
                 })
