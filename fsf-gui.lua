@@ -295,8 +295,7 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
             task.wait()
             local pool = fishing:FindFirstChild("Ancient Orcas Pool") or fishing:FindFirstChild("Orcas Pool")
             if pool then
-                local orca = pool.Orcas:GetChildren()[3].Orca.PrimaryPart
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(orca.Position + Vector3.new(0, -5, 0))
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pool.Position + Vector3.new(0, 60, 0))
             else
                 Rayfield:Notify({
                     Title = "Loop TP to Orca",
@@ -335,8 +334,7 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
             task.wait()
             local pool = fishing:FindFirstChild("Whales Pool")
             if pool then
-                local tpSpot = pool:FindFirstDescendantWhichIsA("Part")
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = tpSpot.CFrame
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pool.Position + Vector3.new(0, 60, 0))
             else
                 Rayfield:Notify({
                     Title = "Loop TP to Whale",
