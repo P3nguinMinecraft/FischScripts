@@ -258,11 +258,12 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
         saveGuiConfig()
         antigp = Value
         local plr = game:GetService("Players").LocalPlayer
-
-        while antigp do
-            plr.GameplayPaused = false
-            task.wait()
-        end
+        task.spawn(function()
+            while antigp do
+                plr.GameplayPaused = false
+                task.wait()
+            end
+        end)
     end,
 })
 
