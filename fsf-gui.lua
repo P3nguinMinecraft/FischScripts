@@ -270,6 +270,9 @@ ToolsToggle3:Set(guiConfig.ToolsToggle3)
 
 local ToolsDivider4 = ToolsTab:CreateDivider()
 
+local stand = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand
+local original
+
 local orcaTP = false
 local stopOrca
 
@@ -279,7 +282,13 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
     Flag = "ToolsToggle4",
     Callback = function(Value)
         orcaTP = Value
-        if not Value then return end
+        if Value then
+            original = stand
+            stand = true
+        else
+            stand = original
+            return
+        end
         local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
         while orcaTP do
             task.wait()
@@ -313,7 +322,13 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
     Flag = "ToolsToggle5",
     Callback = function(Value)
         whaleTP = Value
-        if not Value then return end
+        if Value then
+            original = stand
+            stand = true
+        else
+            stand = original
+            return
+        end
         local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
         while whaleTP do
             task.wait()
