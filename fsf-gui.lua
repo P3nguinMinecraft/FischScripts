@@ -109,6 +109,49 @@ local function saveGuiConfig()
     writefile("FischServerFinder/guiconfig.json", game:GetService("HttpService"):JSONEncode(guiConfig))
 end
 
+local function getfish(fishname, favorite)
+    local plrname = game:GetService("Players").LocalPlayer.Name
+    local inventory = game:GetService("ReplicatedStorage").playerstats:WaitForChild(plrname).Inventory:GetChildren()
+
+    for _, item in ipairs(inventory) do
+        local itemname = item.Name
+        if string.find(string.gsub(itemname, "-", ""), string.gsub(fishname, "-", "")) then
+            local favorited = item:FindFirstChild("Favourited") ~= nil
+            if favorited == favorite or favorite == nil then
+                return itemname
+            end
+        end
+    end
+
+    return nil
+end
+
+local function getitem(fishname, favorite)
+    local id = getfish(fishname, favorite)
+    if id then
+        local backpack = game:GetService("Players").LocalPlayer.Backpack
+        local character = game:GetService("Players").LocalPlayer.Character
+        for _, item in ipairs(backpack:GetChildren()) do
+            if item.Name == fishname and item:FindFirstChild("link") then
+                local linkid = tostring(item.link.Value)
+                if string.match(string.gsub(linkid, "-", ""), string.gsub(id, "-", "")) then
+                    return item
+                end
+            end
+        end
+        for _, item in ipairs(character:GetChildren()) do
+            if item.Name == fishname and item:FindFirstChild("link") then
+                local linkid = tostring(item.link.Value)
+                if string.match(string.gsub(linkid, "-", ""), string.gsub(id, "-", "")) then
+                    return item
+                end
+            end
+        end
+    end
+
+    return nil
+end
+
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
     Icon = 0,
@@ -344,28 +387,34 @@ end
 local ToolsDivider5 = ToolsTab:CreateDivider()
 
 local exploit = false
+local cancelXP
 
 local ToolsToggle6 = ToolsTab:CreateToggle({
     Name = "XP Exploit (Not detected)",
     CurrentValue = false,
     Flag = "ToolsToggle6",
     Callback = function(Value)
+        local npc
         exploit = Value
-        if Value then
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2597, 133, -731)
+        if not Value then return end
+
+        local alli = getitem("Alligator", nil)
+        if alli then
+            alli.Parent = game.Players.LocalPlayer.Character
+        else
+            cancelXP()
             Rayfield:Notify({
                 Title = "XP Exploit",
-                Content = "Hold an Alligator! (Not consumed)",
+                Content = "No Alligator Found!",
                 Duration = 5,
                 Image = nil,
             })
-            Rayfield:Notify({
-                Title = "Detected?",
-                Content = "It is not detected as many might say. The stats IS added but the excess stats ARE VOIDED ON REJOIN.",
-                Duration = 5,
-                Image = nil,
-            })
+            return
         end
+
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2601, 132, -729)
+        npc = workspace.world.npcs:WaitForChild("Agaric")
+        npc.dialogueprompt:InputBegan()
 
         while exploit do
             task.wait()
@@ -376,6 +425,10 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
 
     end,
 })
+
+cancelXP = function()
+    ToolsToggle6:Set(false)
+end
 
 local FishTab = Window:CreateTab("Auto Fish", nil)
 
