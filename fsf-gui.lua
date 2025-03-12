@@ -414,7 +414,9 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
 
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2601, 132, -729)
         npc = workspace.world.npcs:WaitForChild("Agaric")
-        npc:WaitForChild("dialogprompt"):InputHoldBegin()
+        task.delay(3, function()
+            npc:WaitForChild("dialogprompt"):InputHoldBegin()
+        end)
 
         while exploit do
             task.wait()
