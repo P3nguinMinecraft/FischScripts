@@ -421,6 +421,15 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
             pcall(function()
                 npc.Agaric.complete:InvokeServer()
             end)
+            if alli.Parent ~= game.Players.LocalPlayer.Character then
+                cancelXP()
+                Rayfield:Notify({
+                    Title = "XP Exploit",
+                    Content = "Alligator not equipped anymore!",
+                    Duration = 5,
+                    Image = nil,
+                })
+            end
         end
     end,
 })
