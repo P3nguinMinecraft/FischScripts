@@ -1,8 +1,8 @@
-local data_version = "2.3.1"
-local data_versid = "kSw1dauH7Xo42AO3"
-local updmsg = "+GUI Saved Config +Autofish"
-local settingchanged = true
-local settingmsg = "+Autofish! Check it out in the GUI"
+local data_version = "2.3.2"
+local data_versid = "PGjjptu7gpQZgcYP"
+local updmsg = "+XP Exploit (GUI)"
+local settingchanged = false
+local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {

@@ -341,6 +341,36 @@ stopWhale = function()
     ToolsToggle5:Set(false)
 end
 
+local ToolsDivider5 = ToolsTab:CreateDivider()
+
+local exploit = false
+
+local ToolsToggle6 = ToolsTab:CreateToggle({
+    Name = "XP Exploit",
+    CurrentValue = false,
+    Flag = "ToolsToggle6",
+    Callback = function(Value)
+        exploit = Value
+        if Value then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2597, 133, -731)
+            Rayfield:Notify({
+                Title = "XP Exploit",
+                Content = "Hold an Alligator! (Not consumed)",
+                Duration = 5,
+                Image = nil,
+            })
+        end
+
+        while exploit do
+            task.wait()
+            pcall(function()
+                game:GetService("Workspace").world.npcs.Agaric.Agaric.complete:InvokeServer()
+            end)
+        end
+
+    end,
+})
+
 local FishTab = Window:CreateTab("Auto Fish", nil)
 
 local FishToggle1 = FishTab:CreateToggle({
