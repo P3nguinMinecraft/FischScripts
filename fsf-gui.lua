@@ -221,7 +221,7 @@ local HomeButton3 = HomeTab:CreateButton({
 local ToolsTab = Window:CreateTab("Tools", nil)
 
 local ToolsButton1 = ToolsTab:CreateButton({
-    Name = "Remove Fog (Permanent)",
+    Name = "Redeem Codes",
     Callback = function()
         for _, code in data.codes do
             game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("runcode"):FireServer(code)
