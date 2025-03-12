@@ -346,7 +346,7 @@ local ToolsDivider5 = ToolsTab:CreateDivider()
 local exploit = false
 
 local ToolsToggle6 = ToolsTab:CreateToggle({
-    Name = "XP Exploit",
+    Name = "XP Exploit DETECTED!!!!",
     CurrentValue = false,
     Flag = "ToolsToggle6",
     Callback = function(Value)
