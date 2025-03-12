@@ -1,6 +1,6 @@
-local data_version = "2.3.2"
-local data_versid = "PGjjptu7gpQZgcYP"
-local updmsg = "+XP Exploit (GUI)"
+local data_version = "2.3.3"
+local data_versid = "qhm4ZWO6X5fuIuF1"
+local updmsg = "+XP Exploit, +Redeem Codes (GUI)"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -38,6 +38,19 @@ local sunkenchestcoords = {
 -- Forsaken Shores
     {x = -2460, y = 130, z = 2047},
 } -- coords sourced from Fisch Wiki
+
+local codes = {
+    "THEKRAKEN",
+    "CARBON",
+    "SORRYGUYS",
+    "ATLANTEANSTORM",
+    "GOLDENTIDE",
+    "NewYear",
+    "FISCHMASDAY",
+    "NorthernExpedition",
+    "MERRYFISCHMAS",
+    "RFG",
+}
 
 local defaultConfig = {
     autoscan = true,
@@ -193,6 +206,7 @@ local data = {
     settingmsg = settingmsg,
     link = link,
     sunkenchestcoords = sunkenchestcoords,
+    codes = codes,
     defaultConfig = defaultConfig,
     ordered = ordered,
     defaultFishConfig = defaultFishConfig,

@@ -220,9 +220,18 @@ local HomeButton3 = HomeTab:CreateButton({
 
 local ToolsTab = Window:CreateTab("Tools", nil)
 
+local ToolsButton1 = ToolsTab:CreateButton({
+    Name = "Remove Fog (Permanent)",
+    Callback = function()
+        for _, code in data.codes do
+            game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("runcode"):FireServer(code)
+        end
+    end,
+})
+
 local ToolsSection1 = ToolsTab:CreateSection("Rendering")
 
-local ToolsButton1 = ToolsTab:CreateButton({
+local ToolsButton2 = ToolsTab:CreateButton({
     Name = "Remove Fog (Permanent)",
     Callback = function()
         local Sky = game:GetService("Lighting"):FindFirstChild("Sky")
@@ -420,9 +429,9 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
 
         while exploit do
             task.wait()
-            pcall(function()
+            task.spawn(pcall(function()
                 npc.Agaric.complete:InvokeServer()
-            end)
+            end))
             if alli.Parent ~= game.Players.LocalPlayer.Character then
                 cancelXP()
                 Rayfield:Notify({
