@@ -346,7 +346,7 @@ local ToolsDivider5 = ToolsTab:CreateDivider()
 local exploit = false
 
 local ToolsToggle6 = ToolsTab:CreateToggle({
-    Name = "XP Exploit DETECTED!!!!",
+    Name = "XP Exploit (Not detected)",
     CurrentValue = false,
     Flag = "ToolsToggle6",
     Callback = function(Value)
@@ -356,6 +356,12 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
             Rayfield:Notify({
                 Title = "XP Exploit",
                 Content = "Hold an Alligator! (Not consumed)",
+                Duration = 5,
+                Image = nil,
+            })
+            Rayfield:Notify({
+                Title = "Detected?",
+                Content = "It is not detected as many might say. The stats IS added but the excess stats ARE VOIDED ON REJOIN.",
                 Duration = 5,
                 Image = nil,
             })
