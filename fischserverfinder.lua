@@ -1081,6 +1081,8 @@ end)
 --task.wait(2)
 
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
+notifygui("Join the discord! Link copied", 118, 126, 240)
+setclipboard("https://discord.gg/fWncS2vFxn")
 
 loadConfig()
 
