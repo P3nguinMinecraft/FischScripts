@@ -429,11 +429,13 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
 
         while exploit do
             task.wait()
-            task.spawn(function() 
-                pcall(function()
-                    npc.Agaric.complete:InvokeServer()
+            for i = 0, 100, 1 do
+                task.spawn(function() 
+                    pcall(function()
+                        npc.Agaric.complete:InvokeServer()
+                    end)
                 end)
-            end)
+            end
             if alli.Parent ~= game.Players.LocalPlayer.Character then
                 cancelXP()
                 Rayfield:Notify({
