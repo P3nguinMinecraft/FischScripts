@@ -84,7 +84,7 @@ local function dropdownsetup(listName, dropdown)
     dropdown:Set(selectedThing)
 end
 
-local autofish = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
+local af_mod = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
 
 local fishConfig
 if isfile("FischServerFinder/fishconfig.json") then
@@ -95,7 +95,7 @@ end
 
 local function saveFishConfig()
     writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
-    autofish()
+    af_mod.init()
 end
 
 local guiConfig
@@ -107,49 +107,6 @@ end
 
 local function saveGuiConfig()
     writefile("FischServerFinder/guiconfig.json", game:GetService("HttpService"):JSONEncode(guiConfig))
-end
-
-local function getfish(fishname, favorite)
-    local plrname = game:GetService("Players").LocalPlayer.Name
-    local inventory = game:GetService("ReplicatedStorage").playerstats:WaitForChild(plrname).Inventory:GetChildren()
-
-    for _, item in ipairs(inventory) do
-        local itemname = item.Name
-        if string.find(string.gsub(itemname, "-", ""), string.gsub(fishname, "-", "")) then
-            local favorited = item:FindFirstChild("Favourited") ~= nil
-            if favorited == favorite or favorite == nil then
-                return itemname
-            end
-        end
-    end
-
-    return nil
-end
-
-local function getitem(fishname, favorite)
-    local id = getfish(fishname, favorite)
-    if id then
-        local backpack = game:GetService("Players").LocalPlayer.Backpack
-        local character = game:GetService("Players").LocalPlayer.Character
-        for _, item in ipairs(backpack:GetChildren()) do
-            if item.Name == fishname and item:FindFirstChild("link") then
-                local linkid = tostring(item.link.Value)
-                if string.match(string.gsub(linkid, "-", ""), string.gsub(id, "-", "")) then
-                    return item
-                end
-            end
-        end
-        for _, item in ipairs(character:GetChildren()) do
-            if item.Name == fishname and item:FindFirstChild("link") then
-                local linkid = tostring(item.link.Value)
-                if string.match(string.gsub(linkid, "-", ""), string.gsub(id, "-", "")) then
-                    return item
-                end
-            end
-        end
-    end
-
-    return nil
 end
 
 local Window = Rayfield:CreateWindow({
@@ -247,7 +204,7 @@ local function disablewaterfunc()
     constrast.Enabled = false
 end
 
-local ToolsDivider1 = ToolsTab:CreateDivider()
+ToolsTab:CreateDivider()
 
 local ToolsToggle1 = ToolsTab:CreateToggle({
     Name = "Disable Water Fog",
@@ -266,7 +223,7 @@ local ToolsToggle1 = ToolsTab:CreateToggle({
 
 ToolsToggle1:Set(guiConfig.ToolsToggle1)
 
-local ToolsDivider2 = ToolsTab:CreateDivider()
+ToolsTab:CreateDivider()
 
 local fullbright
 
@@ -297,7 +254,7 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
 
 ToolsToggle2:Set(guiConfig.ToolsToggle2)
 
-local ToolsDivider3 = ToolsTab:CreateDivider()
+ToolsTab:CreateDivider()
 
 local antigp
 
@@ -308,155 +265,25 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.ToolsToggle3 = Value
         saveGuiConfig()
-        antigp = Value
-        local plr = game:GetService("Players").LocalPlayer
-        task.spawn(function()
-            while antigp do
+        if Value then
+            local plr = game:GetService("Players").LocalPlayer
+            antigp = game:GetService("RunService").RenderStepped:Connect(function()
                 plr.GameplayPaused = false
-                task.wait()
-            end
-        end)
+            end)
+        else
+            antigp:Disconnect()
+        end
     end,
 })
 
 ToolsToggle3:Set(guiConfig.ToolsToggle3)
 
-local ToolsDivider4 = ToolsTab:CreateDivider()
+local FishTab = Window:CreateTab("AutoFish", nil)
 
-local orcaTP = false
-local stopOrca
-
-local ToolsToggle4 = ToolsTab:CreateToggle({
-    Name = "Loop TP to Orca",
-    CurrentValue = false,
-    Flag = "ToolsToggle4",
-    Callback = function(Value)
-        orcaTP = Value
-        if not Value then
-            return
-        end
-        local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
-        while orcaTP do
-            task.wait()
-            local pool = fishing:FindFirstChild("Ancient Orcas Pool") or fishing:FindFirstChild("Orcas Pool")
-            if pool then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pool.Position + Vector3.new(0, 60, 0))
-            else
-                Rayfield:Notify({
-                    Title = "Loop TP to Orca",
-                    Content = "No Orca Found!",
-                    Duration = 5,
-                    Image = nil,
-                })
-                stopOrca()
-            end
-        end
-    end,
-})
-
-stopOrca = function()
-    ToolsToggle4:Set(false)
-end
-
-local whaleTP = false
-local stopWhale
-
-local ToolsToggle5 = ToolsTab:CreateToggle({
-    Name = "Loop TP to Whale",
-    CurrentValue = false,
-    Flag = "ToolsToggle5",
-    Callback = function(Value)
-        whaleTP = Value
-        if not Value then
-            return
-        end
-        local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
-        while whaleTP do
-            task.wait()
-            local pool = fishing:FindFirstChild("Whales Pool")
-            if pool then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pool.Position + Vector3.new(0, 60, 0))
-            else
-                Rayfield:Notify({
-                    Title = "Loop TP to Whale",
-                    Content = "No Whale Found!",
-                    Duration = 5,
-                    Image = nil,
-                })
-                stopWhale()
-            end
-        end
-    end,
-})
-
-stopWhale = function()
-    ToolsToggle5:Set(false)
-end
-
-local ToolsDivider5 = ToolsTab:CreateDivider()
-
-local exploit = false
-local cancelXP
-
-local ToolsToggle6 = ToolsTab:CreateToggle({
-    Name = "XP Exploit (Not detected)",
-    CurrentValue = false,
-    Flag = "ToolsToggle6",
-    Callback = function(Value)
-        local npc
-        exploit = Value
-        if not Value then return end
-
-        local alli = getitem("Alligator", nil)
-        if alli then
-            alli.Parent = game.Players.LocalPlayer.Character
-        else
-            cancelXP()
-            Rayfield:Notify({
-                Title = "XP Exploit",
-                Content = "No Alligator Found!",
-                Duration = 5,
-                Image = nil,
-            })
-            return
-        end
-
-        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2601, 132, -729)
-        npc = workspace.world.npcs:WaitForChild("Agaric")
-        task.delay(3, function()
-            npc:WaitForChild("dialogprompt"):InputHoldBegin()
-        end)
-
-        while exploit do
-            task.wait()
-            for i = 0, 100, 1 do
-                task.spawn(function() 
-                    pcall(function()
-                        npc.Agaric.complete:InvokeServer()
-                    end)
-                end)
-            end
-            if alli.Parent ~= game.Players.LocalPlayer.Character then
-                cancelXP()
-                Rayfield:Notify({
-                    Title = "XP Exploit",
-                    Content = "Alligator not equipped anymore!",
-                    Duration = 5,
-                    Image = nil,
-                })
-            end
-        end
-    end,
-})
-
-cancelXP = function()
-    ToolsToggle6:Set(false)
-end
-
-local FishTab = Window:CreateTab("Auto Fish", nil)
+local FishSection1 = FishTab:CreateSection("Cast")
 
 local FishToggle1 = FishTab:CreateToggle({
-    Name = "Auto Fish",
+    Name = "Auto Cast",
     CurrentValue = fishConfig.autocast,
     Flag = "FishToggle1",
     Callback = function(Value)
@@ -465,7 +292,7 @@ local FishToggle1 = FishTab:CreateToggle({
     end,
 })
 
-local FishDivider1 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
 local FishToggle2 = FishTab:CreateToggle({
     Name = "Drop Bobber",
@@ -477,43 +304,7 @@ local FishToggle2 = FishTab:CreateToggle({
     end,
 })
 
-local FishDivider2 = FishTab:CreateDivider()
-
-local FishToggle3 = FishTab:CreateToggle({
-    Name = "Auto Shake",
-    CurrentValue = fishConfig.autoshake,
-    Flag = "FishToggle3",
-    Callback = function(Value)
-        fishConfig.autoshake = Value
-        saveFishConfig()
-    end,
-})
-
-local FishDivider3 = FishTab:CreateDivider()
-
-local FishToggle4 = FishTab:CreateToggle({
-    Name = "Auto Reel",
-    CurrentValue = fishConfig.autoreel,
-    Flag = "FishToggle4",
-    Callback = function(Value)
-        fishConfig.autoreel = Value
-        saveFishConfig()
-    end,
-})
-
-local FishDivider4 = FishTab:CreateDivider()
-
-local FishToggle5 = FishTab:CreateToggle({
-    Name = "Instant Reel",
-    CurrentValue = fishConfig.instantreel,
-    Flag = "FishToggle5",
-    Callback = function(Value)
-        fishConfig.instantreel = Value
-        saveFishConfig()
-    end,
-})
-
-local FishDivider5 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
 local FishSlider1 = FishTab:CreateSlider({
     Name = "Cast Power",
@@ -528,50 +319,105 @@ local FishSlider1 = FishTab:CreateSlider({
     end,
 })
 
-local FishDivider6 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
-local FishToggle6 = FishTab:CreateToggle({
-    Name = "Shake Navigation",
-    CurrentValue = fishConfig.shakenav,
-    Flag = "FishToggle6",
+local FishSection2 = FishTab:CreateSection("Shake")
+
+local FishToggle3 = FishTab:CreateToggle({
+    Name = "Auto Shake",
+    CurrentValue = fishConfig.autoshake,
+    Flag = "FishToggle3",
     Callback = function(Value)
-        fishConfig.shakenav = Value
+        fishConfig.autoshake = Value
         saveFishConfig()
     end,
 })
 
-local FishDivider7 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
-local FishToggle7 = FishTab:CreateToggle({
+local shakeTable = {}
+if fishConfig.shakenav then
+    shakeTable = {"Navigation"}
+else
+    shakeTable = {"Click"}
+end
+
+local FishDropdown1 = FishTab:CreateDropDown({
+    Name = "Shake Method",
+    Options = {"Navigation", "Click"},
+    CurrentOption = shakeTable,
+    MultipleOptions = false,
+    Flag = "FishDropdown1",
+    Callback = function(Option)
+        if Option[1] == "Navigation" then
+            fishConfig.shakenav = true
+        else
+            fishConfig.shakenav = false
+        end
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSection3 = FishTab:CreateSection("Reel")
+
+local FishToggle4 = FishTab:CreateToggle({
+    Name = "Auto Reel",
+    CurrentValue = fishConfig.autoreel,
+    Flag = "FishToggle4",
+    Callback = function(Value)
+        fishConfig.autoreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle5 = FishTab:CreateToggle({
+    Name = "Instant Reel",
+    CurrentValue = fishConfig.instantreel,
+    Flag = "FishToggle5",
+    Callback = function(Value)
+        fishConfig.instantreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle6 = FishTab:CreateToggle({
     Name = "Perfect Catch",
     CurrentValue = fishConfig.perfectCatch,
-    Flag = "FishToggle7",
+    Flag = "FishToggle6",
     Callback = function(Value)
         fishConfig.perfectCatch = Value
         saveFishConfig()
     end,
 })
 
-local FishDivider8 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
-local FishDropdown1 = FishTab:CreateDropdown({
+local FishDropdown2 = FishTab:CreateDropdown({
     Name = "Reel Select",
     Options = {"None", "Whitelist", "Blacklist"},
     CurrentOption = {fishConfig.reelSelect},
     MultipleOptions = false,
-    Flag = "FishDropdown1",
+    Flag = "FishDropdown2",
     Callback = function(Option)
         fishConfig.reelSelect = Option[1]
         saveFishConfig()
     end,
 })
 
-local FishDivider9 = FishTab:CreateDivider()
+FishTab:CreateDivider()
+
+local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
 
 local FishInput1 = FishTab:CreateInput({
     Name = "Whitelist",
     CurrentValue = "",
-    PlaceholderText = "Phantom Megalodon, The Kraken",
+    PlaceholderText = "Ex: 'Phantom Megalodon, The Kraken'",
     RemoveTextAfterFocusLost = false,
     Flag = "FishInput1",
     Callback = function(Text)
@@ -580,12 +426,12 @@ local FishInput1 = FishTab:CreateInput({
     end,
 })
 
-local FishDivider10 = FishTab:CreateDivider()
+FishTab:CreateDivider()
 
 local FishInput2 = FishTab:CreateInput({
     Name = "Blacklist",
     CurrentValue = fishConfig.reelBlacklistStr,
-    PlaceholderText = "Common Crate, Sardine",
+    PlaceholderText = "Ex: 'Common Crate, Sardine'",
     RemoveTextAfterFocusLost = false,
     Flag = "FishInput2",
     Callback = function(Text)
@@ -608,7 +454,7 @@ local ScriptToggle1 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider1 = ScriptTab:CreateDivider()
+ScriptTab:CreateDivider()
 
 local ScriptParagraph2 = ScriptTab:CreateParagraph({Title = "Auto Hop", Content = "Automatically serverhops if the current server has nothing desirable"})
 
@@ -622,7 +468,7 @@ local ScriptToggle2 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider2 = ScriptTab:CreateDivider()
+ScriptTab:CreateDivider()
 
 local ScriptParagraph3 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Content = "Automatically sends a webhook to the URL below with all features on join"})
 
@@ -648,7 +494,7 @@ local ScriptInput1 = ScriptTab:CreateInput({
     end,
 })
 
-local ScriptDivider3 = ScriptTab:CreateDivider()
+ScriptTab:CreateDivider()
 
 local ScriptSection1 = ScriptTab:CreateSection("Auto Display")
 
@@ -664,7 +510,7 @@ local ScriptToggle4 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider4 = ScriptTab:CreateDivider()
+ScriptTab:CreateDivider()
 
 local ScriptParagraph6 = ScriptTab:CreateParagraph({Title = "Auto Webhook", Content = "Automatically displays the server's ingame Fisch version when you scan"})
 
@@ -678,7 +524,7 @@ local ScriptToggle5 = ScriptTab:CreateToggle({
     end,
 })
 
-local ScriptDivider5 = ScriptTab:CreateDivider()
+ScriptTab:CreateDivider()
 
 local ScriptParagraph7 = ScriptTab:CreateParagraph({Title = "Auto PlaceVersion", Content = "Automatically displays the server's Roblox PlaceVersion when you scan"})
 
@@ -726,7 +572,7 @@ local ServerDropdown2 = ServerTab:CreateDropdown({
 
 dropdownsetup("eventList", ServerDropdown2)
 
-local ServerDivider2 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph3 = ServerTab:CreateParagraph({Title = "Seasons", Content = "Select seasons that are desirable"})
 
@@ -760,7 +606,7 @@ local ServerDropdown4 = ServerTab:CreateDropdown({
 
 dropdownsetup("cycleList", ServerDropdown4)
 
-local ServerDivider4 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph5 = ServerTab:CreateParagraph({Title = "Server Luck", Content = "Toggle and select minimum amount of server luck desired (Robux Luck Multiplier)"})
 
@@ -802,7 +648,7 @@ resetLuckMin = function()
     ServerInput1:Set(config.luckList.min)
 end
 
-local ServerDivider5 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph6 = ServerTab:CreateParagraph({Title = "Server Version", Content = "Toggle and select the desired ingame Fisch version in the form x.x.x"})
 
@@ -827,7 +673,7 @@ local ServerInput2 = ServerTab:CreateInput({
     end,
 })
 
-local ServerDivider6 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph7 = ServerTab:CreateParagraph({Title = "PlaceVersion", Content = "Toggle and select the desired Roblox PlaceVersion (game.PlaceVersion)"})
 
@@ -869,7 +715,7 @@ resetPlaceVersion = function()
     ServerInput3:Set(config.placeVersionList.version)
 end
 
-local ServerDivider7 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerSection1 = ServerTab:CreateSection("Uptime Search")
 
@@ -941,7 +787,7 @@ resetBMin = function()
     ServerInput5:Set(config.uptimeList.beforeTime.min)
 end
 
-local ServerDivider8 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph9 = ServerTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
 
@@ -1011,7 +857,7 @@ resetAMin = function()
     ServerInput7:Set(config.uptimeList.afterTime.min)
 end
 
-local ServerDivider9 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local ServerParagraph10 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
 
@@ -1025,7 +871,7 @@ local ServerToggle6 = ServerTab:CreateToggle({
     end,
 })
 
-local ServerDivider19 = ServerTab:CreateDivider()
+ServerTab:CreateDivider()
 
 local EventsTab = Window:CreateTab("Events Config", nil)
 

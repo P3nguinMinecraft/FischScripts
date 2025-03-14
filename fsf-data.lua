@@ -1,6 +1,6 @@
-local data_version = "2.3.3"
-local data_versid = "qhm4ZWO6X5fuIuF1"
-local updmsg = "+XP Exploit, +Redeem Codes (GUI)"
+local version = "2.3.4"
+local versid = "TswoN4hGS6XvkTAv"
+local updmsg = "-XP Exploit (Patched), ~Updated AntiGamePaused"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -158,8 +158,8 @@ local defaultConfig = {
         forcehop = false,
     },
 
-    version = data_version,
-    versid = data_versid,
+    version = version,
+    versid = versid,
 }
 
 local ordered = {
@@ -199,8 +199,8 @@ local defaultGuiConfig = {
 }
 
 local data = {
-    version = data_version,
-    versid = data_versid,
+    version = version,
+    versid = versid,
     updmsg = updmsg,
     settingchanged = settingchanged,
     settingmsg = settingmsg,

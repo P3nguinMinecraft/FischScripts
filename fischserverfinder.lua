@@ -23,7 +23,7 @@ local config
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 local scriptvers = data.version
 local checkteleporting = false
-local loadedmsg = false
+local antigp
 local chestfound = false
 local desiredserver = false
 local scheduledhop = false
@@ -64,7 +64,7 @@ loadConfig = function()
         end)
     end
 
-    if not string.match(config.versid, data.versid) then
+    if not string.match(config.versid, data.versid) or not string.match(config.version, data.version) then
         local function updateTable(default, previous)
             local updated = {}
 
@@ -790,14 +790,15 @@ end
 claimsunkenchest = function()
     if not haschildren(activeChestsFolder) then return end
     local chests = activeChestsFolder:FindFirstChild("Pad").Chests
-    local antigp = true
 
-    task.spawn(function()
-        local plr = game:GetService("Players").LocalPlayer
-        while antigp do
-            plr.GameplayPaused = false
-            task.wait()
-        end
+    if antigp then
+        antigp:Disconnect()
+        antigp = nil
+    end
+
+    local plr = game:GetService("Players").LocalPlayer
+    antigp = game:GetService("RunService").RenderStepped:Connect(function()
+        plr.GameplayPaused = false
     end)
 
     for _, chest in ipairs(chests:GetChildren()) do
@@ -820,7 +821,10 @@ claimsunkenchest = function()
         end
     end
 
-    antigp = false
+    if antigp then
+        antigp:Disconnect()
+        antigp = nil
+    end
 
     if config.sunkenchestList.hopafterclaim then
         task.wait(4)
