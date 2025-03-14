@@ -50,6 +50,7 @@ local codes = {
     "NorthernExpedition",
     "MERRYFISCHMAS",
     "RFG",
+    "SorryReward",
 }
 
 local defaultConfig = {
