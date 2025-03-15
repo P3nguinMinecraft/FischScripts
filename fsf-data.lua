@@ -72,6 +72,7 @@ local zoneblacklist = {
     "Canal",
     "Vertigo",
     "Isonade",
+    "Lava",
 }
 
 local defaultConfig = {
