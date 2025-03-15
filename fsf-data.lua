@@ -1,6 +1,6 @@
-local version = "2.3.4"
-local versid = "TswoN4hGS6XvkTAv"
-local updmsg = "-XP Exploit (Patched), ~Updated AntiGamePaused"
+local version = "2.3.5"
+local versid = "omOOTPkXEkeWfshP"
+local updmsg = "+ send zones (for data collection)"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -51,6 +51,27 @@ local codes = {
     "MERRYFISCHMAS",
     "RFG",
     "SorryReward",
+}
+
+local zoneblacklist = {
+    "Moosewood",
+    "Ocean",
+    "Roslit",
+    "Snowcap",
+    "Mushgrove",
+    "Sunstone",
+    "Desolate",
+    "Harvesters",
+    "Ancient Isle",
+    "Forsaken",
+    "Depths",
+    "Terrapin",
+    "Archives",
+    "Arch",
+    "Atlantean",
+    "Canal",
+    "Vertigo",
+    "Isonade",
 }
 
 local defaultConfig = {
@@ -208,6 +229,7 @@ local data = {
     link = link,
     sunkenchestcoords = sunkenchestcoords,
     codes = codes,
+    zoneblacklist = zoneblacklist,
     defaultConfig = defaultConfig,
     ordered = ordered,
     defaultFishConfig = defaultFishConfig,

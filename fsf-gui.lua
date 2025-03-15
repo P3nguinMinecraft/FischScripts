@@ -175,6 +175,26 @@ local HomeButton3 = HomeTab:CreateButton({
     end,
 })
 
+HomeTab:CreateDivider()
+
+local zonecd = -1
+
+local HomeButton4 = HomeTab:CreateButton({
+    Name = "Send Zones",
+    Callback = function()
+        if tick() - zonecd > 30 then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/helper/sendzones.lua"))()
+        else
+            Rayfield:Notify({
+                Title = "Send Zones",
+                Content = "You can send again in " .. tostring(math.floor(tick() - zonecd)) .. " seconds!",
+                Duration = 5,
+                Image = nil,
+            })
+        end
+    end,
+})
+
 local ToolsTab = Window:CreateTab("Tools", nil)
 
 local ToolsButton1 = ToolsTab:CreateButton({
@@ -266,9 +286,8 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
         guiConfig.ToolsToggle3 = Value
         saveGuiConfig()
         if Value then
-            local plr = game:GetService("Players").LocalPlayer
             antigp = game:GetService("RunService").RenderStepped:Connect(function()
-                plr.GameplayPaused = false
+                game:GetService("Players").LocalPlayer.GameplayPaused = false
             end)
         else
             antigp:Disconnect()
@@ -439,6 +458,29 @@ local FishInput2 = FishTab:CreateInput({
         saveFishConfig()
     end,
 })
+--[[
+local AreaTab = Window:CreateTab("Areas", nil)
+
+local AreaSection1 = AreaTab:CreateSection("Zone Fishing")
+
+local AreaToggle1 = AreaTab:CreateToggle({
+    Name = "Zone Fishing",
+    CurrentValue = false,
+    Flag = "AreaToggle1",
+    Callback = function(Value)
+        guiConfig.zonetoggle = Value
+    end,
+})
+
+local AreaToggle2 = AreaTab:CreateToggle({
+    Name = "Event Zone Fishing",
+    CurrentValue = false,
+    Flag = "AreaToggle2",
+    Callback = function(Value)
+        guiConfig.eventzonetoggle = Value
+    end,
+})
+]]
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 
