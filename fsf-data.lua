@@ -1,8 +1,8 @@
-local version = "2.3.5"
-local versid = "omOOTPkXEkeWfshP"
-local updmsg = "+ send zones (for data collection)"
-local settingchanged = false
-local settingmsg = ""
+local version = "2.3.6"
+local versid = "MksaNgiTlAmdYYli"
+local updmsg = "+Update to new game data"
+local settingchanged = true
+local settingmsg = "+ Leprechaun event fish! Discord if lucky chests work (same as sunken)"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -155,13 +155,18 @@ local defaultConfig = {
         ["Great White Shark"] = false,
         ["Great Hammerhead Shark"] = false,
         ["Whale Shark"] = false,
-        ["The Kraken Pool"] = true,
+        ["The Kraken Pool"] = false,
         ["Ancient Kraken Pool"] = true,
         ["Orcas Pool"] = true,
         ["Ancient Orcas Pool"] = true,
         ["Forsaken Veil - Scylla"] = true,
-        ["Whales Pool"] = true,
+        ["Whales Pool"] = false,
         ["Moby"] = true,
+        ["Rowdy McCharm"] = true,
+        ["O'Mango Goldgrin"] = true,
+        ["Sunny O'Coin"] = true,
+        ["Blarney McBreeze"] = true,
+        ["Plumrick O'Luck"] = true,
     },
 
     meteorList = {
@@ -190,13 +195,14 @@ local ordered = {
     eventList = {"Night of the Fireflies", "Night of the Luminous", "Shiny Surge", "Mutation Surge",},
     seasonList = {"Spring", "Summer", "Fall", "Winter",},
     cycleList = {"Day", "Night",},
-    zoneList = { 
+    zoneList = {
         "Megalodon Default", "Megalodon Ancient",
         "Great White Shark", "Great Hammerhead Shark", "Whale Shark", 
         "The Kraken Pool", "Ancient Kraken Pool",
         "Orcas Pool", "Ancient Orcas Pool",
         "Forsaken Veil - Scylla",
         "Whales Pool", "Moby",
+        "Rowdy McCharm", "O'Mango Goldgrin", "Sunny O'Coin", "Blarney McBreeze", "Plumrick O'Luck",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 }
