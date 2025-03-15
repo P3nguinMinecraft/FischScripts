@@ -84,20 +84,6 @@ local function dropdownsetup(listName, dropdown)
     dropdown:Set(selectedThing)
 end
 
-local af_mod = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
-
-local fishConfig
-if isfile("FischServerFinder/fishconfig.json") then
-    fishConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/fishconfig.json"))
-else
-    fishConfig = data.defaultFishConfig
-end
-
-local function saveFishConfig()
-    writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
-    af_mod.init()
-end
-
 local guiConfig
 if isfile("FischServerFinder/guiconfig.json") then
     guiConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/guiconfig.json"))
@@ -297,167 +283,6 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
 
 ToolsToggle3:Set(guiConfig.ToolsToggle3)
 
-local FishTab = Window:CreateTab("AutoFish", nil)
-
-local FishSection1 = FishTab:CreateSection("Cast")
-
-local FishToggle1 = FishTab:CreateToggle({
-    Name = "Auto Cast",
-    CurrentValue = fishConfig.autocast,
-    Flag = "FishToggle1",
-    Callback = function(Value)
-        fishConfig.autocast = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle2 = FishTab:CreateToggle({
-    Name = "Drop Bobber",
-    CurrentValue = fishConfig.dropbobber,
-    Flag = "FishToggle2",
-    Callback = function(Value)
-        fishConfig.dropbobber = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSlider1 = FishTab:CreateSlider({
-    Name = "Cast Power",
-    Range = {0, 100},
-    Increment = 1,
-    Suffix = "%",
-    CurrentValue = fishConfig.castpower,
-    Flag = "FishSlider1",
-    Callback = function(Value)
-        fishConfig.castpower = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSection2 = FishTab:CreateSection("Shake")
-
-local FishToggle3 = FishTab:CreateToggle({
-    Name = "Auto Shake",
-    CurrentValue = fishConfig.autoshake,
-    Flag = "FishToggle3",
-    Callback = function(Value)
-        fishConfig.autoshake = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local shakeTable = {}
-if fishConfig.shakenav then
-    shakeTable = {"Navigation"}
-else
-    shakeTable = {"Click"}
-end
-
-local FishDropdown1 = FishTab:CreateDropDown({
-    Name = "Shake Method",
-    Options = {"Navigation", "Click"},
-    CurrentOption = shakeTable,
-    MultipleOptions = false,
-    Flag = "FishDropdown1",
-    Callback = function(Option)
-        if Option[1] == "Navigation" then
-            fishConfig.shakenav = true
-        else
-            fishConfig.shakenav = false
-        end
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSection3 = FishTab:CreateSection("Reel")
-
-local FishToggle4 = FishTab:CreateToggle({
-    Name = "Auto Reel",
-    CurrentValue = fishConfig.autoreel,
-    Flag = "FishToggle4",
-    Callback = function(Value)
-        fishConfig.autoreel = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle5 = FishTab:CreateToggle({
-    Name = "Instant Reel",
-    CurrentValue = fishConfig.instantreel,
-    Flag = "FishToggle5",
-    Callback = function(Value)
-        fishConfig.instantreel = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle6 = FishTab:CreateToggle({
-    Name = "Perfect Catch",
-    CurrentValue = fishConfig.perfectCatch,
-    Flag = "FishToggle6",
-    Callback = function(Value)
-        fishConfig.perfectCatch = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishDropdown2 = FishTab:CreateDropdown({
-    Name = "Reel Select",
-    Options = {"None", "Whitelist", "Blacklist"},
-    CurrentOption = {fishConfig.reelSelect},
-    MultipleOptions = false,
-    Flag = "FishDropdown2",
-    Callback = function(Option)
-        fishConfig.reelSelect = Option[1]
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
-
-local FishInput1 = FishTab:CreateInput({
-    Name = "Whitelist",
-    CurrentValue = "",
-    PlaceholderText = "Ex: 'Phantom Megalodon, The Kraken'",
-    RemoveTextAfterFocusLost = false,
-    Flag = "FishInput1",
-    Callback = function(Text)
-        fishConfig.reelWhitelistStr = Text
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishInput2 = FishTab:CreateInput({
-    Name = "Blacklist",
-    CurrentValue = fishConfig.reelBlacklistStr,
-    PlaceholderText = "Ex: 'Common Crate, Sardine'",
-    RemoveTextAfterFocusLost = false,
-    Flag = "FishInput2",
-    Callback = function(Text)
-        fishConfig.reelBlacklistStr = Text
-        saveFishConfig()
-    end,
-})
 --[[
 local AreaTab = Window:CreateTab("Areas", nil)
 
@@ -1112,5 +937,183 @@ mergeConfig(data.defaultFishConfig, fishConfig)
 saveFishConfig()
 mergeConfig(data.defaultGuiConfig, guiConfig)
 saveGuiConfig()
+
+print("[FSF-G] Everything but AutoFish loaded: If xeno there will be error :(")
+
+local af_mod = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
+
+local fishConfig
+if isfile("FischServerFinder/fishconfig.json") then
+    fishConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/fishconfig.json"))
+else
+    fishConfig = data.defaultFishConfig
+end
+
+local function saveFishConfig()
+    writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
+    af_mod.init()
+end
+
+local FishTab = Window:CreateTab("AutoFish", nil)
+
+local FishSection1 = FishTab:CreateSection("Cast")
+
+local FishToggle1 = FishTab:CreateToggle({
+    Name = "Auto Cast",
+    CurrentValue = fishConfig.autocast,
+    Flag = "FishToggle1",
+    Callback = function(Value)
+        fishConfig.autocast = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle2 = FishTab:CreateToggle({
+    Name = "Drop Bobber",
+    CurrentValue = fishConfig.dropbobber,
+    Flag = "FishToggle2",
+    Callback = function(Value)
+        fishConfig.dropbobber = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSlider1 = FishTab:CreateSlider({
+    Name = "Cast Power",
+    Range = {0, 100},
+    Increment = 1,
+    Suffix = "%",
+    CurrentValue = fishConfig.castpower,
+    Flag = "FishSlider1",
+    Callback = function(Value)
+        fishConfig.castpower = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSection2 = FishTab:CreateSection("Shake")
+
+local FishToggle3 = FishTab:CreateToggle({
+    Name = "Auto Shake",
+    CurrentValue = fishConfig.autoshake,
+    Flag = "FishToggle3",
+    Callback = function(Value)
+        fishConfig.autoshake = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local shakeTable = {}
+if fishConfig.shakenav then
+    shakeTable = {"Navigation"}
+else
+    shakeTable = {"Click"}
+end
+
+local FishDropdown1 = FishTab:CreateDropDown({
+    Name = "Shake Method",
+    Options = {"Navigation", "Click"},
+    CurrentOption = shakeTable,
+    MultipleOptions = false,
+    Flag = "FishDropdown1",
+    Callback = function(Option)
+        if Option[1] == "Navigation" then
+            fishConfig.shakenav = true
+        else
+            fishConfig.shakenav = false
+        end
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSection3 = FishTab:CreateSection("Reel")
+
+local FishToggle4 = FishTab:CreateToggle({
+    Name = "Auto Reel",
+    CurrentValue = fishConfig.autoreel,
+    Flag = "FishToggle4",
+    Callback = function(Value)
+        fishConfig.autoreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle5 = FishTab:CreateToggle({
+    Name = "Instant Reel",
+    CurrentValue = fishConfig.instantreel,
+    Flag = "FishToggle5",
+    Callback = function(Value)
+        fishConfig.instantreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle6 = FishTab:CreateToggle({
+    Name = "Perfect Catch",
+    CurrentValue = fishConfig.perfectCatch,
+    Flag = "FishToggle6",
+    Callback = function(Value)
+        fishConfig.perfectCatch = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishDropdown2 = FishTab:CreateDropdown({
+    Name = "Reel Select",
+    Options = {"None", "Whitelist", "Blacklist"},
+    CurrentOption = {fishConfig.reelSelect},
+    MultipleOptions = false,
+    Flag = "FishDropdown2",
+    Callback = function(Option)
+        fishConfig.reelSelect = Option[1]
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
+
+local FishInput1 = FishTab:CreateInput({
+    Name = "Whitelist",
+    CurrentValue = "",
+    PlaceholderText = "Ex: 'Phantom Megalodon, The Kraken'",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput1",
+    Callback = function(Text)
+        fishConfig.reelWhitelistStr = Text
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishInput2 = FishTab:CreateInput({
+    Name = "Blacklist",
+    CurrentValue = fishConfig.reelBlacklistStr,
+    PlaceholderText = "Ex: 'Common Crate, Sardine'",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput2",
+    Callback = function(Text)
+        fishConfig.reelBlacklistStr = Text
+        saveFishConfig()
+    end,
+})
 
 print("[FSF-G] Loaded!")
