@@ -1,8 +1,8 @@
-local version = "2.3.6"
-local versid = "MksaNgiTlAmdYYli"
-local updmsg = "+Update to new game data"
+local version = "2.4"
+local versid = "K0b0Wrfcliea1PcK"
+local updmsg = "+ Zone Fishing"
 local settingchanged = true
-local settingmsg = "+ Leprechaun event fish! Discord if lucky chests work (same as sunken)"
+local settingmsg = "Currently very limited selections, more as I gather data!"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -73,6 +73,28 @@ local zoneblacklist = {
     "Vertigo",
     "Isonade",
     "Lava",
+}
+
+local zoneData = {
+    zones = {
+        ["Ocean"] = {
+            x = 0,
+            y = 0,
+            z = 0,
+        },
+    },
+    eventzones = {
+        ["Orcas Pool"] = {
+            x = 0,
+            y = 60,
+            z = 0
+        },
+        ["Whales Pool"] = {
+            x = 0,
+            y = 60,
+            z = 0,
+        },
+    },
 }
 
 local defaultConfig = {
@@ -225,6 +247,16 @@ local defaultGuiConfig = {
     ToolsToggle1 = false,
     ToolsToggle2 = false,
     ToolsToggle3 = false,
+    ToolsToggle4 = false,
+    zonetoggle = false,
+    eventzonetoggle = false,
+    zones = {
+        ["Ocean"] = false,
+    },
+    eventzones = {
+        ["Orcas Pool"] = false,
+        ["Whales Pool"] = false,
+    }
 }
 
 local data = {
@@ -236,7 +268,9 @@ local data = {
     link = link,
     sunkenchestcoords = sunkenchestcoords,
     codes = codes,
-    zoneblacklist = zoneblacklist,
+    zoneblacklist = {},
+    --zoneblacklist = zoneblacklist,
+    zoneData = zoneData,
     defaultConfig = defaultConfig,
     ordered = ordered,
     defaultFishConfig = defaultFishConfig,

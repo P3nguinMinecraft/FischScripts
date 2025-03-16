@@ -22,8 +22,6 @@ else
     config = data.defaultConfig
 end
 
-local ordered = data.ordered
-
 local function saveConfig()
     if not writefile then return end
     local encode = game:GetService("HttpService"):JSONEncode(config)
@@ -52,8 +50,8 @@ local function mergeConfig(default, conf)
     return conf
 end
 
-local function dropdownconvert(listName, options)
-    local list = config[listName]
+local function dropdownconvert(conf, listName, options)
+    local list = conf[listName]
     for name, _ in pairs(list) do
         list[name] = false
         for _, optionName in ipairs(options) do
@@ -63,14 +61,13 @@ local function dropdownconvert(listName, options)
             end
         end
     end
-    saveConfig()
 end
 
-local function dropdownsetup(listName, dropdown)
+local function dropdownsetup(conf, listName, dropdown)
     local allThing = {}
     local selectedThing = {}
-    local list = config[listName]
-    local order = ordered[listName]
+    local list = conf[listName]
+    local order = data.ordered[listName]
 
     for _, name in ipairs(order) do
         local enabled = list[name]
@@ -82,6 +79,20 @@ local function dropdownsetup(listName, dropdown)
 
     dropdown:Refresh(allThing)
     dropdown:Set(selectedThing)
+end
+
+local af_mod = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
+
+local fishConfig
+if isfile("FischServerFinder/fishconfig.json") then
+    fishConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/fishconfig.json"))
+else
+    fishConfig = data.defaultFishConfig
+end
+
+local function saveFishConfig()
+    writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
+    af_mod.init()
 end
 
 local guiConfig
@@ -168,8 +179,8 @@ local zonecd = -1
 local HomeButton4 = HomeTab:CreateButton({
     Name = "Send Zones",
     Callback = function()
-        if tick() - zonecd > 30 then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/helper/sendzones.lua"))()
+        if tick() - zonecd > 60 then
+            loadstring(game:HttpGet("https://pastebin.com/raw/FWmUKSr6"))()
         else
             Rayfield:Notify({
                 Title = "Send Zones",
@@ -223,6 +234,7 @@ local ToolsToggle1 = ToolsTab:CreateToggle({
             disablewater = game:GetService("RunService").RenderStepped:Connect(disablewaterfunc)
         else
             disablewater:Disconnect()
+            disablewater = nil
         end
     end,
 })
@@ -254,6 +266,7 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
             fullbright = game:GetService("RunService").RenderStepped:Connect(fullbrightfunc)
         else
             fullbright:Disconnect()
+            fullbright = nil
         end
     end
 })
@@ -277,23 +290,266 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
             end)
         else
             antigp:Disconnect()
+            antigp = nil
         end
     end,
 })
 
 ToolsToggle3:Set(guiConfig.ToolsToggle3)
 
---[[
+local instantinteract
+
+local ToolsToggle4 = ToolsTab:CreateToggle({
+    Name = "Instant Interaction",
+    CurrentValue = false,
+    Flag = "ToolsToggle4",
+    Callback = function(Value)
+        guiConfig.ToolsToggle3 = Value
+        saveGuiConfig()
+        if Value then
+            if fireproximityprompt then
+                instantinteract = game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(prompt)
+                    fireproximityprompt(prompt)
+                end)
+            else
+                Rayfield:Notify({
+                    Title = "Instant Interaction",
+                    Content = "Your executor does not support fireproximityprompt!",
+                    Duration = 5,
+                    Image = nil,
+                })
+            end
+        else
+            instantinteract:Disconnect()
+            instantinteract = nil
+        end
+    end,
+})
+
+ToolsToggle4:Set(guiConfig.ToolsToggle4)
+
+local FishTab = Window:CreateTab("AutoFish", nil)
+
+local FishSection1 = FishTab:CreateSection("Cast")
+
+local FishToggle1 = FishTab:CreateToggle({
+    Name = "Auto Cast",
+    CurrentValue = fishConfig.autocast,
+    Flag = "FishToggle1",
+    Callback = function(Value)
+        fishConfig.autocast = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle2 = FishTab:CreateToggle({
+    Name = "Drop Bobber",
+    CurrentValue = fishConfig.dropbobber,
+    Flag = "FishToggle2",
+    Callback = function(Value)
+        fishConfig.dropbobber = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSlider1 = FishTab:CreateSlider({
+    Name = "Cast Power",
+    Range = {0, 100},
+    Increment = 1,
+    Suffix = "%",
+    CurrentValue = fishConfig.castpower,
+    Flag = "FishSlider1",
+    Callback = function(Value)
+        fishConfig.castpower = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSection2 = FishTab:CreateSection("Shake")
+
+local FishToggle3 = FishTab:CreateToggle({
+    Name = "Auto Shake",
+    CurrentValue = fishConfig.autoshake,
+    Flag = "FishToggle3",
+    Callback = function(Value)
+        fishConfig.autoshake = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local shakeTable = {}
+if fishConfig.shakenav then
+    shakeTable = {"Navigation"}
+else
+    shakeTable = {"Click"}
+end
+
+local FishDropdown1 = FishTab:CreateDropDown({
+    Name = "Shake Method",
+    Options = {"Navigation", "Click"},
+    CurrentOption = shakeTable,
+    MultipleOptions = false,
+    Flag = "FishDropdown1",
+    Callback = function(Option)
+        if Option[1] == "Navigation" then
+            fishConfig.shakenav = true
+        else
+            fishConfig.shakenav = false
+        end
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishSection3 = FishTab:CreateSection("Reel")
+
+local FishToggle4 = FishTab:CreateToggle({
+    Name = "Auto Reel",
+    CurrentValue = fishConfig.autoreel,
+    Flag = "FishToggle4",
+    Callback = function(Value)
+        fishConfig.autoreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle5 = FishTab:CreateToggle({
+    Name = "Instant Reel",
+    CurrentValue = fishConfig.instantreel,
+    Flag = "FishToggle5",
+    Callback = function(Value)
+        fishConfig.instantreel = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishToggle6 = FishTab:CreateToggle({
+    Name = "Perfect Catch",
+    CurrentValue = fishConfig.perfectCatch,
+    Flag = "FishToggle6",
+    Callback = function(Value)
+        fishConfig.perfectCatch = Value
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishDropdown2 = FishTab:CreateDropdown({
+    Name = "Reel Select",
+    Options = {"None", "Whitelist", "Blacklist"},
+    CurrentOption = {fishConfig.reelSelect},
+    MultipleOptions = false,
+    Flag = "FishDropdown2",
+    Callback = function(Option)
+        fishConfig.reelSelect = Option[1]
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
+
+local FishInput1 = FishTab:CreateInput({
+    Name = "Whitelist",
+    CurrentValue = "",
+    PlaceholderText = "Ex: 'Phantom Megalodon, The Kraken'",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput1",
+    Callback = function(Text)
+        fishConfig.reelWhitelistStr = Text
+        saveFishConfig()
+    end,
+})
+
+FishTab:CreateDivider()
+
+local FishInput2 = FishTab:CreateInput({
+    Name = "Blacklist",
+    CurrentValue = fishConfig.reelBlacklistStr,
+    PlaceholderText = "Ex: 'Common Crate, Sardine'",
+    RemoveTextAfterFocusLost = false,
+    Flag = "FishInput2",
+    Callback = function(Text)
+        fishConfig.reelBlacklistStr = Text
+        saveFishConfig()
+    end,
+})
+
+local prevLocation
+local zonefreeze
+local function zonefreezefunc()
+    local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
+    local zone, coords
+
+    for i = #data.ordered.eventzones, 1, -1 do
+        if zone or not guiConfig.eventzonetoggle then break end
+        local name = data.ordered.events[i]
+        if guiConfig.eventzones[name] then
+            zone = fishing:FindFirstChild(name)
+            if zone then
+                coords = data.zoneData.eventzones[name]
+                if not coords then coords = {x = 0, y = 0, z = 0} end
+                break
+            end
+        end
+    end
+
+    for i = #data.ordered.zones, 1, -1 do
+        if zone or not guiConfig.zonetoggle then break end
+        local name = data.ordered.events[i]
+        if guiConfig.zones[name] then
+            zone = fishing:FindFirstChild(name)
+            if zone then
+                coords = data.zoneData.zones[name]
+                if not coords then coords = {x = 0, y = 0, z = 0} end
+                break
+            end
+        end
+    end
+
+    if not zone or not coords then return end
+
+    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(zone.Position + Vector3.new(coords.x, coords.y, coords.z))
+end
+
 local AreaTab = Window:CreateTab("Areas", nil)
 
-local AreaSection1 = AreaTab:CreateSection("Zone Fishing")
+local AreaSection1 = AreaTab:CreateSection("Zone Freeze")
 
 local AreaToggle1 = AreaTab:CreateToggle({
-    Name = "Zone Fishing",
+    Name = "Zone Freeze",
     CurrentValue = false,
     Flag = "AreaToggle1",
     Callback = function(Value)
         guiConfig.zonetoggle = Value
+        if zonefreeze then
+            zonefreeze:Disconnect()
+            zonefreeze = nil
+        end
+        if guiConfig.zonetoggle or guiConfig.eventzonetoggle then
+            zonefreeze = game:GetService("RunService").RenderStepped:Connect(zonefreezefunc)
+            if not prevLocation then
+                prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+            end
+        else
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
+            prevLocation = nil
+        end
     end,
 })
 
@@ -303,9 +559,49 @@ local AreaToggle2 = AreaTab:CreateToggle({
     Flag = "AreaToggle2",
     Callback = function(Value)
         guiConfig.eventzonetoggle = Value
+        guiConfig.zonetoggle = Value
+        if zonefreeze then
+            zonefreeze:Disconnect()
+            zonefreeze = nil
+        end
+        if guiConfig.zonetoggle or guiConfig.eventzonetoggle then
+            zonefreeze = game:GetService("RunService").RenderStepped:Connect(zonefreezefunc)
+            if not prevLocation then
+                prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+            end
+        else
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
+            prevLocation = nil
+        end
     end,
 })
-]]
+
+local AreaDropdown1 = AreaTab:CreateDropdown({
+    Name = "Zones",
+    Options = {},
+    CurrentOption = {},
+    MultipleOptions = true,
+    Flag = "AreaDropdown1",
+    Callback = function(Options)
+        dropdownconvert(guiConfig, "zones", Options)
+        saveGuiConfig()
+    end,
+})
+
+dropdownsetup(guiConfig, "zones", AreaDropdown1)
+
+local AreaDropdown2 = AreaTab:CreateDropdown({
+    Name = "Event Zones",
+    Options = {},
+    CurrentOption = {},
+    MultipleOptions = true,
+    Flag = "AreaDropdown2",
+    Callback = function(Options)
+        dropdownconvert(guiConfig, "eventzones", Options)
+    end,
+})
+
+dropdownsetup(guiConfig, "eventzones", AreaDropdown2)
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 
@@ -416,11 +712,12 @@ local ServerDropdown1 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown1",
     Callback = function(Options)
-        dropdownconvert("weatherList", Options)
+        dropdownconvert(config, "weatherList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("weatherList", ServerDropdown1)
+dropdownsetup(config, "weatherList", ServerDropdown1)
 
 local ServerDivider1 = ServerTab:CreateDivider()
 
@@ -433,11 +730,12 @@ local ServerDropdown2 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown2",
     Callback = function(Options)
-        dropdownconvert("eventList", Options)
+        dropdownconvert(config, "eventList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("eventList", ServerDropdown2)
+dropdownsetup(config, "eventList", ServerDropdown2)
 
 ServerTab:CreateDivider()
 
@@ -450,11 +748,12 @@ local ServerDropdown3 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown3",
     Callback = function(Options)
-        dropdownconvert("seasonList", Options)
+        dropdownconvert(config, "seasonList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("seasonList", ServerDropdown3)
+dropdownsetup(config, "seasonList", ServerDropdown3)
 
 local ServerDivider3 = ServerTab:CreateDivider()
 
@@ -467,11 +766,12 @@ local ServerDropdown4 = ServerTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "ServerDropdown4",
     Callback = function(Options)
-        dropdownconvert("cycleList", Options)
+        dropdownconvert(config, "cycleList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("cycleList", ServerDropdown4)
+dropdownsetup(config, "cycleList", ServerDropdown4)
 
 ServerTab:CreateDivider()
 
@@ -751,11 +1051,12 @@ local EventsDropdown1 = EventsTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "EventsDropdown1",
     Callback = function(Options)
-        dropdownconvert("zoneList", Options)
+        dropdownconvert(config, "zoneList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("zoneList", EventsDropdown1)
+dropdownsetup(config, "zoneList", EventsDropdown1)
 
 local EventsParagraph2 = EventsTab:CreateParagraph({Title = "Meteor Items", Content = "Select the Meteor Items that are desired"})
 
@@ -766,11 +1067,12 @@ local EventsDropdown2 = EventsTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "EventsDropdown2",
     Callback = function(Options)
-        dropdownconvert("meteorList", Options)
+        dropdownconvert(config, "meteorList", Options)
+        saveConfig()
     end,
 })
 
-dropdownsetup("meteorList", EventsDropdown2)
+dropdownsetup(config, "meteorList", EventsDropdown2)
 
 local sunkenSet
 
@@ -937,183 +1239,5 @@ mergeConfig(data.defaultFishConfig, fishConfig)
 saveFishConfig()
 mergeConfig(data.defaultGuiConfig, guiConfig)
 saveGuiConfig()
-
-print("[FSF-G] Everything but AutoFish loaded: If xeno there will be error :(")
-
-local af_mod = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/obfusc/fsf-af.lua"))()
-
-local fishConfig
-if isfile("FischServerFinder/fishconfig.json") then
-    fishConfig = game:GetService("HttpService"):JSONDecode(readfile("FischServerFinder/fishconfig.json"))
-else
-    fishConfig = data.defaultFishConfig
-end
-
-local function saveFishConfig()
-    writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
-    af_mod.init()
-end
-
-local FishTab = Window:CreateTab("AutoFish", nil)
-
-local FishSection1 = FishTab:CreateSection("Cast")
-
-local FishToggle1 = FishTab:CreateToggle({
-    Name = "Auto Cast",
-    CurrentValue = fishConfig.autocast,
-    Flag = "FishToggle1",
-    Callback = function(Value)
-        fishConfig.autocast = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle2 = FishTab:CreateToggle({
-    Name = "Drop Bobber",
-    CurrentValue = fishConfig.dropbobber,
-    Flag = "FishToggle2",
-    Callback = function(Value)
-        fishConfig.dropbobber = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSlider1 = FishTab:CreateSlider({
-    Name = "Cast Power",
-    Range = {0, 100},
-    Increment = 1,
-    Suffix = "%",
-    CurrentValue = fishConfig.castpower,
-    Flag = "FishSlider1",
-    Callback = function(Value)
-        fishConfig.castpower = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSection2 = FishTab:CreateSection("Shake")
-
-local FishToggle3 = FishTab:CreateToggle({
-    Name = "Auto Shake",
-    CurrentValue = fishConfig.autoshake,
-    Flag = "FishToggle3",
-    Callback = function(Value)
-        fishConfig.autoshake = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local shakeTable = {}
-if fishConfig.shakenav then
-    shakeTable = {"Navigation"}
-else
-    shakeTable = {"Click"}
-end
-
-local FishDropdown1 = FishTab:CreateDropDown({
-    Name = "Shake Method",
-    Options = {"Navigation", "Click"},
-    CurrentOption = shakeTable,
-    MultipleOptions = false,
-    Flag = "FishDropdown1",
-    Callback = function(Option)
-        if Option[1] == "Navigation" then
-            fishConfig.shakenav = true
-        else
-            fishConfig.shakenav = false
-        end
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishSection3 = FishTab:CreateSection("Reel")
-
-local FishToggle4 = FishTab:CreateToggle({
-    Name = "Auto Reel",
-    CurrentValue = fishConfig.autoreel,
-    Flag = "FishToggle4",
-    Callback = function(Value)
-        fishConfig.autoreel = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle5 = FishTab:CreateToggle({
-    Name = "Instant Reel",
-    CurrentValue = fishConfig.instantreel,
-    Flag = "FishToggle5",
-    Callback = function(Value)
-        fishConfig.instantreel = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishToggle6 = FishTab:CreateToggle({
-    Name = "Perfect Catch",
-    CurrentValue = fishConfig.perfectCatch,
-    Flag = "FishToggle6",
-    Callback = function(Value)
-        fishConfig.perfectCatch = Value
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishDropdown2 = FishTab:CreateDropdown({
-    Name = "Reel Select",
-    Options = {"None", "Whitelist", "Blacklist"},
-    CurrentOption = {fishConfig.reelSelect},
-    MultipleOptions = false,
-    Flag = "FishDropdown2",
-    Callback = function(Option)
-        fishConfig.reelSelect = Option[1]
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
-
-local FishInput1 = FishTab:CreateInput({
-    Name = "Whitelist",
-    CurrentValue = "",
-    PlaceholderText = "Ex: 'Phantom Megalodon, The Kraken'",
-    RemoveTextAfterFocusLost = false,
-    Flag = "FishInput1",
-    Callback = function(Text)
-        fishConfig.reelWhitelistStr = Text
-        saveFishConfig()
-    end,
-})
-
-FishTab:CreateDivider()
-
-local FishInput2 = FishTab:CreateInput({
-    Name = "Blacklist",
-    CurrentValue = fishConfig.reelBlacklistStr,
-    PlaceholderText = "Ex: 'Common Crate, Sardine'",
-    RemoveTextAfterFocusLost = false,
-    Flag = "FishInput2",
-    Callback = function(Text)
-        fishConfig.reelBlacklistStr = Text
-        saveFishConfig()
-    end,
-})
 
 print("[FSF-G] Loaded!")
