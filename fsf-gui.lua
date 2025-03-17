@@ -309,7 +309,9 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
         if Value then
             if fireproximityprompt then
                 instantinteract = game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(prompt)
-                    fireproximityprompt(prompt)
+                    pcall(function()
+                        fireproximityprompt(prompt)
+                    end)
                 end)
             else
                 Rayfield:Notify({
@@ -392,7 +394,7 @@ else
     shakeTable = {"Click"}
 end
 
-local FishDropdown1 = FishTab:CreateDropDown({
+local FishDropdown1 = FishTab:CreateDropdown({
     Name = "Shake Method",
     Options = {"Navigation", "Click"},
     CurrentOption = shakeTable,
