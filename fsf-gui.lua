@@ -4,7 +4,6 @@ if not writefile then print("You cannot change configs because your executor doe
 
 print("[FSF-G] Loading GUI")
 
-getgenv().SecureMode = true
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
