@@ -64,7 +64,7 @@ loadConfig = function()
         end)
     end
 
-    if not string.match(config.versid, data.versid) or not string.match(config.version, data.version) then
+    if not string.match(config.versid, data.versid) then
         local function updateTable(default, previous)
             local updated = {}
 
@@ -190,11 +190,11 @@ teleport = function()
 end
 
 creategui = function()
-    local playerGui = game.Players.LocalPlayer.PlayerGui
+    local CoreGui = game:GetService("CoreGui")
 
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "FischServerFinder"
-    screenGui.Parent = playerGui
+    screenGui.Parent = CoreGui
 
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
@@ -424,15 +424,16 @@ creategui = function()
         notifygui("Reloading Config", 41, 217, 123)
         loadConfig()
     end)
+
+    return screenGui
 end
 
 createframe = function()
-    local playerGui = game.Players.LocalPlayer.PlayerGui
-    local screenGui = playerGui:FindFirstChild("FischServerFinder")
+    local CoreGui = game:GetService("CoreGui")
+    local screenGui = CoreGui:FindFirstChild("FischServerFinder")
 
     if not screenGui then
-        creategui()
-        screenGui = playerGui:FindFirstChild("FischServerFinder")
+        screenGui = creategui()
     end
     local mainFrame = screenGui:FindFirstChild("MainFrame")
     local scrollFrame = mainFrame:FindFirstChild("NotificationContainer")
