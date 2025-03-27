@@ -2,9 +2,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 if not writefile then print("You cannot change configs because your executor does not support files!") end
 
-print("[FSF-G] Loading GUI")
-
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+print("[FSF-G] Merging Config")
 
 local data = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-data.lua"))()
 
@@ -110,6 +108,10 @@ fishConfig = mergeConfig(data.defaultFishConfig, fishConfig)
 saveFishConfig()
 guiConfig = mergeConfig(data.defaultGuiConfig, guiConfig)
 saveGuiConfig()
+
+print("[FSF-G] Loading GUI")
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
@@ -339,9 +341,19 @@ ToolsTab:CreateDivider()
 
 ToolsTab:CreateSection("Anti Death")
 
-local resources = game:GetService("Players").LocalPlayer.Character.Resources
+local function disabledeathscript(value, name)
+    local resources = game:GetService("Players").LocalPlayer.Character.Resources
+    local repl_resources = game:GetService("ReplicatedStorage").client.characterScripts.Resources
+    local script = resources:FindFirstChild(name)
+    if script then
+       script:Destroy()
+    end
 
-local oxygen_script
+    if not value then
+        local clone = repl_resources:FindFirstChild(name):Clone()
+        clone.Parent = resources
+    end
+end
 
 local ToolsToggle5 = ToolsTab:CreateToggle({
     Name = "Disable Oxygen (Water)",
@@ -350,12 +362,7 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disableoxygen = Value
         saveGuiConfig()
-        oxygen_script = resources:FindFirstChild("oxygen") or oxygen_script
-        if Value then
-            oxygen_script.Parent = nil
-        else
-            oxygen_script.Parent = resources
-        end
+        disabledeathscript(Value, "oxygen")
     end,
 })
 
@@ -370,12 +377,7 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disableoxygenpeaks = Value
         saveGuiConfig()
-        oxygenpeaks_script = resources:FindFirstChild("oxygen(peaks)") or oxygenpeaks_script
-        if Value then
-            oxygenpeaks_script.Parent = nil
-        else
-            oxygenpeaks_script.Parent = resources
-        end
+        disabledeathscript(Value, "oxygen(peaks)")
     end,
 })
 
@@ -390,12 +392,7 @@ local ToolsToggle7 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disabletemperaturepeaks = Value
         saveGuiConfig()
-        temperaturepeaks_script = resources:FindFirstChild("temperature") or temperaturepeaks_script
-        if Value then
-            temperaturepeaks_script.Parent = nil
-        else
-            temperaturepeaks_script.Parent = resources
-        end
+        disabledeathscript(Value, "temperature")
     end,
 })
 
@@ -410,12 +407,7 @@ local ToolsToggle8 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disabletemperatureveil = Value
         saveGuiConfig()
-        temperatureveil_script = resources:FindFirstChild("temperature(heat)") or temperatureveil_script
-        if Value then
-            temperatureveil_script.Parent = nil
-        else
-            temperatureveil_script.Parent = resources
-        end
+        disabledeathscript(Value, "temperature(heat)")
     end,
 })
 
@@ -430,12 +422,7 @@ local ToolsToggle9 = ToolsTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disablecryptgas = Value
         saveGuiConfig()
-        cryptgas_script = resources:FindFirstChild("gas") or cryptgas_script
-        if Value then
-            cryptgas_script.Parent = nil
-        else
-            cryptgas_script.Parent = resources
-        end
+        disabledeathscript(Value, "gas")
     end,
 })
 
@@ -616,10 +603,13 @@ local FishInput2 = FishTab:CreateInput({
 })
 
 local prevLocation
-local zonefreeze
-local function zonefreezefunc()
-    local fishing = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
-    local zone, coords
+local zonetp
+local zoneobj = nil
+local offset, tsmp = tick()
+local function getzone()
+    local fishing = game:GetService("Workspace").zones.fishing
+    local zone = nil
+    local coords = {x = 0, y = 0, z = 0}
 
     for i = #data.ordered.eventzones, 1, -1 do
         if zone or not guiConfig.eventzonetoggle then break end
@@ -627,8 +617,7 @@ local function zonefreezefunc()
         if guiConfig.eventzones[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
-                coords = data.zoneData.eventzones[name]
-                if not coords then coords = {x = 0, y = 0, z = 0} end
+                coords = data.zoneData.eventzones[name] or {x = 0, y = 0, z = 0}
                 break
             end
         end
@@ -640,16 +629,42 @@ local function zonefreezefunc()
         if guiConfig.zones[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
-                coords = data.zoneData.zones[name]
-                if not coords then coords = {x = 0, y = 0, z = 0} end
+                coords = data.zoneData.zones[name] or {x = 0, y = 0, z = 0}
                 break
             end
         end
     end
 
-    if not zone or not coords then return end
+    return zone, Vector3.new(coords.x, coords.y, coords.z)
+end
 
-    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(zone.Position + Vector3.new(coords.x, coords.y, coords.z))
+local function  zonetpfunc()
+    if not zoneobj or not zoneobj.Parent or tick() - tsmp > 0.2 then
+        zoneobj, offset = getzone()
+        tsmp = tick()
+    end
+    if zoneobj then
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(zoneobj.Position + offset)
+    end
+end
+
+local function toggleFreezeZone(enable)
+    if zonetp then
+        zonetp:Disconnect()
+        zonetp = nil
+    end
+
+    if enable then
+        if not prevLocation then
+            prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+        end
+        zonetp = game:GetService("RunService").Heartbeat:Connect(zonetpfunc)
+    else
+        if prevLocation then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
+            prevLocation = nil
+        end
+    end
 end
 
 local AreaTab = Window:CreateTab("Areas", nil)
@@ -662,46 +677,23 @@ local AreaToggle1 = AreaTab:CreateToggle({
     Flag = "AreaToggle1",
     Callback = function(Value)
         guiConfig.zonetoggle = Value
-        if zonefreeze then
-            if not zonefreeze then return end
-            zonefreeze:Disconnect()
-            zonefreeze = nil
-        end
-        if guiConfig.zonetoggle or guiConfig.eventzonetoggle then
-            zonefreeze = game:GetService("RunService").RenderStepped:Connect(zonefreezefunc)
-            if not prevLocation then
-                prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
-            end
-        else
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
-            prevLocation = nil
-        end
+        toggleFreezeZone(guiConfig.zonetoggle or guiConfig.eventzonetoggle)
     end,
 })
 
+AreaToggle1:Set(guiConfig.zonetoggle)
+
 local AreaToggle2 = AreaTab:CreateToggle({
-    Name = "Event Zone Fishing",
+    Name = "Event Zone Freeze",
     CurrentValue = false,
     Flag = "AreaToggle2",
     Callback = function(Value)
         guiConfig.eventzonetoggle = Value
-        guiConfig.zonetoggle = Value
-        if zonefreeze then
-            if not zonefreeze then return end
-            zonefreeze:Disconnect()
-            zonefreeze = nil
-        end
-        if guiConfig.zonetoggle or guiConfig.eventzonetoggle then
-            zonefreeze = game:GetService("RunService").RenderStepped:Connect(zonefreezefunc)
-            if not prevLocation then
-                prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
-            end
-        else
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
-            prevLocation = nil
-        end
+        toggleFreezeZone(guiConfig.zonetoggle or guiConfig.eventzonetoggle)
     end,
 })
+
+AreaToggle2:Set(guiConfig.eventzonetoggle)
 
 local AreaDropdown1 = AreaTab:CreateDropdown({
     Name = "Zones",
