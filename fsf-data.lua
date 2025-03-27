@@ -1,8 +1,8 @@
-local version = "2.4"
-local versid = "K0b0Wrfcliea1PcK"
-local updmsg = "+ Zone Fishing"
+local version = "2.5"
+local versid = "YpObROIYqAztcIwp"
+local updmsg = "+ Disable Deaths! Actually fixed zone fishing"
 local settingchanged = true
-local settingmsg = "Currently very limited selections, more as I gather data!"
+local settingmsg = "Currently very limited selections, more as I gather data! (it takes a long time)"
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -77,9 +77,19 @@ local zoneblacklist = {
 
 local zoneData = {
     zones = {
-        ["Ocean"] = {
+        ["Ancient Archives"] = {
             x = 0,
             y = 0,
+            z = 20,
+        },
+        ["Ancient Isle Ocean"] = {
+            x = 0,
+            y = 60,
+            z = -40,
+        },
+        ["Ancient Isle Pond"] = { 
+            x = 0,
+            y = -5,
             z = 0,
         },
     },
@@ -87,9 +97,34 @@ local zoneData = {
         ["Orcas Pool"] = {
             x = 0,
             y = 60,
-            z = 0
+            z = 0,
+        },
+        ["Ancient Orcas Pool"] = {
+            x = 0,
+            y = 60,
+            z = 0,
         },
         ["Whales Pool"] = {
+            x = 0,
+            y = 60,
+            z = 0,
+        },
+        ["Megalodon Default"] = {
+            x = 0,
+            y = -20,
+            z = 0,
+        },
+        ["Megalodon Ancient"] = {
+            x = 0,
+            y = -20,
+            z = 0,
+        },
+        ["The Kraken Pool"] = {
+            x = 0,
+            y = 60,
+            z = 0,
+        },
+        ["Ancient Kraken Pool"] = {
             x = 0,
             y = 60,
             z = 0,
@@ -184,11 +219,6 @@ local defaultConfig = {
         ["Forsaken Veil - Scylla"] = true,
         ["Whales Pool"] = false,
         ["Moby"] = true,
-        ["Rowdy McCharm"] = true,
-        ["O'Mango Goldgrin"] = true,
-        ["Sunny O'Coin"] = true,
-        ["Blarney McBreeze"] = true,
-        ["Plumrick O'Luck"] = true,
     },
 
     meteorList = {
@@ -224,9 +254,20 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Forsaken Veil - Scylla",
         "Whales Pool", "Moby",
-        "Rowdy McCharm", "O'Mango Goldgrin", "Sunny O'Coin", "Blarney McBreeze", "Plumrick O'Luck",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
+
+    zones = {
+        "Ancient Archives", "Ancient Isle Ocean", "Ancient Isle Pond",
+    },
+
+    eventzones = {
+        "Orcas Pool", "Ancient Orcas Pool",
+        "Whales Pool",
+        "Megalodon Default", "Megalodon Ancient",
+        "The Kraken Pool", "Ancient Kraken Pool",
+
+    },
 }
 
 local defaultFishConfig = {
@@ -244,18 +285,31 @@ local defaultFishConfig = {
 }
 
 local defaultGuiConfig = {
-    ToolsToggle1 = false,
-    ToolsToggle2 = false,
-    ToolsToggle3 = false,
-    ToolsToggle4 = false,
+    disablewaterfog = false,
+    fullbright = false,
+    antigp = false,
+    instantinteract = false,
+    disableoxygen = false,
+    disableoxygenpeaks = false,
+    disabletemperaturepeaks = false,
+    disabletemperatureveil = false,
+
+
     zonetoggle = false,
     eventzonetoggle = false,
     zones = {
-        ["Ocean"] = false,
+        ["Ancient Archives"] = false,
+        ["Ancient Isle Ocean"] = false,
+        ["Ancient Isle Pond"] = false,
     },
     eventzones = {
         ["Orcas Pool"] = false,
+        ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
+        ["Megalodon Default"] = false,
+        ["Megalodon Ancient"] = false,
+        ["The Kraken Pool"] = false,
+        ["Ancient Kraken Pool"] = false,
     }
 }
 

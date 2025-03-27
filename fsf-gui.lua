@@ -31,23 +31,22 @@ end
 local function updateTable(default, previous)
     local updated = {}
     for key, value in pairs(default) do
-        if type(value) == "table" and type(previous[key]) == "table" then
-            updated[key] = updateTable(value, previous[key])
+        if type(value) == "table" then
+            updated[key] = updateTable(value, type(previous[key]) == "table" and previous[key] or {})
         elseif previous[key] ~= nil then
             updated[key] = previous[key]
         else
             updated[key] = value
         end
     end
-
     return updated
 end
 
 local function mergeConfig(default, conf)
-    conf = updateTable(default, conf)
-    conf.version = data.version
-    conf.versid = data.versid
-    return conf
+    local result = updateTable(default, conf)
+    result.version = data.version
+    result.versid = data.versid
+    return result
 end
 
 local function dropdownconvert(conf, listName, options)
@@ -105,6 +104,13 @@ end
 local function saveGuiConfig()
     writefile("FischServerFinder/guiconfig.json", game:GetService("HttpService"):JSONEncode(guiConfig))
 end
+
+config = mergeConfig(data.defaultConfig, config)
+saveConfig()
+fishConfig = mergeConfig(data.defaultFishConfig, fishConfig)
+saveFishConfig()
+guiConfig = mergeConfig(data.defaultGuiConfig, guiConfig)
+saveGuiConfig()
 
 local Window = Rayfield:CreateWindow({
     Name = "FischServerFinder - Penguin " .. data.version,
@@ -228,18 +234,19 @@ local ToolsToggle1 = ToolsTab:CreateToggle({
     CurrentValue = false,
     Flag = "ToolsToggle1",
     Callback = function(Value)
-        guiConfig.ToolsToggle1 = Value
+        guiConfig.disablewaterfog = Value
         saveGuiConfig()
         if Value then
             disablewater = game:GetService("RunService").RenderStepped:Connect(disablewaterfunc)
         else
+            if not disablewater then return end
             disablewater:Disconnect()
             disablewater = nil
         end
     end,
 })
 
-ToolsToggle1:Set(guiConfig.ToolsToggle1)
+ToolsToggle1:Set(guiConfig.disablewaterfog)
 
 ToolsTab:CreateDivider()
 
@@ -260,18 +267,19 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
     CurrentValue = false,
     Flag = "ToolsToggle2",
     Callback = function(Value)
-        guiConfig.ToolsToggle2 = Value
+        guiConfig.fullbright = Value
         saveGuiConfig()
         if Value then
             fullbright = game:GetService("RunService").RenderStepped:Connect(fullbrightfunc)
         else
+            if not fullbright then return end
             fullbright:Disconnect()
             fullbright = nil
         end
     end
 })
 
-ToolsToggle2:Set(guiConfig.ToolsToggle2)
+ToolsToggle2:Set(guiConfig.fullbright)
 
 ToolsTab:CreateDivider()
 
@@ -282,20 +290,23 @@ local ToolsToggle3 = ToolsTab:CreateToggle({
     CurrentValue = false,
     Flag = "ToolsToggle3",
     Callback = function(Value)
-        guiConfig.ToolsToggle3 = Value
+        guiConfig.antigp = Value
         saveGuiConfig()
         if Value then
             antigp = game:GetService("RunService").RenderStepped:Connect(function()
                 game:GetService("Players").LocalPlayer.GameplayPaused = false
             end)
         else
+            if not antigp then return end
             antigp:Disconnect()
             antigp = nil
         end
     end,
 })
 
-ToolsToggle3:Set(guiConfig.ToolsToggle3)
+ToolsToggle3:Set(guiConfig.antigp)
+
+ToolsTab:CreateDivider()
 
 local instantinteract
 
@@ -304,7 +315,7 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
     CurrentValue = false,
     Flag = "ToolsToggle4",
     Callback = function(Value)
-        guiConfig.ToolsToggle3 = Value
+        guiConfig.instantinteract = Value
         saveGuiConfig()
         if Value then
             if fireproximityprompt then
@@ -322,13 +333,126 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
                 })
             end
         else
+            if not instantinteract then return end
             instantinteract:Disconnect()
             instantinteract = nil
         end
     end,
 })
 
-ToolsToggle4:Set(guiConfig.ToolsToggle4)
+ToolsToggle4:Set(guiConfig.instantinteract)
+
+ToolsTab:CreateDivider()
+
+ToolsTab:CreateSection("Anti Death")
+
+local resources = game:GetService("Players").LocalPlayer.Character.Resources
+
+local oxygen_script
+
+local ToolsToggle5 = ToolsTab:CreateToggle({
+    Name = "Disable Oxygen",
+    CurrentValue = false,
+    Flag = "ToolsToggle5",
+    Callback = function(Value)
+        guiConfig.disableoxygen = Value
+        saveGuiConfig()
+        oxygen_script = resources:FindFirstChild("oxygen") or oxygen_script
+        if Value then
+            oxygen_script.Parent = nil
+        else
+            oxygen_script.Parent = resources
+        end
+    end,
+})
+
+ToolsToggle5:Set(guiConfig.disableoxygen)
+
+local oxygenpeaks_script
+
+local ToolsToggle6 = ToolsTab:CreateToggle({
+    Name = "Disable Oxygen (Peaks)",
+    CurrentValue = false,
+    Flag = "ToolsToggle6",
+    Callback = function(Value)
+        guiConfig.disableoxygenpeaks = Value
+        saveGuiConfig()
+        oxygenpeaks_script = resources:FindFirstChild("oxygen(peaks)") or oxygenpeaks_script
+        if Value then
+            oxygenpeaks_script.Parent = nil
+        else
+            oxygenpeaks_script.Parent = resources
+        end
+    end,
+})
+
+ToolsToggle6:Set(guiConfig.disableoxygenpeaks)
+
+local temperaturepeaks_script
+
+local ToolsToggle7 = ToolsTab:CreateToggle({
+    Name = "Disable Oxygen (Peaks)",
+    CurrentValue = false,
+    Flag = "ToolsToggle7",
+    Callback = function(Value)
+        guiConfig.disabletemperaturepeaks = Value
+        saveGuiConfig()
+        temperaturepeaks_script = resources:FindFirstChild("temperature") or temperaturepeaks_script
+        if Value then
+            temperaturepeaks_script.Parent = nil
+        else
+            temperaturepeaks_script.Parent = resources
+        end
+    end,
+})
+
+ToolsToggle7:Set(guiConfig.disabletemperaturepeaks)
+
+local temperatureveil_script
+
+local ToolsToggle8 = ToolsTab:CreateToggle({
+    Name = "Disable Oxygen (Veil)",
+    CurrentValue = false,
+    Flag = "ToolsToggle8",
+    Callback = function(Value)
+        guiConfig.disabletemperatureveil = Value
+        saveGuiConfig()
+        temperatureveil_script = resources:FindFirstChild("temperature(heat)") or temperatureveil_script
+        if Value then
+            temperatureveil_script.Parent = nil
+        else
+            temperatureveil_script.Parent = resources
+        end
+    end,
+})
+
+ToolsToggle8:Set(guiConfig.disabletemperatureveil)
+
+local ToolsToggle9 = ToolsTab:CreateToggle({
+    Name = "Disable Drown Remote",
+    CurrentValue = false,
+    Flag = "ToolsToggle9",
+    Callback = function(Value)
+        guiConfig.disabledrownremote = Value
+        saveGuiConfig()
+    end,
+})
+
+ToolsToggle9:Set(guiConfig.disabledrownremote)
+
+local blocked = {
+    [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
+    --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
+}
+
+local oldmetamethod
+oldmetamethod = hookmetamethod(game, "__namecall", function(self, ...)
+    local calledmethod = getnamecallmethod()
+    for method, methodinfo in pairs(blocked) do
+        if self == method and calledmethod == methodinfo[1] and methodinfo[2] then return end
+    end
+    return oldmetamethod(self, ...)
+end)
 
 local FishTab = Window:CreateTab("AutoFish", nil)
 
@@ -540,6 +664,7 @@ local AreaToggle1 = AreaTab:CreateToggle({
     Callback = function(Value)
         guiConfig.zonetoggle = Value
         if zonefreeze then
+            if not zonefreeze then return end
             zonefreeze:Disconnect()
             zonefreeze = nil
         end
@@ -563,6 +688,7 @@ local AreaToggle2 = AreaTab:CreateToggle({
         guiConfig.eventzonetoggle = Value
         guiConfig.zonetoggle = Value
         if zonefreeze then
+            if not zonefreeze then return end
             zonefreeze:Disconnect()
             zonefreeze = nil
         end
@@ -1234,12 +1360,5 @@ sunkenSet = function(thing, value)
 
     object:Set(value)
 end
-
-mergeConfig(data.defaultConfig, config)
-saveConfig()
-mergeConfig(data.defaultFishConfig, fishConfig)
-saveFishConfig()
-mergeConfig(data.defaultGuiConfig, guiConfig)
-saveGuiConfig()
 
 print("[FSF-G] Loaded!")
