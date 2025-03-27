@@ -1,8 +1,8 @@
-local version = "2.5"
-local versid = "YpObROIYqAztcIwp"
-local updmsg = "+ Disable Deaths! Actually fixed zone fishing"
-local settingchanged = true
-local settingmsg = "Currently very limited selections, more as I gather data! (it takes a long time)"
+local version = "2.6"
+local versid = "lgAWHZRNWue1Onac"
+local updmsg = "+Disable Cutscenes ~Completed Zone Data"
+local settingchanged = false
+local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
 local sunkenchestcoords = {
@@ -316,6 +316,7 @@ local defaultFishConfig = {
 }
 
 local defaultGuiConfig = {
+    -- Tools
     disablewaterfog = false,
     fullbright = false,
     antigp = false,
@@ -325,7 +326,9 @@ local defaultGuiConfig = {
     disabletemperaturepeaks = false,
     disabletemperatureveil = false,
     disablecryptgas = false,
+    disablecutscenes = false,
 
+    -- Areas
     zonetoggle = false,
     eventzonetoggle = false,
     zones = {

@@ -440,6 +440,53 @@ local ToolsToggle10 = ToolsTab:CreateToggle({
 
 ToolsToggle10:Set(guiConfig.disabledrownremote)
 
+ToolsTab:CreateDivider()
+
+local function modulefunc(file, funcs, disabled)
+    local blankfunc = function() end
+
+    local moduleScriptCloneFolder = game:GetService("ReplicatedStorage"):FindFirstChild("ModuleScriptClone")
+    
+    if not moduleScriptCloneFolder then
+        moduleScriptCloneFolder = Instance.new("Folder")
+        moduleScriptCloneFolder.Name = "ModuleScriptClone"
+        moduleScriptCloneFolder.Parent = game:GetService("ReplicatedStorage")
+    end
+
+    local clonedFile = moduleScriptCloneFolder:FindFirstChild(file.Name)
+    if not clonedFile then
+        clonedFile = file:Clone()
+        clonedFile.Parent = moduleScriptCloneFolder
+    end
+
+    local originalModule = require(file)
+
+    if disabled then
+        for _, func in funcs do
+            originalModule[func] = blankfunc
+        end
+    else
+        local parent = file.Parent
+        file:Destroy()
+        file = clonedFile:Clone()
+        file.Parent = parent
+    end
+end
+
+local ToolsToggle11 = ToolsTab:CreateToggle({
+    Name = "Disable Cutscenes",
+    CurrentValue = false,
+    Flag = "ToolsToggle11",
+    Callback = function(Value)
+        guiConfig.disablecutscenes = Value
+        saveGuiConfig()
+        local controller = game:GetService("ReplicatedStorage").client.legacyControllers.CutsceneController
+        modulefunc(controller, {"Start", "StartCutscene"}, Value)
+    end,
+})
+
+ToolsToggle11:Set(guiConfig.disablecutscenes)
+
 local blocked = {
     [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
     --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
