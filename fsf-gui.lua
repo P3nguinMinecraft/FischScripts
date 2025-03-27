@@ -428,17 +428,37 @@ local ToolsToggle8 = ToolsTab:CreateToggle({
 
 ToolsToggle8:Set(guiConfig.disabletemperatureveil)
 
+local cryptgas_script
+
 local ToolsToggle9 = ToolsTab:CreateToggle({
-    Name = "Disable Drown Remote",
+    Name = "Disable Crypt Gas (UNRELEASED 3/29)",
     CurrentValue = false,
     Flag = "ToolsToggle9",
+    Callback = function(Value)
+        guiConfig.disablecryptgas = Value
+        saveGuiConfig()
+        cryptgas_script = resources:FindFirstChild("gas") or cryptgas_script
+        if Value then
+            cryptgas_script.Parent = nil
+        else
+            cryptgas.Parent = resources
+        end
+    end,
+})
+
+ToolsToggle9:Set(guiConfig.disablecryptgas)
+
+local ToolsToggle10 = ToolsTab:CreateToggle({
+    Name = "Disable Drown Remote",
+    CurrentValue = false,
+    Flag = "ToolsToggle10",
     Callback = function(Value)
         guiConfig.disabledrownremote = Value
         saveGuiConfig()
     end,
 })
 
-ToolsToggle9:Set(guiConfig.disabledrownremote)
+ToolsToggle10:Set(guiConfig.disabledrownremote)
 
 local blocked = {
     [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},

@@ -293,8 +293,8 @@ local defaultGuiConfig = {
     disableoxygenpeaks = false,
     disabletemperaturepeaks = false,
     disabletemperatureveil = false,
-
-
+    disablecryptgas = false,
+    
     zonetoggle = false,
     eventzonetoggle = false,
     zones = {
