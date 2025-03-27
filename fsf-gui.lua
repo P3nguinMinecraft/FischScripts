@@ -227,8 +227,6 @@ local function disablewaterfunc()
     constrast.Enabled = false
 end
 
-ToolsTab:CreateDivider()
-
 local ToolsToggle1 = ToolsTab:CreateToggle({
     Name = "Disable Water Fog",
     CurrentValue = false,
@@ -247,8 +245,6 @@ local ToolsToggle1 = ToolsTab:CreateToggle({
 })
 
 ToolsToggle1:Set(guiConfig.disablewaterfog)
-
-ToolsTab:CreateDivider()
 
 local fullbright
 
@@ -280,8 +276,6 @@ local ToolsToggle2 = ToolsTab:CreateToggle({
 })
 
 ToolsToggle2:Set(guiConfig.fullbright)
-
-ToolsTab:CreateDivider()
 
 local antigp
 
@@ -441,7 +435,7 @@ local ToolsToggle9 = ToolsTab:CreateToggle({
         if Value then
             cryptgas_script.Parent = nil
         else
-            cryptgas.Parent = resources
+            cryptgas_script.Parent = resources
         end
     end,
 })
@@ -488,8 +482,6 @@ local FishToggle1 = FishTab:CreateToggle({
     end,
 })
 
-FishTab:CreateDivider()
-
 local FishToggle2 = FishTab:CreateToggle({
     Name = "Drop Bobber",
     CurrentValue = fishConfig.dropbobber,
@@ -499,8 +491,6 @@ local FishToggle2 = FishTab:CreateToggle({
         saveFishConfig()
     end,
 })
-
-FishTab:CreateDivider()
 
 local FishSlider1 = FishTab:CreateSlider({
     Name = "Cast Power",
@@ -528,8 +518,6 @@ local FishToggle3 = FishTab:CreateToggle({
         saveFishConfig()
     end,
 })
-
-FishTab:CreateDivider()
 
 local shakeTable = {}
 if fishConfig.shakenav then
@@ -568,8 +556,6 @@ local FishToggle4 = FishTab:CreateToggle({
     end,
 })
 
-FishTab:CreateDivider()
-
 local FishToggle5 = FishTab:CreateToggle({
     Name = "Instant Reel",
     CurrentValue = fishConfig.instantreel,
@@ -579,8 +565,6 @@ local FishToggle5 = FishTab:CreateToggle({
         saveFishConfig()
     end,
 })
-
-FishTab:CreateDivider()
 
 local FishToggle6 = FishTab:CreateToggle({
     Name = "Perfect Catch",
@@ -606,8 +590,6 @@ local FishDropdown2 = FishTab:CreateDropdown({
     end,
 })
 
-FishTab:CreateDivider()
-
 local FishLabel1 = FishTab:CreateLabel("Comma-separated list, NOT case-sensitive")
 
 local FishInput1 = FishTab:CreateInput({
@@ -621,8 +603,6 @@ local FishInput1 = FishTab:CreateInput({
         saveFishConfig()
     end,
 })
-
-FishTab:CreateDivider()
 
 local FishInput2 = FishTab:CreateInput({
     Name = "Blacklist",
@@ -644,7 +624,7 @@ local function zonefreezefunc()
 
     for i = #data.ordered.eventzones, 1, -1 do
         if zone or not guiConfig.eventzonetoggle then break end
-        local name = data.ordered.events[i]
+        local name = data.ordered.eventzones[i]
         if guiConfig.eventzones[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
@@ -657,7 +637,7 @@ local function zonefreezefunc()
 
     for i = #data.ordered.zones, 1, -1 do
         if zone or not guiConfig.zonetoggle then break end
-        local name = data.ordered.events[i]
+        local name = data.ordered.zones[i]
         if guiConfig.zones[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
