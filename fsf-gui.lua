@@ -391,7 +391,7 @@ ToolsToggle6:Set(guiConfig.disableoxygenpeaks)
 local temperaturepeaks_script
 
 local ToolsToggle7 = ToolsTab:CreateToggle({
-    Name = "Disable Oxygen (Peaks)",
+    Name = "Disable Temperature (Peaks)",
     CurrentValue = false,
     Flag = "ToolsToggle7",
     Callback = function(Value)
@@ -411,7 +411,7 @@ ToolsToggle7:Set(guiConfig.disabletemperaturepeaks)
 local temperatureveil_script
 
 local ToolsToggle8 = ToolsTab:CreateToggle({
-    Name = "Disable Oxygen (Veil)",
+    Name = "Disable Temperature (Veil)",
     CurrentValue = false,
     Flag = "ToolsToggle8",
     Callback = function(Value)
