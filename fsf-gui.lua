@@ -351,7 +351,7 @@ local resources = game:GetService("Players").LocalPlayer.Character.Resources
 local oxygen_script
 
 local ToolsToggle5 = ToolsTab:CreateToggle({
-    Name = "Disable Oxygen",
+    Name = "Disable Oxygen (Water)",
     CurrentValue = false,
     Flag = "ToolsToggle5",
     Callback = function(Value)
