@@ -512,14 +512,53 @@ local PlayerToggle8 = PlayerTab:CreateToggle({
         if Value then
             task.spawn(function()
                 while guiConfig.antiswim do
-                    game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand = guiConfig.antiswim
+                    pcall(function()
+                        game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand = guiConfig.antiswim
+                    end)
+                    task.wait()
                 end
+            end)
+        else
+            pcall(function()
+                game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand = guiConfig.antiswim
             end)
         end
     end,
 })
 
 PlayerToggle8:Set(guiConfig.antiswim)
+
+local function characteranchor(value)
+    local character = game:GetService("Players").LocalPlayer.Character
+    if not character then return end
+    for _, x in ipairs(character:GetDescendants()) do
+        if x:IsA("BasePart") and not x.Anchored == value then
+            x.Anchored = value
+        end
+    end
+end
+
+local PlayerToggle9 = PlayerTab:CreateToggle({
+    Name = "Freeze Character",
+    CurrentValue = false,
+    Flag = "PlayerToggle9",
+    Callback = function(Value)
+        guiConfig.freezecharacter = Value
+        saveGuiConfig()
+        if Value then
+            task.spawn(function()
+                while guiConfig.freezecharacter do
+                    characteranchor(guiConfig.freezecharacter)
+                    task.wait()
+                end
+            end)
+        else
+            characteranchor(guiConfig.freezecharacter)
+        end
+    end,
+})
+
+PlayerToggle9:Set(guiConfig.freezecharacter)
 
 local FishTab = Window:CreateTab("AutoFish", nil)
 
@@ -672,17 +711,9 @@ local FishInput2 = FishTab:CreateInput({
 local prevLocation
 local zonetp
 local zoneobj = nil
-local offset, tsmp = tick()
-
-local function characteranchor(value)
-    local character = game:GetService("Players").LocalPlayer.Character
-    if not character then return end
-    for _, x in ipairs(character:GetDescendants()) do
-        if x:IsA("BasePart") and not x.Anchored == value then
-            x.Anchored = value
-        end
-    end
-end
+local offset
+local anchored = false
+local tsmp = tick()
 
 local function getzone()
     local fishing = game:GetService("Workspace").zones.fishing
@@ -716,11 +747,27 @@ local function getzone()
     return zone, Vector3.new(coords.x, coords.y, coords.z)
 end
 
-local function  zonetpfunc()
+local function zonetpfunc()
     if not zoneobj or not zoneobj.Parent or tick() - tsmp > 0.2 then
         zoneobj, offset = getzone()
         tsmp = tick()
-        characteranchor(zoneobj ~= nil)
+        local character = game:GetService("Players").LocalPlayer.Character
+        if not character then return end
+        if zoneobj then
+            characteranchor(true)
+            anchored = true
+            if character:FindFirstChild("Humanoid") and not character:FindFirstChild("Humanoid").PlatformStand then
+                character:FindFirstChild("Humanoid").PlatformStand = true
+            end
+        else
+            if anchored == true then
+                characteranchor(false)
+                anchored = false
+            end
+            if character:FindFirstChild("Humanoid") and character:FindFirstChild("Humanoid").PlatformStand then
+                character:FindFirstChild("Humanoid").PlatformStand = false
+            end
+        end
     end
     if zoneobj then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(zoneobj.Position + offset)
@@ -740,6 +787,7 @@ local function toggleFreezeZone(enable)
         zonetp = game:GetService("RunService").Heartbeat:Connect(zonetpfunc)
     else
         characteranchor(false)
+        anchored = false
         if prevLocation then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
             prevLocation = nil

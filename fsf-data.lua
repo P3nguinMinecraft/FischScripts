@@ -330,6 +330,7 @@ local defaultGuiConfig = {
     disablecryptgas = false,
     disablecutscenes = false,
     antiswim = false,
+    freezecharacter = false,
 
     -- Areas
     zonetoggle = false,
