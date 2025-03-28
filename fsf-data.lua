@@ -332,6 +332,10 @@ local defaultGuiConfig = {
     antiswim = false,
     freezecharacter = false,
 
+    -- World
+    hideability = false,
+    hidefishmoels = false,
+
     -- Areas
     zonetoggle = false,
     eventzonetoggle = false,
