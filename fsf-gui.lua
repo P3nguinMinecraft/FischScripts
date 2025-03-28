@@ -494,7 +494,7 @@ local PlayerToggle7 = PlayerTab:CreateToggle({
         guiConfig.disablecutscenes = Value
         saveGuiConfig()
         local controller = game:GetService("ReplicatedStorage").client.legacyControllers.CutsceneController
-        modulefunc(controller, {"Start", "StartCutscene"}, Value)
+        modulefunc(controller, {"ShowBars", "Start", "DisableAllScreens", "StartCutscene", "Fade"}, Value)
     end,
 })
 
