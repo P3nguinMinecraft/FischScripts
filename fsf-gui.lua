@@ -442,7 +442,7 @@ ToolsToggle10:Set(guiConfig.disabledrownremote)
 
 ToolsTab:CreateDivider()
 
-local function modulefunc = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/obfusc/fsf-mf.lua"))()
+local modulefunc = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/obfusc/fsf-mf.lua"))()
 
 local ToolsToggle11 = ToolsTab:CreateToggle({
     Name = "Disable Cutscenes",
