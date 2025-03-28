@@ -712,7 +712,7 @@ local prevLocation
 local zonetp
 local zoneobj = nil
 local offset
-local anchored = false
+local stand = false
 local tsmp = tick()
 
 local function getzone()
@@ -754,15 +754,13 @@ local function zonetpfunc()
         local character = game:GetService("Players").LocalPlayer.Character
         if not character then return end
         if zoneobj then
-            characteranchor(true)
-            anchored = true
+            stand = true
             if character:FindFirstChild("Humanoid") and not character:FindFirstChild("Humanoid").PlatformStand then
                 character:FindFirstChild("Humanoid").PlatformStand = true
             end
         else
-            if anchored == true then
-                characteranchor(false)
-                anchored = false
+            if stand == true then
+                stand = false
                 if character:FindFirstChild("Humanoid") and character:FindFirstChild("Humanoid").PlatformStand then
                     character:FindFirstChild("Humanoid").PlatformStand = false
                 end
@@ -780,16 +778,20 @@ local function toggleFreezeZone(enable)
         zonetp = nil
     end
 
+    local character = game:GetService("Players").LocalPlayer.Character
+
     if enable then
         if not prevLocation then
-            prevLocation = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame
+            prevLocation = character.HumanoidRootPart.CFrame
         end
         zonetp = game:GetService("RunService").Heartbeat:Connect(zonetpfunc)
     else
-        characteranchor(false)
-        anchored = false
+        stand = false
+        if character:FindFirstChild("Humanoid") and character:FindFirstChild("Humanoid").PlatformStand then
+            character:FindFirstChild("Humanoid").PlatformStand = false
+        end
         if prevLocation then
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
+            character.HumanoidRootPart.CFrame = prevLocation
             prevLocation = nil
         end
     end
