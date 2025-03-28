@@ -1,6 +1,6 @@
-local version = "2.6"
-local versid = "lgAWHZRNWue1Onac"
-local updmsg = "+Disable Cutscenes ~Completed Zone Data"
+local version = "2.6.1"
+local versid = "4JDPP72UCdMY7ol0"
+local updmsg = "+Disable Cutscenes +Antiswim ~Completed Zone Data"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -321,12 +321,15 @@ local defaultGuiConfig = {
     fullbright = false,
     antigp = false,
     instantinteract = false,
+
+    -- Player
     disableoxygen = false,
     disableoxygenpeaks = false,
     disabletemperaturepeaks = false,
     disabletemperatureveil = false,
     disablecryptgas = false,
     disablecutscenes = false,
+    antiswim = false,
 
     -- Areas
     zonetoggle = false,

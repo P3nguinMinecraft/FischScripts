@@ -337,9 +337,9 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
 
 ToolsToggle4:Set(guiConfig.instantinteract)
 
-ToolsTab:CreateDivider()
+local PlayerTab = Window:CreateTab("Player", nil)
 
-ToolsTab:CreateSection("Anti Death")
+PlayerTab:CreateSection("Anti Death")
 
 local function disabledeathscript(value, name)
     local resources = game:GetService("Players").LocalPlayer.Character.Resources
@@ -355,10 +355,10 @@ local function disabledeathscript(value, name)
     end
 end
 
-local ToolsToggle5 = ToolsTab:CreateToggle({
+local PlayerToggle1 = PlayerTab:CreateToggle({
     Name = "Disable Oxygen (Water)",
     CurrentValue = false,
-    Flag = "ToolsToggle5",
+    Flag = "PlayerToggle1",
     Callback = function(Value)
         guiConfig.disableoxygen = Value
         saveGuiConfig()
@@ -366,14 +366,14 @@ local ToolsToggle5 = ToolsTab:CreateToggle({
     end,
 })
 
-ToolsToggle5:Set(guiConfig.disableoxygen)
+PlayerToggle1:Set(guiConfig.disableoxygen)
 
 local oxygenpeaks_script
 
-local ToolsToggle6 = ToolsTab:CreateToggle({
+local PlayerToggle2 = PlayerTab:CreateToggle({
     Name = "Disable Oxygen (Peaks)",
     CurrentValue = false,
-    Flag = "ToolsToggle6",
+    Flag = "PlayerToggle2",
     Callback = function(Value)
         guiConfig.disableoxygenpeaks = Value
         saveGuiConfig()
@@ -381,14 +381,14 @@ local ToolsToggle6 = ToolsTab:CreateToggle({
     end,
 })
 
-ToolsToggle6:Set(guiConfig.disableoxygenpeaks)
+PlayerToggle2:Set(guiConfig.disableoxygenpeaks)
 
 local temperaturepeaks_script
 
-local ToolsToggle7 = ToolsTab:CreateToggle({
+local PlayerToggle3 = PlayerTab:CreateToggle({
     Name = "Disable Temperature (Peaks)",
     CurrentValue = false,
-    Flag = "ToolsToggle7",
+    Flag = "PlayerToggle3",
     Callback = function(Value)
         guiConfig.disabletemperaturepeaks = Value
         saveGuiConfig()
@@ -396,14 +396,14 @@ local ToolsToggle7 = ToolsTab:CreateToggle({
     end,
 })
 
-ToolsToggle7:Set(guiConfig.disabletemperaturepeaks)
+PlayerToggle3:Set(guiConfig.disabletemperaturepeaks)
 
 local temperatureveil_script
 
-local ToolsToggle8 = ToolsTab:CreateToggle({
+local PlayerToggle4 = PlayerTab:CreateToggle({
     Name = "Disable Temperature (Veil)",
     CurrentValue = false,
-    Flag = "ToolsToggle8",
+    Flag = "PlayerToggle4",
     Callback = function(Value)
         guiConfig.disabletemperatureveil = Value
         saveGuiConfig()
@@ -411,14 +411,14 @@ local ToolsToggle8 = ToolsTab:CreateToggle({
     end,
 })
 
-ToolsToggle8:Set(guiConfig.disabletemperatureveil)
+PlayerToggle4:Set(guiConfig.disabletemperatureveil)
 
 local cryptgas_script
 
-local ToolsToggle9 = ToolsTab:CreateToggle({
+local PlayerToggle5 = PlayerTab:CreateToggle({
     Name = "Disable Crypt Gas (UNRELEASED 3/29)",
     CurrentValue = false,
-    Flag = "ToolsToggle9",
+    Flag = "PlayerToggle5",
     Callback = function(Value)
         guiConfig.disablecryptgas = Value
         saveGuiConfig()
@@ -426,21 +426,21 @@ local ToolsToggle9 = ToolsTab:CreateToggle({
     end,
 })
 
-ToolsToggle9:Set(guiConfig.disablecryptgas)
+PlayerToggle5:Set(guiConfig.disablecryptgas)
 
-local ToolsToggle10 = ToolsTab:CreateToggle({
+local PlayerToggle6 = PlayerTab:CreateToggle({
     Name = "Disable Drown Remote",
     CurrentValue = false,
-    Flag = "ToolsToggle10",
+    Flag = "PlayerToggle6",
     Callback = function(Value)
         guiConfig.disabledrownremote = Value
         saveGuiConfig()
     end,
 })
 
-ToolsToggle10:Set(guiConfig.disabledrownremote)
+PlayerToggle6:Set(guiConfig.disabledrownremote)
 
-ToolsTab:CreateDivider()
+PlayerTab:CreateDivider()
 
 local function modulefunc(file, funcs, disabled)
     local blankfunc = function() end
@@ -472,20 +472,6 @@ local function modulefunc(file, funcs, disabled)
     end
 end
 
-local ToolsToggle11 = ToolsTab:CreateToggle({
-    Name = "Disable Cutscenes",
-    CurrentValue = false,
-    Flag = "ToolsToggle11",
-    Callback = function(Value)
-        guiConfig.disablecutscenes = Value
-        saveGuiConfig()
-        local controller = game:GetService("ReplicatedStorage").client.legacyControllers.CutsceneController
-        modulefunc(controller, {"Start", "StartCutscene"}, Value)
-    end,
-})
-
-ToolsToggle11:Set(guiConfig.disablecutscenes)
-
 local blocked = {
     [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
     --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
@@ -499,6 +485,41 @@ oldmetamethod = hookmetamethod(game, "__namecall", function(self, ...)
     end
     return oldmetamethod(self, ...)
 end)
+
+local PlayerToggle7 = PlayerTab:CreateToggle({
+    Name = "Disable Cutscenes",
+    CurrentValue = false,
+    Flag = "PlayerToggle7",
+    Callback = function(Value)
+        guiConfig.disablecutscenes = Value
+        saveGuiConfig()
+        local controller = game:GetService("ReplicatedStorage").client.legacyControllers.CutsceneController
+        modulefunc(controller, {"Start", "StartCutscene"}, Value)
+    end,
+})
+
+PlayerToggle7:Set(guiConfig.disablecutscenes)
+
+PlayerTab:CreateDivider()
+
+local PlayerToggle8 = PlayerTab:CreateToggle({
+    Name = "AntiSwim",
+    CurrentValue = false,
+    Flag = "PlayerToggle8",
+    Callback = function(Value)
+        guiConfig.antiswim = Value
+        saveGuiConfig()
+        if Value then
+            task.spawn(function()
+                while guiConfig.antiswim do
+                    game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand = guiConfig.antiswim
+                end
+            end)
+        end
+    end,
+})
+
+PlayerToggle8:Set(guiConfig.antiswim)
 
 local FishTab = Window:CreateTab("AutoFish", nil)
 
