@@ -763,9 +763,9 @@ local function zonetpfunc()
             if anchored == true then
                 characteranchor(false)
                 anchored = false
-            end
-            if character:FindFirstChild("Humanoid") and character:FindFirstChild("Humanoid").PlatformStand then
-                character:FindFirstChild("Humanoid").PlatformStand = false
+                if character:FindFirstChild("Humanoid") and character:FindFirstChild("Humanoid").PlatformStand then
+                    character:FindFirstChild("Humanoid").PlatformStand = false
+                end
             end
         end
     end
