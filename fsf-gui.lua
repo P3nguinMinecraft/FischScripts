@@ -442,36 +442,7 @@ ToolsToggle10:Set(guiConfig.disabledrownremote)
 
 ToolsTab:CreateDivider()
 
-local function modulefunc(file, funcs, disabled)
-    local blankfunc = function() end
-
-    local moduleScriptCloneFolder = game:GetService("ReplicatedStorage"):FindFirstChild("ModuleScriptClone")
-    
-    if not moduleScriptCloneFolder then
-        moduleScriptCloneFolder = Instance.new("Folder")
-        moduleScriptCloneFolder.Name = "ModuleScriptClone"
-        moduleScriptCloneFolder.Parent = game:GetService("ReplicatedStorage")
-    end
-
-    local clonedFile = moduleScriptCloneFolder:FindFirstChild(file.Name)
-    if not clonedFile then
-        clonedFile = file:Clone()
-        clonedFile.Parent = moduleScriptCloneFolder
-    end
-
-    local originalModule = require(file)
-
-    if disabled then
-        for _, func in funcs do
-            originalModule[func] = blankfunc
-        end
-    else
-        local parent = file.Parent
-        file:Destroy()
-        file = clonedFile:Clone()
-        file.Parent = parent
-    end
-end
+local modulefunc = loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/obfusc/fsf-mf.lua"))()
 
 local ToolsToggle11 = ToolsTab:CreateToggle({
     Name = "Disable Cutscenes",
