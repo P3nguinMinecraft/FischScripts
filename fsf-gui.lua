@@ -673,6 +673,17 @@ local prevLocation
 local zonetp
 local zoneobj = nil
 local offset, tsmp = tick()
+
+local function characteranchor(value)
+    local character = game:GetService("Players").LocalPlayer.Character
+    if not character then return end
+    for _, x in ipairs(character:GetDescendants()) do
+        if x:IsA("BasePart") and not x.Anchored == value then
+            x.Anchored = value
+        end
+    end
+end
+
 local function getzone()
     local fishing = game:GetService("Workspace").zones.fishing
     local zone = nil
@@ -709,6 +720,7 @@ local function  zonetpfunc()
     if not zoneobj or not zoneobj.Parent or tick() - tsmp > 0.2 then
         zoneobj, offset = getzone()
         tsmp = tick()
+        characteranchor(zoneobj ~= nil)
     end
     if zoneobj then
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(zoneobj.Position + offset)
@@ -727,6 +739,7 @@ local function toggleFreezeZone(enable)
         end
         zonetp = game:GetService("RunService").Heartbeat:Connect(zonetpfunc)
     else
+        characteranchor(false)
         if prevLocation then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = prevLocation
             prevLocation = nil

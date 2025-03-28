@@ -1,6 +1,6 @@
 local version = "2.6.1"
 local versid = "4JDPP72UCdMY7ol0"
-local updmsg = "+Disable Cutscenes +Antiswim ~Completed Zone Data"
+local updmsg = "+Disable Cutscenes +Antiswim +Freeze Character ~Completed Zone Data"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
