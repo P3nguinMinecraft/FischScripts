@@ -32,7 +32,7 @@ local autofarmchestpotential = false
 local autofarmchestclaimed = false
 local camera = game.Workspace.CurrentCamera
 
-if not game.PlaceId == 16732694052 then
+if game.PlaceId ~= 16732694052 then
     warn("[FSF] You are not in Fisch!")
     return
 end
@@ -67,17 +67,15 @@ loadConfig = function()
     if not string.match(config.versid, data.versid) then
         local function updateTable(default, previous)
             local updated = {}
-
             for key, value in pairs(default) do
-                if type(value) == "table" and type(previous[key]) == "table" then
-                    updated[key] = updateTable(value, previous[key])
+                if type(value) == "table" then
+                    updated[key] = updateTable(value, type(previous[key]) == "table" and previous[key] or {})
                 elseif previous[key] ~= nil then
                     updated[key] = previous[key]
                 else
                     updated[key] = value
                 end
             end
-
             return updated
         end
         local function mergeConfig()
@@ -205,7 +203,6 @@ creategui = function()
     mainFrame.Active = true
     mainFrame.Draggable = true
     mainFrame.Parent = screenGui
-    mainFrame.ZIndex = 101
 
     local topBar = Instance.new("Frame")
     topBar.Name = "TopBar"
@@ -216,7 +213,6 @@ creategui = function()
     topBar.Active = true
     topBar.AnchorPoint = Vector2.new(0.5, 0)
     topBar.Parent = mainFrame
-    topBar.ZIndex = 101
 
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Name = "NotificationContainer"
@@ -228,7 +224,6 @@ creategui = function()
     scrollFrame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
     scrollFrame.BorderSizePixel = 0
     scrollFrame.Parent = mainFrame
-    scrollFrame.ZIndex = 101
 
     local uiListLayout = Instance.new("UIListLayout")
     uiListLayout.Name = "UIList"
@@ -247,7 +242,6 @@ creategui = function()
     closeGUI.Font = Enum.Font.SourceSans
     closeGUI.AnchorPoint = Vector2.new(0, 0.5)
     closeGUI.Parent = topBar
-    closeGUI.ZIndex = 101
     closeGUI.Selectable = false
 
     local hop = Instance.new("TextButton")
@@ -261,7 +255,6 @@ creategui = function()
     hop.Font = Enum.Font.SourceSans
     hop.AnchorPoint = Vector2.new(0, 0.5)
     hop.Parent = topBar
-    hop.ZIndex = 101
     hop.Selectable = false
 
     local rescan = Instance.new("TextButton")
@@ -275,7 +268,6 @@ creategui = function()
     rescan.Font = Enum.Font.SourceSans
     rescan.AnchorPoint = Vector2.new(0, 0.5)
     rescan.Parent = topBar
-    rescan.ZIndex = 101
     rescan.Selectable = false
 
     local JobId = Instance.new("TextButton")
@@ -289,7 +281,6 @@ creategui = function()
     JobId.Font = Enum.Font.SourceSans
     JobId.AnchorPoint = Vector2.new(0, 0.5)
     JobId.Parent = topBar
-    JobId.ZIndex = 101
     JobId.Selectable = false
 
     local minimizeButton = Instance.new("TextButton")
@@ -303,7 +294,6 @@ creategui = function()
     minimizeButton.Font = Enum.Font.SourceSans
     minimizeButton.AnchorPoint = Vector2.new(0, 0.5)
     minimizeButton.Parent = topBar
-    minimizeButton.ZIndex = 101
     minimizeButton.Selectable = false
 
     local clear = Instance.new("TextButton")
@@ -317,7 +307,6 @@ creategui = function()
     clear.Font = Enum.Font.SourceSans
     clear.AnchorPoint = Vector2.new(0, 0.5)
     clear.Parent = topBar
-    clear.ZIndex = 101
     clear.Selectable = false
 
     local JobIdBox = Instance.new("TextBox")
@@ -332,7 +321,6 @@ creategui = function()
     JobIdBox.PlaceholderText = "Input JobId"
     JobIdBox.AnchorPoint = Vector2.new(0, 0.5)
     JobIdBox.Parent = topBar
-    JobIdBox.ZIndex = 101
 
     local TPJobId = Instance.new("TextButton")
     TPJobId.Name = "TPJobId"
@@ -345,7 +333,6 @@ creategui = function()
     TPJobId.Font = Enum.Font.SourceSans
     TPJobId.AnchorPoint = Vector2.new(0, 0.5)
     TPJobId.Parent = topBar
-    TPJobId.ZIndex = 101
     TPJobId.Selectable = false
 
     local OpenGUI = Instance.new("TextButton")
@@ -359,7 +346,6 @@ creategui = function()
     OpenGUI.Font = Enum.Font.SourceSans
     OpenGUI.AnchorPoint = Vector2.new(0, 0.5)
     OpenGUI.Parent = topBar
-    OpenGUI.ZIndex = 101
     OpenGUI.Selectable = false
 
     local ReloadConfig = Instance.new("TextButton")
@@ -373,7 +359,6 @@ creategui = function()
     ReloadConfig.Font = Enum.Font.SourceSans
     ReloadConfig.AnchorPoint = Vector2.new(0, 0.5)
     ReloadConfig.Parent = topBar
-    ReloadConfig.ZIndex = 101
     ReloadConfig.Selectable = false
 
     closeGUI.MouseButton1Click:Connect(function()
@@ -445,7 +430,6 @@ createframe = function()
     frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
     frame.BorderSizePixel = 0
     frame.Parent = scrollFrame
-    frame.ZIndex = 101
 
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
 
@@ -471,7 +455,6 @@ notifygui = function(text, r, g, b)
     closeButton.TextScaled = true
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
-    closeButton.ZIndex = 101
     closeButton.Selectable = false
 
     local textLabel = Instance.new("TextLabel")
@@ -484,7 +467,6 @@ notifygui = function(text, r, g, b)
     textLabel.TextScaled = true
     textLabel.Font = Enum.Font.SourceSans
     textLabel.Parent = frame
-    textLabel.ZIndex = 101
 
     if string.find(text, "Meteor:") then
         textLabel.Size = UDim2.new(1, -50, 1, 0)
@@ -500,7 +482,6 @@ notifygui = function(text, r, g, b)
         meteorTP.TextScaled = true
         meteorTP.Font = Enum.Font.SourceSans
         meteorTP.Parent = frame
-        meteorTP.ZIndex = 101
         meteorTP.Selectable = false
 
         meteorTP.MouseButton1Click:Connect(function()
@@ -549,7 +530,6 @@ askautohop = function()
     closeButton.TextScaled = true
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
-    closeButton.ZIndex = 101
     closeButton.Selectable = false
 
     local autohopButton = Instance.new("TextButton")
@@ -562,7 +542,6 @@ askautohop = function()
     autohopButton.TextScaled = true
     autohopButton.Font = Enum.Font.SourceSans
     autohopButton.Parent = frame
-    autohopButton.ZIndex = 101
     autohopButton.Selectable = false
 
 
@@ -591,7 +570,6 @@ potentialsunkenchest = function()
     closeButton.TextScaled = true
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
-    closeButton.ZIndex = 101
     closeButton.Selectable = false
 
     local tpButton = Instance.new("TextButton")
@@ -604,7 +582,6 @@ potentialsunkenchest = function()
     tpButton.TextScaled = true
     tpButton.Font = Enum.Font.SourceSans
     tpButton.Parent = frame
-    tpButton.ZIndex = 101
     tpButton.Selectable = false
 
     local rescanButton = Instance.new("TextButton")
@@ -617,7 +594,6 @@ potentialsunkenchest = function()
     rescanButton.TextScaled = true
     rescanButton.Font = Enum.Font.SourceSans
     rescanButton.Parent = frame
-    rescanButton.ZIndex = 101
     rescanButton.Selectable = false
 
     closeButton.MouseButton1Click:Connect(function()
@@ -733,7 +709,6 @@ loadedsunkenchest = function(object)
     closeButton.TextScaled = true
     closeButton.Font = Enum.Font.SourceSans
     closeButton.Parent = frame
-    closeButton.ZIndex = 101
     closeButton.Selectable = false
 
     local tpButton = Instance.new("TextButton")
@@ -746,7 +721,6 @@ loadedsunkenchest = function(object)
     tpButton.TextScaled = true
     tpButton.Font = Enum.Font.SourceSans
     tpButton.Parent = frame
-    tpButton.ZIndex = 101
     tpButton.Selectable = false
 
     local claimButton = Instance.new("TextButton")
@@ -759,7 +733,6 @@ loadedsunkenchest = function(object)
     claimButton.TextScaled = true
     claimButton.Font = Enum.Font.SourceSans
     claimButton.Parent = frame
-    claimButton.ZIndex = 101
     claimButton.Selectable = false
 
     closeButton.MouseButton1Click:Connect(function()

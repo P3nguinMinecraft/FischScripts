@@ -1,6 +1,6 @@
-local version = "2.6.1"
-local versid = "4JDPP72UCdMY7ol0"
-local updmsg = "+Disable Cutscenes +Antiswim +Freeze Character ~Completed Zone Data"
+local version = "2.6.2"
+local versid = "FFt2N9sjjagGqa3N"
+local updmsg = "+Hide Rod Ability +Hide Fish Models"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"

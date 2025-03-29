@@ -503,7 +503,7 @@ PlayerToggle7:Set(guiConfig.disablecutscenes)
 PlayerTab:CreateDivider()
 
 local PlayerToggle8 = PlayerTab:CreateToggle({
-    Name = "AntiSwim",
+    Name = "Anti Swim",
     CurrentValue = false,
     Flag = "PlayerToggle8",
     Callback = function(Value)
@@ -559,6 +559,56 @@ local PlayerToggle9 = PlayerTab:CreateToggle({
 })
 
 PlayerToggle9:Set(guiConfig.freezecharacter)
+
+local WorldTab = Window:CreateTab("World", nil)
+
+local rodabilityadded
+
+local WorldToggle1 = WorldTab:CreateToggle({
+    Name = "Hide Rod Abilities",
+    CurrentValue = false,
+    Flag = "WorldToggle1",
+    Callback = function(Value)
+        guiConfig.hideability = Value
+        saveGuiConfig()
+        if rodabilityadded then
+            rodabilityadded:Disconnect()
+            rodabilityadded = nil
+        end
+
+        rodabilityadded = game:GetService("Workspace").active.debrisfx.ChildAdded:Connect(function(child)
+            if guiConfig.hideability then
+                child:Destroy()
+            end
+        end)
+    end,
+})
+
+WorldToggle1:Set(guiConfig.hideability)
+
+local fishadded
+
+local WorldToggle2 = WorldTab:CreateToggle({
+    Name = "Hide Fish Models",
+    CurrentValue = false,
+    Flag = "WorldToggle2",
+    Callback = function(Value)
+        guiConfig.hidefishmodels = Value
+        saveGuiConfig()
+        if fishadded then
+            fishadded:Disconnect()
+            fishadded = nil
+        end
+
+        fishadded = game:GetService("Workspace").active.ChildAdded:Connect(function(child)
+            if guiConfig.hidefishmodels and child:FindFirstChild("Fish") then
+                child:Destroy()
+            end
+        end)
+    end,
+})
+
+WorldToggle1:Set(guiConfig.hidefishmodels)
 
 local FishTab = Window:CreateTab("AutoFish", nil)
 
