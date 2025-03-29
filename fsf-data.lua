@@ -142,7 +142,7 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Cults Curse Pool"] = {x = 3, y = 27, z = -13},
-        ["Notes Island Pool"] = {x = 0, y = 10, z = -25},
+        ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
     },
 }
 
