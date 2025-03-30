@@ -5,6 +5,11 @@ local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
+local placeids = {
+    sea1 = 16732694052,
+    sea2 = 72907489978215,
+}
+
 local sunkenchestcoords = {
 -- Moosewood
     {x = 936, y = 130, z = -159},
@@ -141,7 +146,6 @@ local zoneData = {
         ["Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
-        ["Cults Curse Pool"] = {x = 3, y = 27, z = -13},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
     },
 }
@@ -296,7 +300,6 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
-        "Cults Curse Pool",
         "Notes Island Pool",
     },
 }
@@ -328,6 +331,8 @@ local defaultGuiConfig = {
     disabletemperaturepeaks = false,
     disabletemperatureveil = false,
     disablecryptgas = false,
+    disabledrownremote = false,
+    disabledamage = false,
     disablecutscenes = false,
     antiswim = false,
     freezecharacter = false,
@@ -404,7 +409,6 @@ local defaultGuiConfig = {
         ["Orcas Pool"] = true,
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
-        ["Cults Curse Pool"] = false,
         ["Notes Island Pool"] = false,
     }
 }
@@ -416,6 +420,7 @@ local data = {
     settingchanged = settingchanged,
     settingmsg = settingmsg,
     link = link,
+    placeids = placeids,
     sunkenchestcoords = sunkenchestcoords,
     codes = codes,
     zoneblacklist = {},
