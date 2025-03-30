@@ -337,6 +337,102 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
 
 ToolsToggle4:Set(guiConfig.instantinteract)
 
+local ServerTab = Window:CreateTab("Server", nil)
+
+
+local function teleport(placeid)
+    local Server, Next = nil, nil
+
+    local filename = "FischServerFinder/servers.json"
+
+    if placeid ==  data.placeids.sea1 then
+        filename = filename + "1"
+    else
+        filename = filename + "2"
+    end
+
+
+    local function ListServers(cursor)
+        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100"
+        local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
+        local Decode = HttpService:JSONDecode(Raw)
+
+        if Decode.errors then
+            if isfile(filename) then
+                return HttpService:JSONDecode(readfile(filename))
+            end
+            return nil
+        else
+            if writefile then
+                writefile(filename, Raw)
+            end
+            return HttpService:JSONDecode(Raw)
+        end
+    end
+
+    local function RemoveServer(serverId)
+        if not isfile(filename) then return end
+
+        local Servers = HttpService:JSONDecode(readfile(filename))
+        local NewData = {}
+        for _, server in ipairs(Servers.data) do
+            if server.id ~= serverId then
+                table.insert(NewData, server)
+            end
+        end
+        Servers.data = NewData
+        writefile(filename, HttpService:JSONEncode(Servers))
+    end
+
+    notifygui("Teleporting", 22, 209, 242)
+
+    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= nil do
+        local Servers = ListServers(Next)
+
+        if Servers and Servers.nextPageCursor then
+            Server = Servers.data[math.random(1, #Servers.data)]
+            Next = Servers.nextPageCursor
+        else
+            notifygui("No available servers!", 242, 44, 22)
+            return
+        end
+    end
+
+    if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
+        if cache.autohop then
+            writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
+        end
+        RemoveServer(Server.id)
+        TeleportService:TeleportToPlaceInstance(placeid, Server.id, game:GetService("Players").LocalPlayer)
+    end
+end
+
+local ServerButton1 = ServerTab:CreateButton({
+    Name = "Teleport Between Seas",
+    Callback = function()
+        if game.PlaceId == data.placeids.sea1 then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(138, 150, 2031)
+        end
+        game:GetService("Workspace").world.npcs.WaitForChild("Sea Traveler").seatraveler.teleport:InvokeServer()
+    end,
+})
+
+local ServerParagraph1 = ServerTab:CreateParagraph({Title = "TP", Content = "Teleports to the given server. Prioritizes low player count and can be used for server hopping"})
+
+local ServerButton2 = ServerTab:CreateButton({
+    Name = "TP First Sea",
+    Callback = function()
+        teleport(data.placeids.sea1)
+    end,
+})
+
+local ServerButton3 = ServerTab:CreateButton({
+    Name = "TP Second Sea",
+    Callback = function()
+        teleport(data.placeids.sea2)
+    end,
+})
+
 local PlayerTab = Window:CreateTab("Player", nil)
 
 PlayerTab:CreateSection("Anti Death")
@@ -428,8 +524,24 @@ local PlayerToggle5 = PlayerTab:CreateToggle({
 
 PlayerToggle5:Set(guiConfig.disablecryptgas)
 
+local blocked = {
+    [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
+    [game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("clientTakeDamage")] = {"FireServer", guiConfig.disableddamage}
+
+    --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
+}
+
+local oldmetamethod
+oldmetamethod = hookmetamethod(game, "__namecall", function(self, ...)
+    local calledmethod = getnamecallmethod()
+    for method, methodinfo in pairs(blocked) do
+        if self == method and calledmethod == methodinfo[1] and methodinfo[2] then return end
+    end
+    return oldmetamethod(self, ...)
+end)
+
 local PlayerToggle6 = PlayerTab:CreateToggle({
-    Name = "Disable Drown Remote",
+    Name = "Disable Drown Death",
     CurrentValue = false,
     Flag = "PlayerToggle6",
     Callback = function(Value)
@@ -439,6 +551,18 @@ local PlayerToggle6 = PlayerTab:CreateToggle({
 })
 
 PlayerToggle6:Set(guiConfig.disabledrownremote)
+
+local PlayerToggle7 = PlayerTab:CreateToggle({
+    Name = "Disable Damage",
+    CurrentValue = false,
+    Flag = "PlayerToggle7",
+    Callback = function(Value)
+        guiConfig.disabledamage = Value
+        saveGuiConfig()
+    end,
+})
+
+PlayerToggle7:Set(guiConfig.disableddamage)
 
 PlayerTab:CreateDivider()
 
@@ -472,24 +596,10 @@ local function modulefunc(file, funcs, disabled)
     end
 end
 
-local blocked = {
-    [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
-    --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
-}
-
-local oldmetamethod
-oldmetamethod = hookmetamethod(game, "__namecall", function(self, ...)
-    local calledmethod = getnamecallmethod()
-    for method, methodinfo in pairs(blocked) do
-        if self == method and calledmethod == methodinfo[1] and methodinfo[2] then return end
-    end
-    return oldmetamethod(self, ...)
-end)
-
-local PlayerToggle7 = PlayerTab:CreateToggle({
+local PlayerToggle8 = PlayerTab:CreateToggle({
     Name = "Disable Cutscenes",
     CurrentValue = false,
-    Flag = "PlayerToggle7",
+    Flag = "PlayerToggle8",
     Callback = function(Value)
         guiConfig.disablecutscenes = Value
         saveGuiConfig()
@@ -498,14 +608,14 @@ local PlayerToggle7 = PlayerTab:CreateToggle({
     end,
 })
 
-PlayerToggle7:Set(guiConfig.disablecutscenes)
+PlayerToggle8:Set(guiConfig.disablecutscenes)
 
 PlayerTab:CreateDivider()
 
-local PlayerToggle8 = PlayerTab:CreateToggle({
+local PlayerToggle9 = PlayerTab:CreateToggle({
     Name = "Anti Swim",
     CurrentValue = false,
-    Flag = "PlayerToggle8",
+    Flag = "PlayerToggle9",
     Callback = function(Value)
         guiConfig.antiswim = Value
         saveGuiConfig()
@@ -526,7 +636,7 @@ local PlayerToggle8 = PlayerTab:CreateToggle({
     end,
 })
 
-PlayerToggle8:Set(guiConfig.antiswim)
+PlayerToggle9:Set(guiConfig.antiswim)
 
 local function characteranchor(value)
     local character = game:GetService("Players").LocalPlayer.Character
@@ -538,10 +648,10 @@ local function characteranchor(value)
     end
 end
 
-local PlayerToggle9 = PlayerTab:CreateToggle({
+local PlayerToggle10 = PlayerTab:CreateToggle({
     Name = "Freeze Character",
     CurrentValue = false,
-    Flag = "PlayerToggle9",
+    Flag = "PlayerToggle10",
     Callback = function(Value)
         guiConfig.freezecharacter = Value
         saveGuiConfig()
@@ -558,7 +668,7 @@ local PlayerToggle9 = PlayerTab:CreateToggle({
     end,
 })
 
-PlayerToggle9:Set(guiConfig.freezecharacter)
+PlayerToggle10:Set(guiConfig.freezecharacter)
 
 local WorldTab = Window:CreateTab("World", nil)
 
@@ -770,25 +880,48 @@ local function getzone()
     local zone = nil
     local coords = {x = 0, y = 0, z = 0}
 
-    for i = #data.ordered.eventzones, 1, -1 do
+    local zones
+    local zonesconfig
+    local zonesdata
+    local eventzones
+    local eventzonesconfig
+    local eventzonesdata
+
+    if game.PlaceId == data.placeids.sea1 then
+        zones = data.ordered.zones1
+        zonesconfig = guiConfig.zones1
+        zonesdata = data.zoneData.zones1
+        eventzones = data.ordered.eventzones1
+        eventzonesconfig = guiConfig.eventzones1
+        eventzonesdata = data.zoneData.eventzones1
+    else
+        zones = data.ordered.zones2
+        zonesconfig = guiConfig.zones2
+        zonesdata = data.zoneData.zones2
+        eventzones = data.ordered.eventzones2
+        eventzonesconfig = guiConfig.eventzones2
+        eventzonesdata = data.zoneData.eventzones2
+    end
+
+    for i = #eventzones, 1, -1 do
         if zone or not guiConfig.eventzonetoggle then break end
-        local name = data.ordered.eventzones[i]
-        if guiConfig.eventzones[name] then
+        local name = eventzones[i]
+        if eventzonesconfig[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
-                coords = data.zoneData.eventzones[name] or {x = 0, y = 0, z = 0}
+                coords = eventzonesdata[name] or {x = 0, y = 0, z = 0}
                 break
             end
         end
     end
 
-    for i = #data.ordered.zones, 1, -1 do
+    for i = #zones, 1, -1 do
         if zone or not guiConfig.zonetoggle then break end
-        local name = data.ordered.zones[i]
-        if guiConfig.zones[name] then
+        local name = zones[i]
+        if zonesconfig[name] then
             zone = fishing:FindFirstChild(name)
             if zone then
-                coords = data.zoneData.zones[name] or {x = 0, y = 0, z = 0}
+                coords = zonesdata[name] or {x = 0, y = 0, z = 0}
                 break
             end
         end
@@ -882,12 +1015,20 @@ local AreaDropdown1 = AreaTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "AreaDropdown1",
     Callback = function(Options)
-        dropdownconvert(guiConfig, "zones", Options)
+        if game.PlaceId == data.placeids.sea1 then
+            dropdownconvert(guiConfig, "zones1", Options)
+        else
+            dropdownconvert(guiConfig, "zones2", Options) 
+        end
         saveGuiConfig()
     end,
 })
 
-dropdownsetup(guiConfig, "zones", AreaDropdown1)
+if game.PlaceId == data.placeids.sea1 then
+    dropdownsetup(guiConfig, "zones1", AreaDropdown1)
+else
+    dropdownsetup(guiConfig, "zones2", AreaDropdown1)
+end
 
 local AreaDropdown2 = AreaTab:CreateDropdown({
     Name = "Event Zones",
@@ -896,11 +1037,19 @@ local AreaDropdown2 = AreaTab:CreateDropdown({
     MultipleOptions = true,
     Flag = "AreaDropdown2",
     Callback = function(Options)
-        dropdownconvert(guiConfig, "eventzones", Options)
+        if game.PlaceId == data.placeids.sea1 then
+            dropdownconvert(guiConfig, "eventzones1", Options)
+        else
+            dropdownconvert(guiConfig, "eventzones2", Options) 
+        end
     end,
 })
 
-dropdownsetup(guiConfig, "eventzones", AreaDropdown2)
+if game.PlaceId == data.placeids.sea1 then
+    dropdownsetup(guiConfig, "eventzones1", AreaDropdown2)
+else
+    dropdownsetup(guiConfig, "eventzones2", AreaDropdown2)
+end
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 

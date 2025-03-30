@@ -32,7 +32,8 @@ local autofarmchestpotential = false
 local autofarmchestclaimed = false
 local camera = game.Workspace.CurrentCamera
 
-if game.PlaceId ~= 16732694052 then
+if game.PlaceId == data.placeids.sea1 or game.PlaceId == data.placeids.sea2 then
+else
     warn("[FSF] You are not in Fisch!")
     return
 end
@@ -99,7 +100,6 @@ end
 
 local TeleportService = game:GetService("TeleportService")
 local HttpService = game:GetService("HttpService")
-local serversfilename = "FischServerFinder/servers.json"
 
 parseuptime = function()
     local uptime = game:GetService("ReplicatedStorage").world.uptime.Value
@@ -121,32 +121,40 @@ tp = function(x, y, z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(x, y, z))
 end
 
-teleport = function()
+teleport = function(placeid)
     local Server, Next = nil, nil
     scheduledhop = true
+    local filename = "FischServerFinder/servers.json"
+
+    if placeid ==  data.placeids.sea1 then
+        filename = filename + "1"
+    else
+        filename = filename + "2"
+    end
+
 
     local function ListServers(cursor)
-        local ServersAPI = "https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100"
+        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100"
         local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
         local Decode = HttpService:JSONDecode(Raw)
 
         if Decode.errors then
-            if isfile(serversfilename) then
-                return HttpService:JSONDecode(readfile(serversfilename))
+            if isfile(filename) then
+                return HttpService:JSONDecode(readfile(filename))
             end
             return nil
         else
             if writefile then
-                writefile(serversfilename, Raw)
+                writefile(filename, Raw)
             end
             return HttpService:JSONDecode(Raw)
         end
     end
 
     local function RemoveServer(serverId)
-        if not isfile(serversfilename) then return end
+        if not isfile(filename) then return end
 
-        local Servers = HttpService:JSONDecode(readfile(serversfilename))
+        local Servers = HttpService:JSONDecode(readfile(filename))
         local NewData = {}
         for _, server in ipairs(Servers.data) do
             if server.id ~= serverId then
@@ -154,7 +162,7 @@ teleport = function()
             end
         end
         Servers.data = NewData
-        writefile(serversfilename, HttpService:JSONEncode(Servers))
+        writefile(filename, HttpService:JSONEncode(Servers))
     end
 
     notifygui("Teleporting", 22, 209, 242)
@@ -176,12 +184,12 @@ teleport = function()
             writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
         end
         RemoveServer(Server.id)
-        TeleportService:TeleportToPlaceInstance(game.PlaceId, Server.id, game:GetService("Players").LocalPlayer)
+        TeleportService:TeleportToPlaceInstance(placeid, Server.id, game:GetService("Players").LocalPlayer)
 
         task.spawn(function()
             task.wait(10)
             notifygui("Hop failed. Retrying...", 242, 44, 22)
-            TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, game:GetService("Players").LocalPlayer)
+            TeleportService:TeleportToPlaceInstance(placeid, game.JobId, game:GetService("Players").LocalPlayer)
             scheduledhop = false
         end)
     end
@@ -366,7 +374,7 @@ creategui = function()
     end)
 
     hop.MouseButton1Click:Connect(function()
-        teleport()
+        teleport(game.PlaceId)
     end)
 
     rescan.MouseButton1Click:Connect(function()
@@ -553,7 +561,7 @@ askautohop = function()
        notifygui("Starting autohop! DC to stop")
        task.wait(2)
        cache.autohop = true
-       teleport()
+       teleport(game.PlaceId)
     end)
 end
 
@@ -657,7 +665,7 @@ chesttpscan = function(delay)
             checkteleporting = false
             if config.sunkenchestList.hopafterclaim then
                 notifygui("Hop After Claim - Hopping", 247, 94, 229)
-                teleport()
+                teleport(game.PlaceId)
             end
         end
     end
@@ -803,7 +811,7 @@ claimsunkenchest = function()
     if config.sunkenchestList.hopafterclaim then
         task.wait(4)
         notifygui("Claimed, autohoppping", 247, 94, 229)
-        teleport()
+        teleport(game.PlaceId)
     end
 end
 
@@ -996,7 +1004,7 @@ notify = function(events)
         notifygui("Nothing", 255, 153, 0)
         if cache.autohop and config.autohop then
             notifygui("Autohopping", 247, 94, 229)
-            teleport()
+            teleport(game.PlaceId)
         end
     end
 end
@@ -1086,7 +1094,7 @@ end
 
 if cache.autohop and config.autohop and config.sunkenchestList.autofarm and config.sunkenchestList.forcehop and not autofarmchestpotential and not scheduledhop then
     notifygui("Force hopping", 247, 94, 229)
-    teleport()
+    teleport(game.PlaceId)
 end
 
 task.wait(20)

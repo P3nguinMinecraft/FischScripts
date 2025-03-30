@@ -1,6 +1,6 @@
-local version = "2.6.2"
-local versid = "FFt2N9sjjagGqa3N"
-local updmsg = "+Hide Rod Ability +Hide Fish Models"
+local version = "2.7"
+local versid = "Fn709mXViAgovCHQ"
+local updmsg = "~Updated to latest game data"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -81,7 +81,7 @@ local zoneblacklist = {
 }
 
 local zoneData = {
-    zones = {
+    zones1 = {
         ["Abyssal Zenith"] = {x = -230, y = -1, z = 3},
         ["Atlantean Storm"] = {x = 20, y = 53, z = -50},
         ["Ancient Archives"] = {x = 0, y = 0, z = 20},
@@ -132,7 +132,7 @@ local zoneData = {
         ["Volcanic Vents"] = {x = -50, y = 83, z = 65},
         ["Zeus Pool"] = {x = -10, y = 10, z = 10},
     },
-    eventzones = {
+    eventzones1 = {
         ["Megalodon Default"] = {x = 0, y = -20, z = 0},
         ["Megalodon Ancient"] = {x = 0, y = -20, z = 0},
         ["Forsaken Veil - Scylla"] = {x = 0, y = 75, z = -140},
@@ -147,6 +147,22 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
+    },
+
+    zones2 = {
+        ["Azure Lagoon"] = {x = -45, y = 10, z = -10},
+        ["Emberreach Ponds"] = {x = 0, y = 10, z = 110},
+        ["Isle of New Beginnings"] = {x = -10, y = 10, z = 0},
+        ["Lushgrove"] = {x = -20, y = 10, z = 0},
+        ["Open Ocean"] = {x = 0, y = 0, z = 0},
+        ["Pine Shoal"] = {x = -115, y = 20, z = 10},
+        ["The Cursed Shores"] = {x = 0, y = 20, z = 10},
+        ["Waveborne"] = {x = 0, y = 20, z = 5},
+        [""] = {x = 0, y = 0, z = 0},
+
+    },
+    eventzones2 = {
+
     },
 }
 
@@ -279,7 +295,7 @@ local ordered = {
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 
-    zones = {
+    zones1 = {
         "Abyssal Zenith", "Atlantean Storm", "Ancient Archives", "Ancient Isle Ocean", "Ancient Isle Pond",
         "Brine Pool", "Calm Zone", "Challengers Deep", "Cryogenic Canal", "Deep Ocean", "Desolate Deep",
         "Ethereal Abyss", "Forsaken Shores", "Forsaken Shores Ocean", "Forsaken Shores Pond", "Forsaken Veil",
@@ -290,8 +306,7 @@ local ordered = {
         "Snowcap Pond", "Sunken's Depth", "Sunstone", "Sunstone Hidden", "Terrapin Ocean", "Terrapin Olm",
         "The Arch", "The Depths", "Vertigo", "Volcanic Vents", "Zeus Pool"
     },
-
-    eventzones = {
+    eventzones1 = {
         "Megalodon Default", "Megalodon Ancient",
         "Forsaken Veil - Scylla",
         "The Kraken Pool", "Ancient Kraken Pool",
@@ -301,6 +316,14 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
+    },
+
+    zones2 = {
+        "Azure Lagoon", "Emberreach Ponds", "Isle of New Beginnings", "Lushgrove", "Open Ocean",
+        "Pine Shoal", "The Cursed Shores", "Waveborne",
+    },
+    eventzones2 = {
+
     },
 }
 
@@ -344,7 +367,7 @@ local defaultGuiConfig = {
     -- Areas
     zonetoggle = false,
     eventzonetoggle = false,
-    zones = {
+    zones1 = {
         ["Abyssal Zenith"] = false,
         ["Atlantean Storm"] = false,
         ["Ancient Archives"] = false,
@@ -395,7 +418,7 @@ local defaultGuiConfig = {
         ["Volcanic Vents"] = false,
         ["Zeus Pool"] = false,
     },
-    eventzones = {
+    eventzones1 = {
         ["Megalodon Default"] = true,
         ["Megalodon Ancient"] = true,
         ["Forsaken Veil - Scylla"] = true,
@@ -410,7 +433,21 @@ local defaultGuiConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
-    }
+    },
+
+    zones2 = {
+        ["Azure Lagoon"] = false,
+        ["Emberreach Ponds"] = false,
+        ["Isle of New Beginnings"] = false,
+        ["Lushgrove"] = false,
+        ["Open Ocean"] = false,
+        ["Pine Shoal"] = false,
+        ["The Cursed Shores"] = false,
+        ["Waveborne"] = false,
+    },
+    eventzones2 = {
+
+    },
 }
 
 local data = {
