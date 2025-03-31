@@ -362,7 +362,7 @@ local defaultGuiConfig = {
 
     -- World
     hideability = false,
-    hidefishmoels = false,
+    hidefishmodels = false,
 
     -- Areas
     zonetoggle = false,
