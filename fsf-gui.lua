@@ -408,10 +408,28 @@ local function teleport(placeid)
 end
 
 local ServerButton1 = ServerTab:CreateButton({
+    Name = "Teleport to AFK Mine",
+    Callback = function()
+        if game.PlaceId ~= data.placeids.sea1 then
+            Rayfield:Notify({
+                Title = "Teleport to AFK Mine",
+                Content = "You are not in Fisch First Sea!",
+                Duration = 5,
+                Image = nil,
+            })
+        end
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(233, 140, 38)
+        firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace.world.map.Moosewood:WaitForChild("AfkTPBuild").TpPart, 0)
+    end
+})
+
+local ServerButton2 = ServerTab:CreateButton({
     Name = "Teleport Between Seas",
     Callback = function()
         if game.PlaceId == data.placeids.sea1 then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(138, 150, 2031)
+        else
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(452, 84, 797)
         end
         game:GetService("Workspace").world.npcs.WaitForChild("Sea Traveler").seatraveler.teleport:InvokeServer()
     end,
@@ -419,14 +437,14 @@ local ServerButton1 = ServerTab:CreateButton({
 
 local ServerParagraph1 = ServerTab:CreateParagraph({Title = "TP", Content = "Teleports to the given server. Prioritizes low player count and can be used for server hopping"})
 
-local ServerButton2 = ServerTab:CreateButton({
+local ServerButton3 = ServerTab:CreateButton({
     Name = "TP First Sea",
     Callback = function()
         teleport(data.placeids.sea1)
     end,
 })
 
-local ServerButton3 = ServerTab:CreateButton({
+local ServerButton4 = ServerTab:CreateButton({
     Name = "TP Second Sea",
     Callback = function()
         teleport(data.placeids.sea2)
@@ -718,7 +736,20 @@ local WorldToggle2 = WorldTab:CreateToggle({
     end,
 })
 
-WorldToggle1:Set(guiConfig.hidefishmodels)
+WorldToggle2:Set(guiConfig.hidefishmodels)
+
+local WorldToggle3 = WorldTab:CreateToggle({
+    Name = "Disable 3D Rendering",
+    CurrentValue = false,
+    Flag = "WorldToggle3",
+    Callback = function(Value)
+        guiConfig.disable3drender = Value
+        saveGuiConfig()
+        game:GetService("RunService").Set3dRenderingEnabled(not Value)
+    end,
+})
+
+WorldToggle3:Set(guiConfig.disable3drender)
 
 local FishTab = Window:CreateTab("AutoFish", nil)
 
@@ -1050,6 +1081,34 @@ if game.PlaceId == data.placeids.sea1 then
 else
     dropdownsetup(guiConfig, "eventzones2", AreaDropdown2)
 end
+
+local AutoTab = Window:CreateTab("Auto", nil)
+
+local autoselltask
+
+local AutoToggle1 = AutoTab:CreateToggle({
+    Name = "Auto Sell",
+    CurrentValue = false,
+    Flag = "AutoToggle1",
+    Callback = function(Value)
+        guiConfig.autosell = Value
+        saveFishConfig()
+        if autoselltask then
+            task.cancel(autoselltask)
+            autoselltask = nil
+        end
+        if Value then
+            autoselltask = task.spawn(function()
+                while guiConfig.autosell do
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("SellAll"):InvokeServer()
+                end
+            end)
+        end
+    end,
+})
+
+AutoToggle1:Set(guiConfig.autosell)
 
 local ScriptTab = Window:CreateTab("Script Config", nil)
 

@@ -1,6 +1,6 @@
-local version = "2.7"
-local versid = "Fn709mXViAgovCHQ"
-local updmsg = "~Updated to latest game data"
+local version = "2.7.1"
+local versid = "JzRjulwH11hRYg9W"
+local updmsg = "+Autosell +Disable rendering"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -363,6 +363,7 @@ local defaultGuiConfig = {
     -- World
     hideability = false,
     hidefishmodels = false,
+    disable3drender = false,
 
     -- Areas
     zonetoggle = false,
@@ -448,6 +449,9 @@ local defaultGuiConfig = {
     eventzones2 = {
 
     },
+
+    -- Auto
+    autosell = false,
 }
 
 local data = {
