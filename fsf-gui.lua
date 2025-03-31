@@ -1100,8 +1100,8 @@ local AutoToggle1 = AutoTab:CreateToggle({
         if Value then
             autoselltask = task.spawn(function()
                 while guiConfig.autosell do
-                    task.wait(1)
-                    game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("SellAll"):InvokeServer()
+                    game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("SellAll"):InvokeServer(
+                    task.wait(1))
                 end
             end)
         end
