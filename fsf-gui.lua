@@ -745,7 +745,7 @@ local WorldToggle3 = WorldTab:CreateToggle({
     Callback = function(Value)
         guiConfig.disable3drender = Value
         saveGuiConfig()
-        game:GetService("RunService").Set3dRenderingEnabled(not Value)
+        game:GetService("RunService"):Set3dRenderingEnabled(not Value)
     end,
 })
 
