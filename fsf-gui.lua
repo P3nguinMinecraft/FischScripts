@@ -431,7 +431,7 @@ local ServerButton2 = ServerTab:CreateButton({
         else
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(452, 84, 797)
         end
-        game:GetService("Workspace").world.npcs.WaitForChild("Sea Traveler").seatraveler.teleport:InvokeServer()
+        game:GetService("Workspace").world.npcs:WaitForChild("Sea Traveler").seatraveler.teleport:InvokeServer()
     end,
 })
 
