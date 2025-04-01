@@ -187,7 +187,7 @@ local HomeButton4 = HomeTab:CreateButton({
     Name = "Send Zones",
     Callback = function()
         if tick() - zonecd > 60 then
-            loadstring(game:HttpGet("https://pastebin.com/raw/FWmUKSr6"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/refs/heads/main/helper/sendzones.lua"))()
         else
             Rayfield:Notify({
                 Title = "Send Zones",
