@@ -1,8 +1,8 @@
-local version = "2.7.1"
-local versid = "JzRjulwH11hRYg9W"
-local updmsg = "+Autosell +Disable rendering"
-local settingchanged = false
-local settingmsg = ""
+local version = "2.8"
+local versid = "twIIk1d1sdnxiFrd"
+local updmsg = "+Numerous Bug Fixes +Dynamic Placeversion, Placeversion based teleport +Sea Leviathan (theoretical)"
+local settingchanged = true
+local settingmsg = "Placeversion settings!"
 local link = "https://discord.gg/fWncS2vFx"
 
 local placeids = {
@@ -158,11 +158,9 @@ local zoneData = {
         ["Pine Shoal"] = {x = -115, y = 20, z = 10},
         ["The Cursed Shores"] = {x = 0, y = 20, z = 10},
         ["Waveborne"] = {x = 0, y = 20, z = 5},
-        [""] = {x = 0, y = 0, z = 0},
-
     },
     eventzones2 = {
-
+        ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
     },
 }
 
@@ -220,10 +218,19 @@ local defaultConfig = {
     },
 
     placeVersionList = {
-        enabled = false,
-        version = 1234,
+        beforeVersion = {
+            enabled = false,
+            version = 0,
+        },
+
+        afterVersion = {
+            enabled = false,
+            version = 0,
+        },
+
+        orLogic = true,
     },
-    
+
     uptimeList = {
         beforeTime = {
             enabled = false,
@@ -255,6 +262,7 @@ local defaultConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Moby"] = true,
+        ["Open Ocean - Sea Leviathan"] = true,
     },
 
     meteorList = {
@@ -292,6 +300,7 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
+        "Open Ocean - Sea Leviathan",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 
@@ -323,7 +332,7 @@ local ordered = {
         "Pine Shoal", "The Cursed Shores", "Waveborne",
     },
     eventzones2 = {
-
+        "Open Ocean - Sea Leviathan",
     },
 }
 
@@ -447,7 +456,7 @@ local defaultGuiConfig = {
         ["Waveborne"] = false,
     },
     eventzones2 = {
-
+        ["Open Ocean - Sea Leviathan"] = false,
     },
 
     -- Auto

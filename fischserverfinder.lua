@@ -98,9 +98,6 @@ loadConfig = function()
     end
 end
 
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService("HttpService")
-
 parseuptime = function()
     local uptime = game:GetService("ReplicatedStorage").world.uptime.Value
 
@@ -121,15 +118,20 @@ tp = function(x, y, z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(x, y, z))
 end
 
-teleport = function(placeid)
-    local Server, Next = nil, nil
+teleport = function(placeid, placeversion)
+    if not placeversion then placeversion = config.placeVersionList end
+
+    local TeleportService = game:GetService("TeleportService")
+    local HttpService = game:GetService("HttpService")
+
+    local Servers, Server, Next = nil, nil, nil
     scheduledhop = true
     local filename = "FischServerFinder/servers.json"
 
     if placeid ==  data.placeids.sea1 then
-        filename = filename + "1"
+        filename = filename .. "1"
     else
-        filename = filename + "2"
+        filename = filename .. "2"
     end
 
 
@@ -167,19 +169,52 @@ teleport = function(placeid)
 
     notifygui("Teleporting", 22, 209, 242)
 
-    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= nil do
-        local Servers = ListServers(Next)
+    local count = nil
+
+    while Server == nil do
+        if count == nil then
+            Servers = ListServers(Next)
+            count = 1
+        end
 
         if Servers and Servers.nextPageCursor then
-            Server = Servers.data[math.random(1, #Servers.data)]
-            Next = Servers.nextPageCursor
+            local tempserver = Servers[count]
+            if tempserver.playing < tempserver.maxPlayer
+                and tempserver.id ~= game.JobId
+                and tempserver.PrivateServerId == nil
+            then
+                local version = tempserver.placeVersion or 0
+                local beforeVersion = placeversion.beforeVersion.enabled and version < placeversion.beforeVersion.version
+                local afterVersion = placeversion.afterVersion.enabled and version > placeversion.afterVersion.version
+                
+                if not placeversion.teleport then
+                    Server = tempserver
+                elseif not placeversion.beforeVersion.enabled and not placeversion.afterVersion.enabled then
+                    Server = tempserver
+                elseif beforeVersion and afterVersion then
+                    Server = tempserver
+                elseif beforeVersion and placeversion.orLogic then
+                    Server = tempserver
+                elseif afterVersion and placeversion.orLogic then
+                    Server = tempserver
+                end
+            end
+            count = count + 1
+            if count > #Servers then
+                count = nil
+                if not Servers.nextPageCursor then
+                    notifygui("No available servers!", 242, 44, 22)
+                    return
+                end
+                Next = Servers.nextPageCursor
+            end
         else
             notifygui("No available servers!", 242, 44, 22)
             return
         end
     end
 
-    if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
+    if Server then
         if cache.autohop then
             writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
         end
@@ -1025,29 +1060,40 @@ scan = function()
     desiredserver = false
     local hour, minute = parseuptime()
     local time = hour * 60 + minute
-    local before = config.uptimeList.beforeTime.enabled and time < (config.uptimeList.beforeTime.hour * 60 + config.uptimeList.beforeTime.minute)
-    local after = config.uptimeList.afterTime.enabled and time > (config.uptimeList.afterTime.hour * 60 + config.uptimeList.afterTime.minute)
+    local beforeTime = config.uptimeList.beforeTime.enabled and time < (config.uptimeList.beforeTime.hour * 60 + config.uptimeList.beforeTime.minute)
+    local afterTime = config.uptimeList.afterTime.enabled and time > (config.uptimeList.afterTime.hour * 60 + config.uptimeList.afterTime.minute)
 
-    if before and after then
+    if beforeTime and afterTime then
         desiredserver = true
         notifygui("Before/after: " .. formattime(parseuptime()), 46, 232, 21)
-    elseif before and config.uptimeList.orLogic then
+    elseif beforeTime and config.uptimeList.orLogic then
         desiredserver = true
         notifygui("Before: " .. formattime(parseuptime()), 52, 168, 255)
-    elseif after and config.uptimeList.orLogic then
+    elseif afterTime and config.uptimeList.orLogic then
         desiredserver = true
         notifygui("After: " .. formattime(parseuptime()), 193, 48, 255)
     end
+
+    local currentVersion = game.PlaceVersion
+    local beforeVersion = config.placeVersionList.beforeVersion.enabled and currentVersion < config.placeVersionList.beforeVersion.version
+    local afterVersion = config.placeVersionList.afterVersion.enabled and currentVersion > config.placeVersionList.afterVersion.version
+
+    if beforeVersion and afterVersion then
+        desiredserver = true
+        notifygui("Before/after version: " .. currentVersion, 46, 232, 21)
+    elseif beforeVersion and config.placeVersionList.orLogic then
+        desiredserver = true
+        notifygui("Before version: " .. currentVersion, 52, 168, 255)
+    elseif afterVersion and config.placeVersionList.orLogic then
+        desiredserver = true
+        notifygui("After version: " .. currentVersion, 193, 48, 255)
+    end
+
 
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
     if config.versionList.enabled and string.match(config.versionList.version, serverversion) then
         desiredserver = true
         notifygui("Version: " .. serverversion, 151, 36, 227)
-    end
-
-    if config.placeVersionList.enabled and config.placeVersionList.version == game.PlaceVersion then
-        desiredserver = true
-        notifygui("Place Version: " .. game.PlaceVersion, 151, 36, 227)
     end
 
     local events = scanWorld()

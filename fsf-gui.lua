@@ -341,14 +341,17 @@ local ServerTab = Window:CreateTab("Server", nil)
 
 
 local function teleport(placeid)
+    local TeleportService = game:GetService("TeleportService")
+    local HttpService = game:GetService("HttpService")
+
     local Server, Next = nil, nil
 
     local filename = "FischServerFinder/servers.json"
 
     if placeid ==  data.placeids.sea1 then
-        filename = filename + "1"
+        filename = filename .. "1"
     else
-        filename = filename + "2"
+        filename = filename .. "2"
     end
 
 
@@ -384,8 +387,6 @@ local function teleport(placeid)
         writefile(filename, HttpService:JSONEncode(Servers))
     end
 
-    notifygui("Teleporting", 22, 209, 242)
-
     while Server == nil or Server.playing == nil or Server.PrivateServerId ~= nil do
         local Servers = ListServers(Next)
 
@@ -393,15 +394,11 @@ local function teleport(placeid)
             Server = Servers.data[math.random(1, #Servers.data)]
             Next = Servers.nextPageCursor
         else
-            notifygui("No available servers!", 242, 44, 22)
             return
         end
     end
 
     if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
-        if cache.autohop then
-            writefile("FischServerFinder/cache.json", game:GetService("HttpService"):JSONEncode(cache))
-        end
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(placeid, Server.id, game:GetService("Players").LocalPlayer)
     end
@@ -690,7 +687,7 @@ PlayerToggle10:Set(guiConfig.freezecharacter)
 
 local WorldTab = Window:CreateTab("World", nil)
 
-local rodabilityadded
+local rodabilityadded1, rodabilityadded2
 
 local WorldToggle1 = WorldTab:CreateToggle({
     Name = "Hide Rod Abilities",
@@ -699,13 +696,25 @@ local WorldToggle1 = WorldTab:CreateToggle({
     Callback = function(Value)
         guiConfig.hideability = Value
         saveGuiConfig()
-        if rodabilityadded then
-            rodabilityadded:Disconnect()
-            rodabilityadded = nil
+        if rodabilityadded1 then
+            rodabilityadded1:Disconnect()
+            rodabilityadded1 = nil
+        end
+        if rodabilityadded2 then
+            rodabilityadded2:Disconnect()
+            rodabilityadded2 = nil
         end
 
-        rodabilityadded = game:GetService("Workspace").active.debrisfx.ChildAdded:Connect(function(child)
+        rodabilityadded1 = game:GetService("Workspace").active.debrisfx.ChildAdded:Connect(function(child)
             if guiConfig.hideability then
+                task.wait()
+                child:Destroy()
+            end
+        end)
+
+        rodabilityadded2 = game:GetService("Workspace").ChildAdded:Connect(function(child)
+            if guiConfig.hideability and child.Name == "Cathulu" then
+                task.wait()
                 child:Destroy()
             end
         end)
@@ -1021,6 +1030,7 @@ local AreaToggle1 = AreaTab:CreateToggle({
     Flag = "AreaToggle1",
     Callback = function(Value)
         guiConfig.zonetoggle = Value
+        saveGuiConfig()
         toggleFreezeZone(guiConfig.zonetoggle or guiConfig.eventzonetoggle)
     end,
 })
@@ -1033,6 +1043,7 @@ local AreaToggle2 = AreaTab:CreateToggle({
     Flag = "AreaToggle2",
     Callback = function(Value)
         guiConfig.eventzonetoggle = Value
+        saveGuiConfig()
         toggleFreezeZone(guiConfig.zonetoggle or guiConfig.eventzonetoggle)
     end,
 })
@@ -1073,6 +1084,7 @@ local AreaDropdown2 = AreaTab:CreateDropdown({
         else
             dropdownconvert(guiConfig, "eventzones2", Options) 
         end
+        saveGuiConfig()
     end,
 })
 
@@ -1092,7 +1104,7 @@ local AutoToggle1 = AutoTab:CreateToggle({
     Flag = "AutoToggle1",
     Callback = function(Value)
         guiConfig.autosell = Value
-        saveFishConfig()
+        saveGuiConfig()
         if autoselltask then
             task.cancel(autoselltask)
             autoselltask = nil
@@ -1210,7 +1222,7 @@ local ScriptToggle6 = ScriptTab:CreateToggle({
 
 local ServerTab = Window:CreateTab("Server Config", nil)
 
-local ServerParagraph1 = ServerTab:CreateParagraph({Title = "Weather", Content = "Select weathers that are desirable"})
+local ServerParagraph2 = ServerTab:CreateParagraph({Title = "Weather", Content = "Select weathers that are desirable"})
 
 local ServerDropdown1 = ServerTab:CreateDropdown({
     Name = "Weather",
@@ -1228,7 +1240,7 @@ dropdownsetup(config, "weatherList", ServerDropdown1)
 
 local ServerDivider1 = ServerTab:CreateDivider()
 
-local ServerParagraph2 = ServerTab:CreateParagraph({Title = "Events", Content = "Select events that are desirable"})
+local ServerParagraph3 = ServerTab:CreateParagraph({Title = "Events", Content = "Select events that are desirable"})
 
 local ServerDropdown2 = ServerTab:CreateDropdown({
     Name = "Events",
@@ -1246,7 +1258,7 @@ dropdownsetup(config, "eventList", ServerDropdown2)
 
 ServerTab:CreateDivider()
 
-local ServerParagraph3 = ServerTab:CreateParagraph({Title = "Seasons", Content = "Select seasons that are desirable"})
+local ServerParagraph4 = ServerTab:CreateParagraph({Title = "Seasons", Content = "Select seasons that are desirable"})
 
 local ServerDropdown3 = ServerTab:CreateDropdown({
     Name = "Season",
@@ -1264,7 +1276,7 @@ dropdownsetup(config, "seasonList", ServerDropdown3)
 
 local ServerDivider3 = ServerTab:CreateDivider()
 
-local ServerParagraph4 = ServerTab:CreateParagraph({Title = "Daytime Cycle", Content = "Select daytime cycles that are desirable"})
+local ServerParagraph5 = ServerTab:CreateParagraph({Title = "Daytime Cycle", Content = "Select daytime cycles that are desirable"})
 
 local ServerDropdown4 = ServerTab:CreateDropdown({
     Name = "Daytime Cycle",
@@ -1282,7 +1294,7 @@ dropdownsetup(config, "cycleList", ServerDropdown4)
 
 ServerTab:CreateDivider()
 
-local ServerParagraph5 = ServerTab:CreateParagraph({Title = "Server Luck", Content = "Toggle and select minimum amount of server luck desired (Robux Luck Multiplier)"})
+local ServerParagraph6 = ServerTab:CreateParagraph({Title = "Server Luck", Content = "Toggle and select minimum amount of server luck desired (Robux Luck Multiplier)"})
 
 local ServerToggle1 = ServerTab:CreateToggle({
     Name = "Luck Toggle",
@@ -1324,7 +1336,7 @@ end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph6 = ServerTab:CreateParagraph({Title = "Server Version", Content = "Toggle and select the desired ingame Fisch version in the form x.x.x"})
+local ServerParagraph7 = ServerTab:CreateParagraph({Title = "Server Version", Content = "Toggle and select the desired ingame Fisch version in the form x.x.x"})
 
 local ServerToggle2 = ServerTab:CreateToggle({
     Name = "Version Toggle",
@@ -1349,29 +1361,39 @@ local ServerInput2 = ServerTab:CreateInput({
 
 ServerTab:CreateDivider()
 
-local ServerParagraph7 = ServerTab:CreateParagraph({Title = "PlaceVersion", Content = "Toggle and select the desired Roblox PlaceVersion (game.PlaceVersion)"})
+local ServerParagraph8 = ServerTab:CreateParagraph({Title = "PlaceVersion", Content = "Toggle and select the desired Roblox PlaceVersion (game.PlaceVersion)"})
 
 local ServerToggle3 = ServerTab:CreateToggle({
-    Name = "PlaceVersion Toggle",
-    CurrentValue = config.placeVersionList.enabled,
+    Name = "PlaceVersion - Teleport (only to desired)",
+    CurrentValue = config.placeVersionList.teleport,
     Flag = "ServerToggle3",
     Callback = function(Value)
-        config.placeVersionList.enabled = Value
+        config.placeVersionList.teleport = Value
         saveConfig()
     end,
 })
 
-local resetPlaceVersion
+local ServerToggle4 = ServerTab:CreateToggle({
+    Name = "Before PlaceVersion - Toggle",
+    CurrentValue = config.placeVersionList.beforeVersion.enabled,
+    Flag = "ServerToggle4",
+    Callback = function(Value)
+        config.placeVersionList.beforeVersion.enabled = Value
+        saveConfig()
+    end,
+})
+
+local resetBeforePlaceVersion
 
 local ServerInput3 = ServerTab:CreateInput({
-    Name = "PlaceVersion",
-    CurrentValue = config.placeVersionList.version,
+    Name = "Before PlaceVersion",
+    CurrentValue = config.placeVersionList.beforeVersion.version,
     PlaceholderText = "1234",
     RemoveTextAfterFocusLost = false,
     Flag = "ServerInput3",
     Callback = function(Text)
         if tonumber(Text) and tonumber(Text) > 0 then
-            config.placeVersionList.version = tonumber(Text)
+            config.placeVersionList.beforeVersion.version = tonumber(Text)
             saveConfig()
         else
             Rayfield:Notify({
@@ -1380,25 +1402,81 @@ local ServerInput3 = ServerTab:CreateInput({
                 Duration = 5,
                 Image = nil,
             })
-            resetPlaceVersion()
+            resetBeforePlaceVersion()
         end
     end,
 })
 
-resetPlaceVersion = function()
-    ServerInput3:Set(config.placeVersionList.version)
+resetBeforePlaceVersion = function()
+    ServerInput3:Set(config.placeVersionList.beforeVersion.version)
 end
+
+ServerTab:CreateDivider()
+
+local ServerParagraph9 = ServerTab:CreateParagraph({Title = "After PlaceVersion", Content = "Desirable server if the PlaceVersion is greater than the amount below"})
+
+local ServerToggle5 = ServerTab:CreateToggle({
+    Name = "After PlaceVersion - Toggle",
+    CurrentValue = config.placeVersionList.afterVersion.enabled,
+    Flag = "ServerToggle5",
+    Callback = function(Value)
+        config.placeVersionList.afterVersion.enabled = Value
+        saveConfig()
+    end,
+})
+
+local resetAfterPlaceVersion
+
+local ServerInput4 = ServerTab:CreateInput({
+    Name = "After PlaceVersion",
+    CurrentValue = config.placeVersionList.afterVersion.version,
+    PlaceholderText = "1234",
+    RemoveTextAfterFocusLost = false,
+    Flag = "ServerInput4",
+    Callback = function(Text)
+        if tonumber(Text) and tonumber(Text) > 0 then
+            config.placeVersionList.afterVersion.version = tonumber(Text)
+            saveConfig()
+        else
+            Rayfield:Notify({
+                Title = "PlaceVersion",
+                Content = "The input has to be a positive integer!",
+                Duration = 5,
+                Image = nil,
+            })
+            resetAfterPlaceVersion()
+        end
+    end,
+})
+
+resetAfterPlaceVersion = function()
+    ServerInput4:Set(config.placeVersionList.afterVersion.version)
+end
+
+ServerTab:CreateDivider()
+
+local ServerParagraph10 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "Desirable server if either condition (Before or After PlaceVersion) is met"})
+
+local ServerToggle6 = ServerTab:CreateToggle({
+    Name = "Or Logic - Toggle",
+    CurrentValue = config.placeVersionList.orLogic,
+    Flag = "ServerToggle6",
+    Callback = function(Value)
+        config.placeVersionList.orLogic = Value
+        saveConfig()
+    end,
+})
 
 ServerTab:CreateDivider()
 
 local ServerSection1 = ServerTab:CreateSection("Uptime Search")
 
-local ServerParagraph8 = ServerTab:CreateParagraph({Title = "Before Time", Content = "Desirable server if the uptime is less than the amount below (summed)"})
+local ServerParagraph11 = ServerTab:CreateParagraph({Title = "Before Time", Content = "Desirable server if the uptime is less than the amount below (summed)"})
 
-local ServerToggle4 = ServerTab:CreateToggle({
+local ServerToggle7 = ServerTab:CreateToggle({
     Name = "Before Time - Toggle",
     CurrentValue = config.uptimeList.beforeTime.enabled,
-    Flag = "ServerToggle4",
+    Flag = "ServerToggle7",
     Callback = function(Value)
         config.uptimeList.beforeTime.enabled = Value
         saveConfig()
@@ -1407,12 +1485,12 @@ local ServerToggle4 = ServerTab:CreateToggle({
 
 local resetBHour
 
-local ServerInput4 = ServerTab:CreateInput({
+local ServerInput5 = ServerTab:CreateInput({
     Name = "Before Time - Hour",
     CurrentValue = config.uptimeList.beforeTime.hour,
     PlaceholderText = "x hours",
     RemoveTextAfterFocusLost = false,
-    Flag = "ServerInput4",
+    Flag = "ServerInput5",
     Callback = function(Text)
         if tonumber(Text) and tonumber(Text) >= 0 then
             config.uptimeList.beforeTime.hour = tonumber(Text)
@@ -1430,17 +1508,17 @@ local ServerInput4 = ServerTab:CreateInput({
 })
 
 resetBHour = function()
-    ServerInput4:Set(config.uptimeList.beforeTime.hour)
+    ServerInput5:Set(config.uptimeList.beforeTime.hour)
 end
 
 local resetBMin
 
-local ServerInput5 = ServerTab:CreateInput({
+local ServerInput6 = ServerTab:CreateInput({
     Name = "Before Time - Min",
     CurrentValue = config.uptimeList.beforeTime.min,
     PlaceholderText = "x mins",
     RemoveTextAfterFocusLost = false,
-    Flag = "ServerInput5",
+    Flag = "ServerInput6",
     Callback = function(Text)
         if tonumber(Text) and tonumber(Text) >= 0 then
             config.uptimeList.beforeTime.min = tonumber(Text)
@@ -1458,17 +1536,17 @@ local ServerInput5 = ServerTab:CreateInput({
 })
 
 resetBMin = function()
-    ServerInput5:Set(config.uptimeList.beforeTime.min)
+    ServerInput6:Set(config.uptimeList.beforeTime.min)
 end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph9 = ServerTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
+local ServerParagraph12 = ServerTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
 
-local ServerToggle5 = ServerTab:CreateToggle({
+local ServerToggle8 = ServerTab:CreateToggle({
     Name = "After Time - Toggle",
     CurrentValue = config.uptimeList.afterTime.enabled,
-    Flag = "ServerToggle5",
+    Flag = "ServerToggle8",
     Callback = function(Value)
         config.uptimeList.afterTime.enabled = Value
         saveConfig()
@@ -1477,12 +1555,12 @@ local ServerToggle5 = ServerTab:CreateToggle({
 
 local resetAHour
 
-local ServerInput6 = ServerTab:CreateInput({
+local ServerInput7 = ServerTab:CreateInput({
     Name = "After Time - Hour",
     CurrentValue = config.uptimeList.afterTime.hour,
     PlaceholderText = "x hours",
     RemoveTextAfterFocusLost = false,
-    Flag = "ServerInput6",
+    Flag = "ServerInput7",
     Callback = function(Text)
         if tonumber(Text) and tonumber(Text) >= 0 then
             config.uptimeList.afterTime.hour = tonumber(Text)
@@ -1500,17 +1578,17 @@ local ServerInput6 = ServerTab:CreateInput({
 })
 
 resetAHour = function()
-    ServerInput6:Set(config.uptimeList.afterTime.hour)
+    ServerInput7:Set(config.uptimeList.afterTime.hour)
 end
 
 local resetAMin
 
-local ServerInput7 = ServerTab:CreateInput({
+local ServerInput8 = ServerTab:CreateInput({
     Name = "After Time - Min",
     CurrentValue = config.uptimeList.afterTime.min,
     PlaceholderText = "x mins",
     RemoveTextAfterFocusLost = false,
-    Flag = "ServerInput7",
+    Flag = "ServerInput8",
     Callback = function(Text)
         if tonumber(Text) and tonumber(Text) >= 0 then
             config.uptimeList.afterTime.min = tonumber(Text)
@@ -1528,17 +1606,17 @@ local ServerInput7 = ServerTab:CreateInput({
 })
 
 resetAMin = function()
-    ServerInput7:Set(config.uptimeList.afterTime.min)
+    ServerInput8:Set(config.uptimeList.afterTime.min)
 end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph10 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
+local ServerParagraph13 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
 
-local ServerToggle6 = ServerTab:CreateToggle({
+local ServerToggle8 = ServerTab:CreateToggle({
     Name = "Or Logic",
     CurrentValue = config.uptimeList.orLogic,
-    Flag = "ServerToggle6",
+    Flag = "ServerToggle8",
     Callback = function(Value)
         config.uptimeList.orLogic = Value
         saveConfig()
