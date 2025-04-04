@@ -134,7 +134,7 @@ teleport = function(placeid)
 
 
     local function ListServers(cursor)
-        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100"
+        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100&excludeFullGames=true"
         local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
         local Decode = HttpService:JSONDecode(Raw)
 
@@ -173,12 +173,11 @@ teleport = function(placeid)
             notifygui("No available servers!", 242, 44, 22)
             return
         end
-        
+
         for i = 1, #Servers.data do
             local tempserver = Servers.data[i]
             if tempserver.playing < tempserver.maxPlayers
                 and tempserver.id ~= game.JobId
-                and tempserver.PrivateServerId == nil
             then
                 Server = tempserver
                 break

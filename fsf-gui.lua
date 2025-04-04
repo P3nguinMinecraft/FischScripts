@@ -346,8 +346,7 @@ local function teleport(placeid)
     local TeleportService = game:GetService("TeleportService")
     local HttpService = game:GetService("HttpService")
 
-    local Server, Next = nil, nil
-
+    local Servers, Server, Next = nil, nil, nil
     local filename = "FischServerFinder/servers.json"
 
     if placeid ==  data.placeids.sea1 then
@@ -358,7 +357,7 @@ local function teleport(placeid)
 
 
     local function ListServers(cursor)
-        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100"
+        local ServersAPI = "https://games.roblox.com/v1/games/" .. tostring(placeid) .. "/servers/Public?sortOrder=Asc&limit=100&excludeFullGames=true"
         local Raw = game:HttpGet(ServersAPI .. ((cursor and "&cursor=" .. cursor) or ""))
         local Decode = HttpService:JSONDecode(Raw)
 
@@ -389,18 +388,32 @@ local function teleport(placeid)
         writefile(filename, HttpService:JSONEncode(Servers))
     end
 
-    while Server == nil or Server.playing == nil or Server.PrivateServerId ~= nil do
-        local Servers = ListServers(Next)
-
-        if Servers and Servers.nextPageCursor then
-            Server = Servers.data[math.random(1, #Servers.data)]
-            Next = Servers.nextPageCursor
-        else
+    while Server == nil do
+        Servers = ListServers(Next)
+        if not Servers.data then
+            print("No available servers!")
             return
+        end
+
+        for i = 1, #Servers.data do
+            local tempserver = Servers.data[i]
+            if tempserver.playing < tempserver.maxPlayers
+                and tempserver.id ~= game.JobId
+            then
+                Server = tempserver
+                break
+            end
+        end
+
+        if not Servers.nextPageCursor then
+            print("No available servers!")
+            return
+        else
+            Next = Servers.nextPageCursor
         end
     end
 
-    if Server and Server.playing < Server.maxPlayers and Server.id ~= game.JobId then
+    if Server then
         RemoveServer(Server.id)
         TeleportService:TeleportToPlaceInstance(placeid, Server.id, game:GetService("Players").LocalPlayer)
     end
