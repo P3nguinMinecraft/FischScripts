@@ -877,10 +877,19 @@ sendwebhook = function()
     local serverversion = game:GetService("ReplicatedStorage").world.version.Value
     local placeversion = game.PlaceVersion
     local uptimestr = "**Server Uptime: **" .. formattime(parseuptime())
-    local jobId = game.JobId
+    local placeid = tostring(game.PlaceId)
+    local jobId = tostring(game.JobId)
     local timestamp = os.time()
     local timestampfooter = os.date("!%Y-%m-%dT%H:%M:%S.000Z")
     local events = convertEventString(scanWorld())
+    local sea
+    if game.PlaceId == data.placeids.sea1 then
+        sea = "Sea 1"
+    elseif game.PlaceId == data.placeids.sea2 then
+        sea = "Sea 2"
+    else
+        sea = "Unknown???"
+    end
 
     local embedData = {
         content = "",
@@ -896,7 +905,7 @@ sendwebhook = function()
                     },
                     {
                         name = "Code",
-                        value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(16732694052, \"" .. 
+                        value = "```game:GetService(\"TeleportService\"):TeleportToPlaceInstance(" .. placeid .. ", \"" .. 
                             jobId .. "\", game:GetService(\"Players\").LocalPlayer)```"
                     }
                 },
@@ -904,7 +913,7 @@ sendwebhook = function()
                     text = "windows1267"
                 },
                 timestamp = timestampfooter,
-                title = "Server Found <t:" .. timestamp ..":R>",
+                title = sea .. " Server Found <t:" .. timestamp ..":R>",
                 color = 53759,
             }
         }
