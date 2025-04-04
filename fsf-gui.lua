@@ -1380,19 +1380,9 @@ local ServerConfigButton1 = ServerTab:CreateButton({
 local ServerConfigParagraph7 = ServerConfigTab:CreateParagraph({Title = "PlaceVersion", Content = "Toggle and select the desired Roblox PlaceVersion (game.PlaceVersion)"})
 
 local ServerConfigToggle3 = ServerConfigTab:CreateToggle({
-    Name = "PlaceVersion - Teleport (only to desired)",
-    CurrentValue = config.placeVersionList.teleport,
-    Flag = "ServerConfigToggle3",
-    Callback = function(Value)
-        config.placeVersionList.teleport = Value
-        saveConfig()
-    end,
-})
-
-local ServerConfigToggle4 = ServerConfigTab:CreateToggle({
     Name = "Before PlaceVersion - Toggle",
     CurrentValue = config.placeVersionList.beforeVersion.enabled,
-    Flag = "ServerConfigToggle4",
+    Flag = "ServerConfigToggle3",
     Callback = function(Value)
         config.placeVersionList.beforeVersion.enabled = Value
         saveConfig()
@@ -1433,10 +1423,10 @@ ServerConfigTab:CreateDivider()
 
 local ServerConfigParagraph9 = ServerConfigTab:CreateParagraph({Title = "After PlaceVersion", Content = "Desirable server if the PlaceVersion is greater than the amount below"})
 
-local ServerConfigToggle5 = ServerConfigTab:CreateToggle({
+local ServerConfigToggle4 = ServerConfigTab:CreateToggle({
     Name = "After PlaceVersion - Toggle",
     CurrentValue = config.placeVersionList.afterVersion.enabled,
-    Flag = "ServerConfigToggle5",
+    Flag = "ServerConfigToggle4",
     Callback = function(Value)
         config.placeVersionList.afterVersion.enabled = Value
         saveConfig()
@@ -1475,10 +1465,10 @@ ServerConfigTab:CreateDivider()
 
 local ServerConfigParagraph10 = ServerConfigTab:CreateParagraph({Title = "Or Logic", Content = "Desirable server if either condition (Before or After PlaceVersion) is met"})
 
-local ServerConfigToggle6 = ServerConfigTab:CreateToggle({
+local ServerConfigToggle5 = ServerConfigTab:CreateToggle({
     Name = "Or Logic - Toggle",
     CurrentValue = config.placeVersionList.orLogic,
-    Flag = "ServerConfigToggle6",
+    Flag = "ServerConfigToggle5",
     Callback = function(Value)
         config.placeVersionList.orLogic = Value
         saveConfig()
@@ -1491,10 +1481,10 @@ local ServerConfigSection2 = ServerConfigTab:CreateSection("Uptime Search")
 
 local ServerConfigParagraph11 = ServerConfigTab:CreateParagraph({Title = "Before Time", Content = "Desirable server if the uptime is less than the amount below (summed)"})
 
-local ServerConfigToggle7 = ServerConfigTab:CreateToggle({
+local ServerConfigToggle6 = ServerConfigTab:CreateToggle({
     Name = "Before Time - Toggle",
     CurrentValue = config.uptimeList.beforeTime.enabled,
-    Flag = "ServerConfigToggle7",
+    Flag = "ServerConfigToggle6",
     Callback = function(Value)
         config.uptimeList.beforeTime.enabled = Value
         saveConfig()
@@ -1561,10 +1551,10 @@ ServerConfigTab:CreateDivider()
 
 local ServerConfigParagraph12 = ServerConfigTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
 
-local ServerConfigToggle8 = ServerConfigTab:CreateToggle({
+local ServerConfigToggle7 = ServerConfigTab:CreateToggle({
     Name = "After Time - Toggle",
     CurrentValue = config.uptimeList.afterTime.enabled,
-    Flag = "ServerConfigToggle8",
+    Flag = "ServerConfigToggle7",
     Callback = function(Value)
         config.uptimeList.afterTime.enabled = Value
         saveConfig()
@@ -1631,10 +1621,10 @@ ServerConfigTab:CreateDivider()
 
 local ServerConfigParagraph13 = ServerConfigTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
 
-local ServerConfigToggle9 = ServerConfigTab:CreateToggle({
+local ServerConfigToggle8 = ServerConfigTab:CreateToggle({
     Name = "Or Logic",
     CurrentValue = config.uptimeList.orLogic,
-    Flag = "ServerConfigToggle9",
+    Flag = "ServerConfigToggle8",
     Callback = function(Value)
         config.uptimeList.orLogic = Value
         saveConfig()

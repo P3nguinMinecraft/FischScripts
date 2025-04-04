@@ -118,9 +118,7 @@ tp = function(x, y, z)
     game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(x, y, z))
 end
 
-teleport = function(placeid, placeversion)
-    if not placeversion then placeversion = config.placeVersionList end
-
+teleport = function(placeid)
     local TeleportService = game:GetService("TeleportService")
     local HttpService = game:GetService("HttpService")
 
@@ -182,22 +180,8 @@ teleport = function(placeid, placeversion)
                 and tempserver.id ~= game.JobId
                 and tempserver.PrivateServerId == nil
             then
-                local version = tempserver.placeVersion or -1
-                local beforeVersion = placeversion.beforeVersion.enabled and version < placeversion.beforeVersion.version
-                local afterVersion = placeversion.afterVersion.enabled and version > placeversion.afterVersion.version
-                
-                if not placeversion.teleport then
-                    Server = tempserver
-                elseif not placeversion.beforeVersion.enabled and not placeversion.afterVersion.enabled then
-                    Server = tempserver
-                elseif version == -1 then
-                elseif beforeVersion and afterVersion then
-                    Server = tempserver
-                elseif beforeVersion and placeversion.orLogic then
-                    Server = tempserver
-                elseif afterVersion and placeversion.orLogic then
-                    Server = tempserver
-                end
+                Server = tempserver
+                break
             end
         end
 

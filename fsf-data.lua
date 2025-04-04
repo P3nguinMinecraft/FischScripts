@@ -1,6 +1,6 @@
 local version = "2.8"
 local versid = "twIIk1d1sdnxiFrd"
-local updmsg = "+Numerous Bug Fixes +Dynamic Placeversion, Placeversion based teleport +Sea Leviathan (theoretical)"
+local updmsg = "+Numerous Bug Fixes +Dynamic Placeversion, +Sea Leviathan (theoretical)"
 local settingchanged = true
 local settingmsg = "Placeversion settings!"
 local link = "https://discord.gg/fWncS2vFx"
