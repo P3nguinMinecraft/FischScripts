@@ -172,13 +172,16 @@ teleport = function(placeid, placeversion)
     local count = nil
 
     while Server == nil do
-        if count == nil then
-            Servers = ListServers(Next)
-            count = 1
+        Servers = ListServers(Next)
+
+        if not Servers then
+            notifygui("No available servers!", 242, 44, 22)
+            return
         end
 
-        if Servers and Servers.nextPageCursor then
-            local tempserver = Servers[count]
+        
+        for i = 1, #Servers do
+            local tempserver = Servers[1]
             if tempserver.playing < tempserver.maxPlayer
                 and tempserver.id ~= game.JobId
                 and tempserver.PrivateServerId == nil
@@ -199,18 +202,13 @@ teleport = function(placeid, placeversion)
                     Server = tempserver
                 end
             end
-            count = count + 1
-            if count > #Servers then
-                count = nil
-                if not Servers.nextPageCursor then
-                    notifygui("No available servers!", 242, 44, 22)
-                    return
-                end
-                Next = Servers.nextPageCursor
-            end
-        else
+        end
+
+        if not Servers.nextPageCursor then
             notifygui("No available servers!", 242, 44, 22)
             return
+        else
+            Next = Servers.nextPageCursor
         end
     end
 
@@ -940,7 +938,7 @@ scanWorld = function()
     if luckServer.Value == 1 then
         luck = luck - 1
     end
-    local meteor = game:GetService("Workspace"):WaitForChild("MeteorItems")
+    local meteor = game:GetService("Workspace"):FindFirstChild("MeteorItems")
     local zones = game:GetService("Workspace"):WaitForChild("zones"):WaitForChild("fishing")
 
     for name, enabled in pairs(config.weatherList) do
@@ -977,12 +975,14 @@ scanWorld = function()
         table.insert(events, {text = "Luck: x" .. luck, r = 88, g = 162, b = 91, enabled = send})
     end
 
-    local meteoritems = meteor:GetChildren()
-    if #meteoritems > 0 then
-        local item = meteoritems[1]
-        for name, enabled in pairs(config.meteorList) do
-            if name == item.Name then
-                table.insert(events, {text = "Meteor: " .. name, r = 236, g = 103, b = 44, enabled = enabled})
+    if meteor then
+        local meteoritems = meteor:GetChildren()
+        if #meteoritems > 0 then
+            local item = meteoritems[1]
+            for name, enabled in pairs(config.meteorList) do
+                if name == item.Name then
+                    table.insert(events, {text = "Meteor: " .. name, r = 236, g = 103, b = 44, enabled = enabled})
+                end
             end
         end
     end
@@ -1113,8 +1113,8 @@ end)
 --task.wait(2)
 
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
-notifygui("Join the discord! Link copied", 118, 126, 240)
-setclipboard("https://discord.gg/fWncS2vFxn")
+notifygui("Join the discord /fWncS2vFxn Link copied", 118, 126, 240)
+setclipboard(data.link)
 
 loadConfig()
 
