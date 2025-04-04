@@ -156,26 +156,29 @@ local HomeLabel2 = HomeTab:CreateLabel("Explore the various Tabs to change confi
 if not writefile then HomeLabel2:Set("You cannot change configs because your executor does not support files!") end
 
 local HomeButton1 = HomeTab:CreateButton({
+    Name = "Join discord (/fWncS2vFxn)",
+    Callback = function()
+        setclipboard(data.link)
+        Rayfield:Notify({
+            Title = "Discord",
+            Content = data.link,
+            Duration = 5,
+            Image = nil,
+        })
+    end,
+})
+
+local HomeButton2 = HomeTab:CreateButton({
     Name = "Close GUI (Destroy)",
     Callback = function()
         Rayfield:Destroy()
     end,
 })
 
-local HomeButton2 = HomeTab:CreateButton({
+local HomeButton3 = HomeTab:CreateButton({
     Name = "Load Main Script",
     Callback = function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fischserverfinder.lua"))()
-    end,
-})
-
-local HomeButton3 = HomeTab:CreateButton({
-    Name = "Reset Config",
-    Callback = function()
-        config = data.defaultConfig
-        saveConfig()
-        Rayfield:Destroy()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/P3nguinMinecraft/FischScripts/main/fsf-gui.lua"))()
     end,
 })
 
@@ -1361,6 +1364,8 @@ local ServerInput2 = ServerTab:CreateInput({
 
 ServerTab:CreateDivider()
 
+local ServerSection1 = ServerTab:CreateSection("PlaceVersion Search")
+
 local ServerParagraph8 = ServerTab:CreateParagraph({Title = "PlaceVersion", Content = "Toggle and select the desired Roblox PlaceVersion (game.PlaceVersion)"})
 
 local ServerToggle3 = ServerTab:CreateToggle({
@@ -1384,6 +1389,8 @@ local ServerToggle4 = ServerTab:CreateToggle({
 })
 
 local resetBeforePlaceVersion
+
+local ServerParagraph9 = ServerTab:CreateParagraph({Title = "Before PlaceVersion", Content = "Desirable server if the PlaceVersion is less than the amount below"})
 
 local ServerInput3 = ServerTab:CreateInput({
     Name = "Before PlaceVersion",
@@ -1413,7 +1420,7 @@ end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph9 = ServerTab:CreateParagraph({Title = "After PlaceVersion", Content = "Desirable server if the PlaceVersion is greater than the amount below"})
+local ServerParagraph10 = ServerTab:CreateParagraph({Title = "After PlaceVersion", Content = "Desirable server if the PlaceVersion is greater than the amount below"})
 
 local ServerToggle5 = ServerTab:CreateToggle({
     Name = "After PlaceVersion - Toggle",
@@ -1455,7 +1462,7 @@ end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph10 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "Desirable server if either condition (Before or After PlaceVersion) is met"})
+local ServerParagraph11 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "Desirable server if either condition (Before or After PlaceVersion) is met"})
 
 local ServerToggle6 = ServerTab:CreateToggle({
     Name = "Or Logic - Toggle",
@@ -1469,9 +1476,9 @@ local ServerToggle6 = ServerTab:CreateToggle({
 
 ServerTab:CreateDivider()
 
-local ServerSection1 = ServerTab:CreateSection("Uptime Search")
+local ServerSection2 = ServerTab:CreateSection("Uptime Search")
 
-local ServerParagraph11 = ServerTab:CreateParagraph({Title = "Before Time", Content = "Desirable server if the uptime is less than the amount below (summed)"})
+local ServerParagraph12 = ServerTab:CreateParagraph({Title = "Before Time", Content = "Desirable server if the uptime is less than the amount below (summed)"})
 
 local ServerToggle7 = ServerTab:CreateToggle({
     Name = "Before Time - Toggle",
@@ -1541,7 +1548,7 @@ end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph12 = ServerTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
+local ServerParagraph13 = ServerTab:CreateParagraph({Title = "After Time", Content = "Desirable server if the uptime is more than the amount below (summed)"})
 
 local ServerToggle8 = ServerTab:CreateToggle({
     Name = "After Time - Toggle",
@@ -1611,12 +1618,12 @@ end
 
 ServerTab:CreateDivider()
 
-local ServerParagraph13 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
+local ServerParagraph14 = ServerTab:CreateParagraph({Title = "Or Logic", Content = "If Or Logic is on, server is desired if EITHER Before or After is satisfied. If Or Logic is off, BOTH Before and After must be satisfied (used if you need between 2 uptimes)"})
 
-local ServerToggle8 = ServerTab:CreateToggle({
+local ServerToggle9 = ServerTab:CreateToggle({
     Name = "Or Logic",
     CurrentValue = config.uptimeList.orLogic,
-    Flag = "ServerToggle8",
+    Flag = "ServerToggle9",
     Callback = function(Value)
         config.uptimeList.orLogic = Value
         saveConfig()
