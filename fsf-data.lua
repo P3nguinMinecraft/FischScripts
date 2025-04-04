@@ -151,6 +151,8 @@ local zoneData = {
 
     zones2 = {
         ["Azure Lagoon"] = {x = -45, y = 10, z = -10},
+        ["Emberreach"] = {x = -730, y = 0, z = 0},
+        ["Emberreach Lava"] = {x = -110, y = 20, z = -80},
         ["Emberreach Ponds"] = {x = 0, y = 10, z = 110},
         ["Isle of New Beginnings"] = {x = -10, y = 10, z = 0},
         ["Lushgrove"] = {x = -20, y = 10, z = 0},
@@ -328,8 +330,8 @@ local ordered = {
     },
 
     zones2 = {
-        "Azure Lagoon", "Emberreach Ponds", "Isle of New Beginnings", "Lushgrove", "Open Ocean",
-        "Pine Shoal", "The Cursed Shores", "Waveborne",
+        "Azure Lagoon", "Emberreach", "Emberreach Lava", "Emberreach Ponds", "Isle of New Beginnings",
+        "Lushgrove", "Open Ocean", "Pine Shoal", "The Cursed Shores", "Waveborne",
     },
     eventzones2 = {
         "Open Ocean - Sea Leviathan",
@@ -447,6 +449,8 @@ local defaultGuiConfig = {
 
     zones2 = {
         ["Azure Lagoon"] = false,
+        ["Emberreach"] = false,
+        ["Emberreach Lava"] = false,
         ["Emberreach Ponds"] = false,
         ["Isle of New Beginnings"] = false,
         ["Lushgrove"] = false,
