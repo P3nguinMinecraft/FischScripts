@@ -1,6 +1,6 @@
 local version = "2.8"
 local versid = "LYXs75el7WZdMs1U"
-local updmsg = "+Animals Pool"
+local updmsg = "+Animals Pool +Octophant Pool"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -147,7 +147,8 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
-        ["Animals Pool"] = {x = 0, y = 10, z = 0},
+        ["Animals Pool"] = {x = 0, y = 80, z = 0},
+        ["Octophant Pool"] = {x = 0, y = 80, z = 0},
     },
 
     zones2 = {
@@ -266,6 +267,7 @@ local defaultConfig = {
         ["Whales Pool"] = false,
         ["Moby"] = true,
         ["Animals Pool"] = true,
+        ["Octophant Pool"] = true,
 
         ["Open Ocean - Sea Leviathan"] = true,
     },
@@ -305,7 +307,7 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
-        "Animals Pool",
+        "Animals Pool", "Octophant Pool",
 
         "Open Ocean - Sea Leviathan",
     },
@@ -332,7 +334,7 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
-        "Animals Pool",
+        "Animals Pool", "Octophant Pool",
     },
 
     zones2 = {
@@ -452,6 +454,7 @@ local defaultGuiConfig = {
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
         ["Animals Pool"] = false,
+        ["Octophant Pool"] = false,
     },
 
     zones2 = {
