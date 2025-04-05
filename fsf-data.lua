@@ -1,8 +1,8 @@
 local version = "2.8"
-local versid = "twIIk1d1sdnxiFrd"
-local updmsg = "+Numerous Bug Fixes +Dynamic Placeversion, +Sea Leviathan (theoretical)"
-local settingchanged = true
-local settingmsg = "Placeversion settings!"
+local versid = "LYXs75el7WZdMs1U"
+local updmsg = "+Animals Pool"
+local settingchanged = false
+local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
 local placeids = {
@@ -147,6 +147,7 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
+        ["Animals Pool"] = {x = 0, y = 10, z = 0},
     },
 
     zones2 = {
@@ -264,6 +265,8 @@ local defaultConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Moby"] = true,
+        ["Animals Pool"] = true,
+
         ["Open Ocean - Sea Leviathan"] = true,
     },
 
@@ -302,6 +305,8 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
+        "Animals Pool",
+
         "Open Ocean - Sea Leviathan",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
@@ -327,6 +332,7 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
+        "Animals Pool",
     },
 
     zones2 = {
@@ -445,6 +451,7 @@ local defaultGuiConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
+        ["Animals Pool"] = false,
     },
 
     zones2 = {
