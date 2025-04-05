@@ -148,7 +148,6 @@ local zoneData = {
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
         ["Animals Pool"] = {x = 0, y = 80, z = 0},
-        ["Octophant Pool"] = {x = 0, y = 80, z = 0},
     },
 
     zones2 = {
@@ -165,6 +164,8 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
+        ["Animals Pool"] = {x = 0, y = 80, z = 0},
+        ["Octophant Pool"] = {x = 0, y = 80, z = 0},
     },
 }
 
@@ -308,7 +309,6 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
         "Animals Pool", "Octophant Pool",
-
         "Open Ocean - Sea Leviathan",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
@@ -322,7 +322,7 @@ local ordered = {
         "Mushgrove Water", "Ocean", "Overgrowth Caves", "Poseidon Pool", "Roslit Bay", "Roslit Bay Clam",
         "Roslit Bay Ocean", "Roslit Pond", "Roslit Pond Seaweed", "Scallop Ocean", "Snowcap Ocean",
         "Snowcap Pond", "Sunken's Depth", "Sunstone", "Sunstone Hidden", "Terrapin Ocean", "Terrapin Olm",
-        "The Arch", "The Depths", "Vertigo", "Volcanic Vents", "Zeus Pool"
+        "The Arch", "The Depths", "Vertigo", "Volcanic Vents", "Zeus Pool",
     },
     eventzones1 = {
         "Megalodon Default", "Megalodon Ancient",
@@ -334,7 +334,7 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
-        "Animals Pool", "Octophant Pool",
+        "Animals Pool",
     },
 
     zones2 = {
@@ -343,6 +343,7 @@ local ordered = {
     },
     eventzones2 = {
         "Open Ocean - Sea Leviathan",
+        "Animals Pool", "Octophant Pool",
     },
 }
 
@@ -454,7 +455,6 @@ local defaultGuiConfig = {
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
         ["Animals Pool"] = false,
-        ["Octophant Pool"] = false,
     },
 
     zones2 = {
@@ -471,6 +471,8 @@ local defaultGuiConfig = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = false,
+        ["Animals Pool"] = false,
+        ["Octophant Pool"] = false,
     },
 
     -- Auto
