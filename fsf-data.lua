@@ -191,7 +191,7 @@ local defaultConfig = {
         ["Windy"] = false,
         ["Rain"] = false,
         ["Eclipse"] = false,
-        ["Aurora Borealis"] = true,
+        ["Aurora Borealis"] = false,
     },
 
     eventList = {
@@ -214,7 +214,7 @@ local defaultConfig = {
     },
 
     luckList = {
-        enabled = true,
+        enabled = false,
         min = 8,
     },
 
@@ -254,25 +254,25 @@ local defaultConfig = {
     },
 
     zoneList = {
-        ["Megalodon Default"] = true,
-        ["Megalodon Ancient"] = true,
-        ["Forsaken Veil - Scylla"] = true,
+        ["Megalodon Default"] = false,
+        ["Megalodon Ancient"] = false,
+        ["Forsaken Veil - Scylla"] = false,
         ["The Kraken Pool"] = false,
-        ["Ancient Kraken Pool"] = true,
+        ["Ancient Kraken Pool"] = false,
         ["Isonade"] = false,
         ["Great White Shark"] = false,
         ["Great Hammerhead Shark"] = false,
         ["Whale Shark"] = false,
         ["The Depths - Serpent"] = false,
-        ["Orcas Pool"] = true,
-        ["Ancient Orcas Pool"] = true,
+        ["Orcas Pool"] = false,
+        ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
-        ["Moby"] = true,
-        ["Open Ocean - Sea Leviathan"] = true,
-        ["Animal Pool"] = true,
-        ["Animal Pool - Second Sea"] = true,
-        ["Octophant Pool Without Elephant"] = true,
-        ["Octophant Pool With Elephant"] = true,
+        ["Moby"] = false,
+        ["Open Ocean - Sea Leviathan"] = false,
+        ["Animal Pool"] = false,
+        ["Animal Pool - Second Sea"] = false,
+        ["Octophant Pool Without Elephant"] = false,
+        ["Octophant Pool With Elephant"] = false,
     },
 
     meteorList = {
@@ -280,13 +280,13 @@ local defaultConfig = {
         ["Ruby"] = false,
         ["Opal"] = false,
         ["Lapis Lazuli"] = false,
-        ["Moonstone"] = true,
+        ["Moonstone"] = false,
     },
 
     sunkenchestList = {
-        enabled = true,
+        enabled = false,
         bufferbefore = 1,
-        alertonload = true,
+        alertonload = false,
         autofarm = false,
         hopafterclaim = false,
         forcehop = false,
@@ -350,10 +350,10 @@ local ordered = {
 }
 
 local defaultFishConfig = {
-    autocast = true,
+    autocast = false,
     dropbobber = true,
-    autoshake = true,
-    autoreel = true,
+    autoshake = false,
+    autoreel = false,
     instantreel = false,
     castpower = 0,
     shakenav = true,
@@ -369,6 +369,7 @@ local defaultGuiConfig = {
     fullbright = false,
     antigp = false,
     instantinteract = false,
+    antiafk = false,
 
     -- Player
     disableoxygen = false,
@@ -442,18 +443,18 @@ local defaultGuiConfig = {
         ["Zeus Pool"] = false,
     },
     eventzones1 = {
-        ["Megalodon Default"] = true,
-        ["Megalodon Ancient"] = true,
-        ["Forsaken Veil - Scylla"] = true,
+        ["Megalodon Default"] = false,
+        ["Megalodon Ancient"] = false,
+        ["Forsaken Veil - Scylla"] = false,
         ["The Kraken Pool"] = false,
-        ["Ancient Kraken Pool"] = true,
+        ["Ancient Kraken Pool"] = false,
         ["Isonade"] = false,
         ["Great White Shark"] = false,
         ["Great Hammerhead Shark"] = false,
         ["Whale Shark"] = false,
         ["The Depths - Serpent"] = false,
-        ["Orcas Pool"] = true,
-        ["Ancient Orcas Pool"] = true,
+        ["Orcas Pool"] = false,
+        ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
         ["Animal Pool"] = false,

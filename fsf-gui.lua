@@ -340,6 +340,31 @@ local ToolsToggle4 = ToolsTab:CreateToggle({
 
 ToolsToggle4:Set(guiConfig.instantinteract)
 
+local antiafk
+
+local ToolsToggle5 = ToolsTab:CreateToggle({
+    Name = "Disable AFK/Idle Kick",
+    CurrentValue = false,
+    Flag = "ToolsToggle5",
+    Callback = function(Value)
+        guiConfig.antiafk = Value
+        saveGuiConfig()
+        if Value then
+            local VirtualUser = game:GetService("VirtualUser")
+            antiafk = game:GetService("Players").LocalPlayer.Idled:Connect(function()
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+            end)
+        else
+            if not antiafk then return end
+            antiafk:Disconnect()
+            antiafk = nil
+        end
+    end,
+})
+
+ToolsToggle5:Set(guiConfig.antiafk)
+
 local ServerTab = Window:CreateTab("Server", nil)
 
 local function teleport(placeid)
@@ -395,12 +420,11 @@ local function teleport(placeid)
             return
         end
 
-        for i = 1, #Servers.data do
-            local tempserver = Servers.data[i]
-            if tempserver.playing < tempserver.maxPlayers
-                and tempserver.id ~= game.JobId
+        for _, s in ipairs(Servers.data) do
+            if s.playing < s.maxPlayers
+                and s.id ~= game.JobId
             then
-                Server = tempserver
+                Server = s
                 break
             end
         end
