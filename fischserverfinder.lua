@@ -42,7 +42,7 @@ print("[FSF] Loading")
 
 local loading = game:GetService("Players").LocalPlayer.PlayerGui:WaitForChild("loading", 3)
 if loading then
-    loading.loading.Visible = false
+    --loading.loading.Visible = false
 end
 
 loadConfig = function()
@@ -174,12 +174,11 @@ teleport = function(placeid)
             return
         end
 
-        for i = 1, #Servers.data do
-            local tempserver = Servers.data[i]
-            if tempserver.playing < tempserver.maxPlayers
-                and tempserver.id ~= game.JobId
+        for _, s in ipairs(Servers.data) do
+            if s.playing < s.maxPlayers
+                and s.id ~= game.JobId
             then
-                Server = tempserver
+                Server = s
                 break
             end
         end
@@ -1099,8 +1098,6 @@ activeChestsFolder.ChildAdded:Connect(function(object)
     end
 end)
 
---task.wait(2)
-
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
 notifygui("Join the discord /fWncS2vFxn Link copied", 118, 126, 240)
 setclipboard(data.link)
@@ -1120,6 +1117,10 @@ if config.autoscan then
 end
 
 print("[FSF] Loaded!")
+
+local VirtualInputManager = game:GetService("VirtualInputManager")
+VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
 
 if writefile and not cache.autohop then
     if config.autohop then
