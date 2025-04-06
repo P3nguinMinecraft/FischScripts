@@ -1120,10 +1120,6 @@ end
 
 print("[FSF] Loaded!")
 
-local VirtualInputManager = game:GetService("VirtualInputManager")
-VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-
 if writefile and not cache.autohop then
     if config.autohop then
         askautohop()
@@ -1135,7 +1131,12 @@ if cache.autohop and config.autohop and config.sunkenchestList.autofarm and conf
     teleport(game.PlaceId)
 end
 
-task.wait(20)
-if loading then
-    loading.loading.Visible = true
-end
+task.spawn(function()
+    local VirtualInputManager = game:GetService("VirtualInputManager")
+    game:GetService("Players").LocalPlayer.PlayerGui.loading.loading.skip.Visible = true
+    while game:GetService("Players").LocalPlayer.PlayerGui.loading.loading.BackgroundTransparency == 0 do
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+        VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+        task.wait(0.1)
+    end
+end)
