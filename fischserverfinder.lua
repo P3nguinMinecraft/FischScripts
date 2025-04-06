@@ -1139,4 +1139,5 @@ task.spawn(function()
         VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
         task.wait(0.1)
     end
+    game:GetService("Players").LocalPlayer.PlayerGui.loading.loading.skip.Visible = false
 end)
