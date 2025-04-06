@@ -147,7 +147,7 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
-        ["Animal Pool"] = {x = 0, y = -10, z = 0},
+        ["Animal Pool"] = {x = 0, y = -4, z = 0},
     },
 
     zones2 = {
@@ -164,9 +164,9 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
-        ["Animal Pool - Second Sea"] = {x = 0, y = -10, z = 0},
-        ["Octophant Pool Without Elephant"] = {x = 0, y = -5, z = 0},
-        ["Octophant Pool With Elephant"] = {x = 0, y = -5, z = 0},
+        ["Animal Pool - Second Sea"] = {x = 0, y = -4, z = 0},
+        ["Octophant Pool Without Elephant"] = {x = 0, y = -4, z = 0},
+        ["Octophant Pool With Elephant"] = {x = 0, y = -4, z = 0},
     },
 }
 
