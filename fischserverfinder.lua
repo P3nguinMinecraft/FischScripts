@@ -703,6 +703,8 @@ loadedsunkenchest = function(object)
             task.wait(600)
             chestfound = false
         end)
+    else
+        return
     end
 
     checkteleporting = false
