@@ -165,8 +165,8 @@ local zoneData = {
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
         ["Animal Pool - Second Sea"] = {x = 0, y = -10, z = 0},
-        ["Octophant Pool Without Elephant"] = {x = 0, y = -30, z = 0},
-        ["Octophant Pool With Elephant"] = {x = 0, y = -30, z = 0},
+        ["Octophant Pool Without Elephant"] = {x = 0, y = -20, z = 0},
+        ["Octophant Pool With Elephant"] = {x = 0, y = -20, z = 0},
     },
 }
 
