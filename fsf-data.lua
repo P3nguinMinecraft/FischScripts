@@ -147,7 +147,7 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
-        ["Animals Pool"] = {x = 0, y = 80, z = 0},
+        ["Animal Pool"] = {x = 0, y = 80, z = 0},
     },
 
     zones2 = {
@@ -164,8 +164,9 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
-        ["Animals Pool"] = {x = 0, y = 80, z = 0},
-        ["Octophant Pool"] = {x = 0, y = 80, z = 0},
+        ["Animal Pool - Second Sea"] = {x = 0, y = 80, z = 0},
+        ["Octophant Pool Without Elephant"] = {x = 0, y = 80, z = 0},
+        ["Octophant Pool With Elephant"] = {x = 0, y = 80, z = 0},
     },
 }
 
@@ -267,10 +268,11 @@ local defaultConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Moby"] = true,
-        ["Animals Pool"] = true,
-        ["Octophant Pool"] = true,
-
         ["Open Ocean - Sea Leviathan"] = true,
+        ["Animal Pool"] = true,
+        ["Animal Pool - Second Sea"] = true,
+        ["Octophant Pool Without Elephant"] = true,
+        ["Octophant Pool With Elephant"] = true,
     },
 
     meteorList = {
@@ -308,7 +310,7 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
-        "Animals Pool", "Octophant Pool",
+        "Animal Pool", "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
         "Open Ocean - Sea Leviathan",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
@@ -334,7 +336,7 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
-        "Animals Pool",
+        "Animal Pool",
     },
 
     zones2 = {
@@ -343,7 +345,7 @@ local ordered = {
     },
     eventzones2 = {
         "Open Ocean - Sea Leviathan",
-        "Animals Pool", "Octophant Pool",
+        "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
     },
 }
 
@@ -454,7 +456,7 @@ local defaultGuiConfig = {
         ["Ancient Orcas Pool"] = true,
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
-        ["Animals Pool"] = false,
+        ["Animal Pool"] = false,
     },
 
     zones2 = {
@@ -471,8 +473,9 @@ local defaultGuiConfig = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = false,
-        ["Animals Pool"] = false,
-        ["Octophant Pool"] = false,
+        ["Animal Pool - Second Sea"] = false,
+        ["Octophant Pool Without Elephant"] = false,
+        ["Octophant Pool With Elephant"] = false,
     },
 
     -- Auto
