@@ -1101,8 +1101,15 @@ activeChestsFolder.ChildAdded:Connect(function(object)
 end)
 
 notifygui("FischServerFinder by Penguin - " .. scriptvers, 0, 247, 255)
-notifygui("Join the discord /fWncS2vFxn Link copied", 118, 126, 240)
-setclipboard(data.link)
+
+local bypass
+if isfile("FischServerFinder/discord.txt") then
+    bypass = readfile("FischServerFinder/discord.txt")
+end
+if not bypass or not bypass == data.link then
+    notifygui("Join the discord.gg/fWncS2vFxn Link copied", 118, 126, 240)
+    setclipboard(data.link)
+end
 
 loadConfig()
 
