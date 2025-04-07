@@ -755,7 +755,7 @@ local WorldToggle1 = WorldTab:CreateToggle({
             if not guiConfig.hideability then return end
             if c.Name == "Cathulu" or c.Name == "Gem" then
                 task.wait()
-                child:Destroy()
+                c:Destroy()
             end
         end)
     end
