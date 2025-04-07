@@ -726,7 +726,7 @@ PlayerToggle10:Set(guiConfig.freezecharacter)
 
 local WorldTab = Window:CreateTab("World", nil)
 
-local rodabilityadded1, rodabilityadded2
+local abcon = {}
 
 local WorldToggle1 = WorldTab:CreateToggle({
     Name = "Hide Rod Abilities",
@@ -735,29 +735,30 @@ local WorldToggle1 = WorldTab:CreateToggle({
     Callback = function(Value)
         guiConfig.hideability = Value
         saveGuiConfig()
-        if rodabilityadded1 then
-            rodabilityadded1:Disconnect()
-            rodabilityadded1 = nil
+        for _, v in ipairs(abcon) do
+            v:Disconnect()
         end
-        if rodabilityadded2 then
-            rodabilityadded2:Disconnect()
-            rodabilityadded2 = nil
-        end
+        abcon = {}
 
-        rodabilityadded1 = game:GetService("Workspace").active.debrisfx.ChildAdded:Connect(function(child)
+        local ws = game:GetService("Workspace")
+
+        -- Seraphic
+        abcon[#abcon+1] = ws.active.debrisfx.ChildAdded:Connect(function(c)
             if guiConfig.hideability then
                 task.wait()
-                child:Destroy()
+                c:Destroy()
             end
         end)
 
-        rodabilityadded2 = game:GetService("Workspace").ChildAdded:Connect(function(child)
-            if guiConfig.hideability and child.Name == "Cathulu" then
+        -- Great Dreamer, Free Spirit
+        abcon[#abcon+1] = ws.ChildAdded:Connect(function(c)
+            if not guiConfig.hideability then return end
+            if c.Name == "Cathulu" or c.Name == "Gem" then
                 task.wait()
                 child:Destroy()
             end
         end)
-    end,
+    end
 })
 
 WorldToggle1:Set(guiConfig.hideability)
