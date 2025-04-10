@@ -86,9 +86,13 @@ else
     fishConfig = data.defaultFishConfig
 end
 
+local afts = tick()
 local function saveFishConfig()
     writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
-    af_mod.init()
+	if tick() - afts > 0.1 then
+		af_mod.init()
+		afts = tick()
+	end
 end
 
 local guiConfig
