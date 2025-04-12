@@ -1,6 +1,6 @@
-local version = "2.8"
-local versid = "LYXs75el7WZdMs1U"
-local updmsg = "+Animals Pool +Octophant Pool"
+local version = "2.8.1"
+local versid = "K1gFwzNNmRd2PSbM"
+local updmsg = "+Blue Moon Pool (guess)"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -146,6 +146,7 @@ local zoneData = {
         ["Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
+        ["Blue Moon Pool"] = {x = 0, y = 0, z = 0}, -- Need Data
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
         ["Animal Pool"] = {x = 0, y = -3, z = 0},
     },
@@ -164,6 +165,7 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
+        ["Blue Moon Pool - Second Sea"] = {x = 0, y = 0, z = 0}, -- Need Data
         ["Animal Pool - Second Sea"] = {x = 0, y = -3, z = 0},
         ["Octophant Pool Without Elephant"] = {x = 0, y = -3, z = 0},
         ["Octophant Pool With Elephant"] = {x = 0, y = -3, z = 0},
@@ -267,8 +269,12 @@ local defaultConfig = {
         ["Orcas Pool"] = false,
         ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
+        ["Blue Moon"] = true,
+        ["Blue Moon - Second Sea"] = true,
         ["Moby"] = false,
+        ["Blue Moon Pool"] = false,
         ["Open Ocean - Sea Leviathan"] = false,
+        ["Blue Moon Pool - Second Sea"] = false,
         ["Animal Pool"] = false,
         ["Animal Pool - Second Sea"] = false,
         ["Octophant Pool Without Elephant"] = false,
@@ -310,6 +316,8 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
+        "Blue Moon Pool",
+        "Open Ocean - Sea Leviathan", "Blue Moon Pool - Second Sea",
         "Animal Pool", "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
         "Open Ocean - Sea Leviathan",
     },
@@ -335,6 +343,7 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
+        "Blue Moon Pool",
         "Notes Island Pool",
         "Animal Pool",
     },
@@ -345,6 +354,7 @@ local ordered = {
     },
     eventzones2 = {
         "Open Ocean - Sea Leviathan",
+        "Blue Moon Pool - Second Sea",
         "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
     },
 }
@@ -456,6 +466,7 @@ local defaultGuiConfig = {
         ["Orcas Pool"] = false,
         ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
+        ["Blue Moon Pool"] = false,
         ["Notes Island Pool"] = false,
         ["Animal Pool"] = false,
     },
@@ -474,6 +485,7 @@ local defaultGuiConfig = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = false,
+        ["Blue Moon Pool - Second Sea"] = false,
         ["Animal Pool - Second Sea"] = false,
         ["Octophant Pool Without Elephant"] = false,
         ["Octophant Pool With Elephant"] = false,
