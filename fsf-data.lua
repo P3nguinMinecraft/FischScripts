@@ -87,6 +87,7 @@ local zoneData = {
         ["Ancient Archives"] = {x = 0, y = 0, z = 20},
         ["Ancient Isle Ocean"] = {x = 0, y = 60, z = -40},
         ["Ancient Isle Pond"] = {x = 0, y = -5, z = 0},
+        ["Blue Moon - First Sea"] = {x = -15, y = 10, z = 0},
         ["Brine Pool"] = {x = 0, y = 3, z = 0},
         ["Calm Zone"] = {x = 35, y = 70, z = 0},
         ["Challengers Deep"] = {x = 0, y = 65, z = 0},
@@ -146,13 +147,13 @@ local zoneData = {
         ["Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
-        ["Blue Moon Pool"] = {x = 0, y = 0, z = 0}, -- Need Data
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
         ["Animal Pool"] = {x = 0, y = -3, z = 0},
     },
 
     zones2 = {
         ["Azure Lagoon"] = {x = -45, y = 10, z = -10},
+        ["Blue Moon - Second Sea"] = {x = 0, y = 0, z = 0}, -- Need Data
         ["Emberreach"] = {x = -730, y = 0, z = 0},
         ["Emberreach Lava"] = {x = -110, y = 20, z = -80},
         ["Emberreach Ponds"] = {x = 0, y = 10, z = 110},
@@ -165,7 +166,6 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
-        ["Blue Moon Pool - Second Sea"] = {x = 0, y = 0, z = 0}, -- Need Data
         ["Animal Pool - Second Sea"] = {x = 0, y = -3, z = 0},
         ["Octophant Pool Without Elephant"] = {x = 0, y = -3, z = 0},
         ["Octophant Pool With Elephant"] = {x = 0, y = -3, z = 0},
@@ -269,12 +269,8 @@ local defaultConfig = {
         ["Orcas Pool"] = false,
         ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
-        ["Blue Moon"] = true,
-        ["Blue Moon - Second Sea"] = true,
         ["Moby"] = false,
-        ["Blue Moon Pool"] = false,
         ["Open Ocean - Sea Leviathan"] = false,
-        ["Blue Moon Pool - Second Sea"] = false,
         ["Animal Pool"] = false,
         ["Animal Pool - Second Sea"] = false,
         ["Octophant Pool Without Elephant"] = false,
@@ -316,8 +312,7 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
-        "Blue Moon Pool",
-        "Open Ocean - Sea Leviathan", "Blue Moon Pool - Second Sea",
+        "Open Ocean - Sea Leviathan",
         "Animal Pool", "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
         "Open Ocean - Sea Leviathan",
     },
@@ -325,10 +320,10 @@ local ordered = {
 
     zones1 = {
         "Abyssal Zenith", "Atlantean Storm", "Ancient Archives", "Ancient Isle Ocean", "Ancient Isle Pond",
-        "Brine Pool", "Calm Zone", "Challengers Deep", "Cryogenic Canal", "Deep Ocean", "Desolate Deep",
-        "Ethereal Abyss", "Forsaken Shores", "Forsaken Shores Ocean", "Forsaken Shores Pond", "Forsaken Veil",
-        "Frigid Cavern", "Glacial Grotto", "Grand Reef", "Harvesters Spike", "Keepers Altar", "Kraken Pool",
-        "Lava", "Moosewood Docks", "Moosewood Ocean", "Moosewood Ocean Mythical", "Moosewood Pond",
+        "Blue Moon - First Sea", "Brine Pool", "Calm Zone", "Challengers Deep", "Cryogenic Canal", "Deep Ocean",
+        "Desolate Deep", "Ethereal Abyss", "Forsaken Shores", "Forsaken Shores Ocean", "Forsaken Shores Pond",
+        "Forsaken Veil", "Frigid Cavern", "Glacial Grotto", "Grand Reef", "Harvesters Spike", "Keepers Altar",
+        "Kraken Pool", "Lava", "Moosewood Docks", "Moosewood Ocean", "Moosewood Ocean Mythical", "Moosewood Pond",
         "Mushgrove Water", "Ocean", "Overgrowth Caves", "Poseidon Pool", "Roslit Bay", "Roslit Bay Clam",
         "Roslit Bay Ocean", "Roslit Pond", "Roslit Pond Seaweed", "Scallop Ocean", "Snowcap Ocean",
         "Snowcap Pond", "Sunken's Depth", "Sunstone", "Sunstone Hidden", "Terrapin Ocean", "Terrapin Olm",
@@ -343,18 +338,17 @@ local ordered = {
         "The Depths - Serpent",
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
-        "Blue Moon Pool",
         "Notes Island Pool",
         "Animal Pool",
     },
 
     zones2 = {
-        "Azure Lagoon", "Emberreach", "Emberreach Lava", "Emberreach Ponds", "Isle of New Beginnings",
+        "Azure Lagoon", "Blue Moon - Second Sea",
+        "Emberreach", "Emberreach Lava", "Emberreach Ponds", "Isle of New Beginnings",
         "Lushgrove", "Open Ocean", "Pine Shoal", "The Cursed Shores", "Waveborne",
     },
     eventzones2 = {
         "Open Ocean - Sea Leviathan",
-        "Blue Moon Pool - Second Sea",
         "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
     },
 }
@@ -407,6 +401,7 @@ local defaultGuiConfig = {
         ["Ancient Archives"] = false,
         ["Ancient Isle Ocean"] = false,
         ["Ancient Isle Pond"] = false,
+        ["Blue Moon - First Sea"] = false,
         ["Brine Pool"] = false,
         ["Calm Zone"] = false,
         ["Challengers Deep"] = false,
@@ -466,13 +461,13 @@ local defaultGuiConfig = {
         ["Orcas Pool"] = false,
         ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
-        ["Blue Moon Pool"] = false,
         ["Notes Island Pool"] = false,
         ["Animal Pool"] = false,
     },
 
     zones2 = {
         ["Azure Lagoon"] = false,
+        ["Blue Moon - Second Sea"] = false,
         ["Emberreach"] = false,
         ["Emberreach Lava"] = false,
         ["Emberreach Ponds"] = false,
@@ -485,7 +480,6 @@ local defaultGuiConfig = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = false,
-        ["Blue Moon Pool - Second Sea"] = false,
         ["Animal Pool - Second Sea"] = false,
         ["Octophant Pool Without Elephant"] = false,
         ["Octophant Pool With Elephant"] = false,
