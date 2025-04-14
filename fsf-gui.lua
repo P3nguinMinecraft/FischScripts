@@ -567,21 +567,6 @@ local PlayerToggle4 = PlayerTab:CreateToggle({
 
 PlayerToggle4:Set(guiConfig.disabletemperatureveil)
 
-local cryptgas_script
-
-local PlayerToggle5 = PlayerTab:CreateToggle({
-    Name = "Disable Crypt Gas (UNRELEASED 3/29)",
-    CurrentValue = false,
-    Flag = "PlayerToggle5",
-    Callback = function(Value)
-        guiConfig.disablecryptgas = Value
-        saveGuiConfig()
-        disabledeathscript(Value, "gas")
-    end,
-})
-
-PlayerToggle5:Set(guiConfig.disablecryptgas)
-
 local blocked = {
     [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
     [game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("clientTakeDamage")] = {"FireServer", guiConfig.disableddamage}
@@ -598,29 +583,29 @@ oldmetamethod = hookmetamethod(game, "__namecall", function(self, ...)
     return oldmetamethod(self, ...)
 end)
 
-local PlayerToggle6 = PlayerTab:CreateToggle({
+local PlayerToggle5 = PlayerTab:CreateToggle({
     Name = "Disable Drown Death",
     CurrentValue = false,
-    Flag = "PlayerToggle6",
+    Flag = "PlayerToggle5",
     Callback = function(Value)
         guiConfig.disabledrownremote = Value
         saveGuiConfig()
     end,
 })
 
-PlayerToggle6:Set(guiConfig.disabledrownremote)
+PlayerToggle5:Set(guiConfig.disabledrownremote)
 
-local PlayerToggle7 = PlayerTab:CreateToggle({
+local PlayerToggle6 = PlayerTab:CreateToggle({
     Name = "Disable Damage",
     CurrentValue = false,
-    Flag = "PlayerToggle7",
+    Flag = "PlayerToggle6",
     Callback = function(Value)
         guiConfig.disabledamage = Value
         saveGuiConfig()
     end,
 })
 
-PlayerToggle7:Set(guiConfig.disableddamage)
+PlayerToggle6:Set(guiConfig.disableddamage)
 
 PlayerTab:CreateDivider()
 
@@ -654,10 +639,10 @@ local function modulefunc(file, funcs, disabled)
     end
 end
 
-local PlayerToggle8 = PlayerTab:CreateToggle({
+local PlayerToggle7 = PlayerTab:CreateToggle({
     Name = "Disable Cutscenes",
     CurrentValue = false,
-    Flag = "PlayerToggle8",
+    Flag = "PlayerToggle7",
     Callback = function(Value)
         guiConfig.disablecutscenes = Value
         saveGuiConfig()
@@ -666,7 +651,20 @@ local PlayerToggle8 = PlayerTab:CreateToggle({
     end,
 })
 
-PlayerToggle8:Set(guiConfig.disablecutscenes)
+PlayerToggle7:Set(guiConfig.disablecutscenes)
+
+local PlayerToggle8 = PlayerTab:CreateToggle({
+    Name = "Disable Vignette",
+    CurrentValue = false,
+    Flag = "PlayerToggle8",
+    Callback = function(Value)
+        guiConfig.disablevignette = Value
+        saveGuiConfig()
+        game:GetService("Players").LocalPlayer.PlayerGui.over.Enabled = not Value
+    end,
+})
+
+PlayerToggle8:Set(guiConfig.disablevignette)
 
 PlayerTab:CreateDivider()
 
@@ -1412,7 +1410,7 @@ local ServerConfigButton1 = ServerTab:CreateButton({
     Callback = function()
         Rayfield:Notify({
             Title = "PlaceVersion",
-            Content = "The current PlaceVersion is " .. tostring(game.PlcaeVersion),
+            Content = "The current PlaceVersion is " .. tostring(game.PlaceVersion),
             Duration = 5,
             Image = nil,
         })

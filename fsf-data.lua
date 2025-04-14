@@ -1,6 +1,6 @@
 local version = "2.8.1"
 local versid = "K1gFwzNNmRd2PSbM"
-local updmsg = "+Blue Moon Pool (guess)"
+local updmsg = "+Blue Moon Pool +Disable Vignette -Disable Crypt Gas"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -380,10 +380,10 @@ local defaultGuiConfig = {
     disableoxygenpeaks = false,
     disabletemperaturepeaks = false,
     disabletemperatureveil = false,
-    disablecryptgas = false,
     disabledrownremote = false,
     disabledamage = false,
     disablecutscenes = false,
+    disablevignette = false,
     antiswim = false,
     freezecharacter = false,
 
