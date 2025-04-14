@@ -86,7 +86,7 @@ else
     fishConfig = data.defaultFishConfig
 end
 
-local afts = tick()
+local afts = tick() - 1
 local function saveFishConfig()
     writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
 	if tick() - afts > 0.1 then
@@ -94,6 +94,8 @@ local function saveFishConfig()
 		afts = tick()
 	end
 end
+
+saveFishConfig()
 
 local guiConfig
 if isfile("FischServerFinder/guiconfig.json") then
