@@ -63,11 +63,15 @@ zonePoolTask = task.spawn(function()
             if poolToggle then
                 player.CFrame = CFrame.new(poolPos.X + offsetX, poolPos.Y + offsetY, poolPos.Z + offsetZ)
             end
-            PoolLabel1:Set("Pool Status: Found")
-            PoolLabel2:Set("Coords: " .. poolPos)
+            if PoolLabel1 then
+                PoolLabel1:Set("Pool Status: Found")
+                PoolLabel2:Set("Coords: " .. tostring(poolPos))
+            end
         else
-            PoolLabel1:Set("Pool Status: Not Found")
-            PoolLabel2:Set("Coords: N/A")
+            if PoolLabel1 then
+                PoolLabel1:Set("Pool Status: Not Found")
+                PoolLabel2:Set("Coords: N/A")
+            end
         end
     end
 end)
