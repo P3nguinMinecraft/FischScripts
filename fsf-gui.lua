@@ -232,23 +232,55 @@ local ToolsButton2 = ToolsTab:CreateButton({
     end,
 })
 
+local hunt = game:GetService("Workspace").EggHunt
+
+local function findEgg(name)
+    local obj = hunt.Eggs:WaitForChild(name, 1)
+    if obj then
+        if not obj:FindFirstChild("Highlight") then
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = obj:FindFirstChildWhichIsA("BasePart").CFrame
+        end
+        if obj:WaitForChild("Highlight", 1) then
+            obj.ProximityPrompt:InputHoldBegin()
+            task.wait()
+            obj.ProximityPrompt:InputHoldEnd()
+            return true
+        end
+    end
+    return false
+end
+
 local ToolsButton3 = ToolsTab:CreateButton({
     Name = "Collect Eggs",
     Callback = function()
-        local eggs = game:GetService("Workspace").EggHunt.Egg;
         local coords = game.PlaceId == data.placeids.sea1 and data.eggcoords[1] or data.eggcoords[2]
-
         for _, egg in pairs(coords) do
-            local vector = Vector3.new(egg.x, egg.y, egg.z)
-            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(vector)
-            local obj = eggs:WaitForChild(egg.name, 5)
-            if obj then
-                if not obj:FindFirstChild("ProximityPrompt") then
-                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(vector)
+            local found = false
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(egg.x, egg.y, egg.z))
+            if findEgg(egg.name) then
+                found = true
+            else 
+                if egg.spawns and hunt:FindFirstChild(egg.spawns) then
+                    for _, spawn in pairs(hunt:FindFirstChild(egg.spawns)) do
+                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = spawn.CFrame
+                        if findEgg(egg.name) then
+                            found = tru
+                            break
+                        end
+                        task.wait()
+                    end
                 end
-                local prompt = obj:WaitForChild("ProximityPrompt", 5)
-                if prompt then prompt:InputHoldBegin() end
             end
+            if not found then
+                local str = "Egg not found!" .. (egg.criteria or nil)
+                Rayfield:Notify({
+                    Title = "Collect Eggs - " .. egg.name,
+                    Content = str,
+                    Duration = 5,
+                    Image = nil,
+                })
+            end
+            task.wait(0.1)
         end
     end,
 })
@@ -485,6 +517,7 @@ local ServerButton1 = ServerTab:CreateButton({
                 Duration = 5,
                 Image = nil,
             })
+            return
         end
         game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(233, 140, 38)
         firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace.world.map.Moosewood:WaitForChild("AfkTPBuild").TpPart, 0)
@@ -550,8 +583,6 @@ local PlayerToggle1 = PlayerTab:CreateToggle({
 
 PlayerToggle1:Set(guiConfig.disableoxygen)
 
-local oxygenpeaks_script
-
 local PlayerToggle2 = PlayerTab:CreateToggle({
     Name = "Disable Oxygen (Peaks)",
     CurrentValue = false,
@@ -565,8 +596,6 @@ local PlayerToggle2 = PlayerTab:CreateToggle({
 
 PlayerToggle2:Set(guiConfig.disableoxygenpeaks)
 
-local temperaturepeaks_script
-
 local PlayerToggle3 = PlayerTab:CreateToggle({
     Name = "Disable Temperature (Peaks)",
     CurrentValue = false,
@@ -579,8 +608,6 @@ local PlayerToggle3 = PlayerTab:CreateToggle({
 })
 
 PlayerToggle3:Set(guiConfig.disabletemperaturepeaks)
-
-local temperatureveil_script
 
 local PlayerToggle4 = PlayerTab:CreateToggle({
     Name = "Disable Temperature (Veil)",
@@ -597,9 +624,7 @@ PlayerToggle4:Set(guiConfig.disabletemperatureveil)
 
 local blocked = {
     [game:GetService("ReplicatedStorage").events.drown] = {"FireServer", guiConfig.disabledrownremote},
-    [game:GetService("ReplicatedStorage"):WaitForChild("events"):WaitForChild("clientTakeDamage")] = {"FireServer", guiConfig.disableddamage}
-
-    --[game:GetService("ReplicatedStorage").packages.Net.RE/GasAsphyxiated] = {"FireServer", false},
+    [game:GetService("ReplicatedStorage").events.clientTakeDamage] = {"FireServer", guiConfig.disableddamage}
 }
 
 local oldmetamethod

@@ -810,8 +810,9 @@ claimsunkenchest = function()
             task.wait(0.3)
             local highlight = root:FindFirstChild("Main"):FindFirstChild("Highlight")
             if highlight then
-                local prompt = root:FindFirstChild("Main"):FindFirstChild("Prompt")
-                prompt:InputHoldBegin()
+                root.Main.Prompt:InputHoldBegin()
+                task.wait()
+                root.Main.Prompt:InputHoldEnd()
                 task.wait(0.2)
             end
         end
