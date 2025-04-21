@@ -56,6 +56,11 @@ local eggcoords1 = {
     {name = "Shroom Egg", x = 2607, y = 171, z = -756},
     {name = "Vertigo Egg", x = 102, y = -706, z = 1157},
     {name = "Baby Glow Egg", x = -13848, y = -11086, z = 193},
+    {name = "Volcano Burst Egg", x = -1983, y = 627, z = 262, spawns = "VolcanoBurstEggSpawns"},
+    {name = "Vent Egg", x = -1802, y = 126, z = 147, spawns = "VentEggSpawns"},
+    {name = "Meteor Egg", x = 5694, y = 174, z = 632, criteria = "Spawns inside a meteor"},
+    {name = "Shark Frenzy Egg", x = 382, y = 135, z = 244, criteria = "Spawns during Shark Hunts (Not supported)"},
+    {name = "Aurora Egg", x = 19736, y = 435, z = 5337, spawns = "AuroraEggSpawns", criteria = "Spawns during Aurora"},
 }
 
 local eggcoords2 = {
@@ -63,10 +68,10 @@ local eggcoords2 = {
     {name = "Lighthouse Egg", x = 1411, y = 206, z = 488},
     {name = "Lava Egg", x = 3388, y = 184, z = 208},
     {name = "Azure Egg", x = 1599, y = 72, z = 2381},
-    {name = "Lush Night Egg", x = 1522, y = 165, z = -672, spawns = "LushNightEggSpawns", criteria = "Only at night!"},
-    --{name = "Summer Isle Egg", x = 0, y = 0, z = 0, spawns = "SummerIsleEggSpawns", criteria = "Only during summer!"},
-    --{name = "Leviathan Egg", x = 0, y = 0, z = 0, spawns = "-", criteria = "Spawns at Leviathan Hunts! (Not implemented)"},
-    --{name = "Cursed Egg", x = 1522, y = 165, z = -672, spawns = "CursedEggSpawns", criteria = "Only at night during winter!"},
+    {name = "Lush Night Egg", x = 1522, y = 165, z = -672, spawns = "LushNightEggSpawns", criteria = "Spawn at night"},
+    {name = "Summer Isle Egg", x = -532, y = 78, z = -337, spawns = "SummerIsleEggSpawns", criteria = "Spawns during summer"},
+    {name = "Leviathan Egg", x = 427, y = 84, z = 779, spawns = "-", criteria = "Spawns at Leviathan Hunts (Not supported)"},
+    {name = "Cursed Egg", x = -99, y = 82, z = 2112, spawns = "CursedEggSpawns", criteria = "Spawns at night during winter"},
 }
 
 local codes = {
