@@ -235,7 +235,7 @@ local ToolsButton2 = ToolsTab:CreateButton({
 local hunt = game:GetService("Workspace").EggHunt
 
 local function findEgg(name)
-    local obj = hunt.Eggs:WaitForChild(name, 1)
+    local obj = hunt.Eggs:WaitForChild(name, 2)
     if obj then
         if not obj:FindFirstChild("Highlight") then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = obj:FindFirstChildWhichIsA("BasePart").CFrame
@@ -272,7 +272,7 @@ local ToolsButton3 = ToolsTab:CreateButton({
                 end
             end
             if not found then
-                local str = "Egg not found!" .. (egg.criteria or nil)
+                local str = "Egg not found!" .. (egg.criteria or "")
                 Rayfield:Notify({
                     Title = "Collect Eggs - " .. egg.name,
                     Content = str,
