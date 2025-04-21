@@ -86,7 +86,7 @@ else
     fishConfig = data.defaultFishConfig
 end
 
-local afts = tick() - 1
+local afts = 0
 local function saveFishConfig()
     writefile("FischServerFinder/fishconfig.json", game:GetService("HttpService"):JSONEncode(fishConfig))
 	if tick() - afts > 0.1 then
@@ -94,8 +94,6 @@ local function saveFishConfig()
 		afts = tick()
 	end
 end
-
-saveFishConfig()
 
 local guiConfig
 if isfile("FischServerFinder/guiconfig.json") then
@@ -154,6 +152,11 @@ local Window = Rayfield:CreateWindow({
 })
 
 local HomeTab = Window:CreateTab("Home", nil)
+
+local HomeParagraph1 = HomeTab:CreateParagraph({
+    Title = "Changelog",
+    Content = data.changelog
+})
 
 local HomeLabel1 = HomeTab:CreateLabel("GUI for FischServerFinder")
 
@@ -228,6 +231,29 @@ local ToolsButton2 = ToolsTab:CreateButton({
         if Sky then Sky:Destroy() end
     end,
 })
+
+local ToolsButton3 = ToolsTab:CreateButton({
+    Name = "Collect Eggs",
+    Callback = function()
+        local eggs = game:GetService("Workspace").EggHunt.Egg;
+        local coords = game.PlaceId == data.placeids.sea1 and data.eggcoords[1] or data.eggcoords[2]
+
+        for _, egg in pairs(coords) do
+            local vector = Vector3.new(egg.x, egg.y, egg.z)
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(vector)
+            local obj = eggs:WaitForChild(egg.name, 5)
+            if obj then
+                if not obj:FindFirstChild("ProximityPrompt") then
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(vector)
+                end
+                local prompt = obj:WaitForChild("ProximityPrompt", 5)
+                if prompt then prompt:InputHoldBegin() end
+            end
+        end
+    end,
+})
+
+ToolsTab:CreateLabel("You have to do this in both seas!")
 
 local disablewater
 local function disablewaterfunc()

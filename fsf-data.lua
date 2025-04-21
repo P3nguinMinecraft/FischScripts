@@ -1,6 +1,7 @@
-local version = "2.8.1"
+local version = "2.8.2"
 local versid = "K1gFwzNNmRd2PSbM"
-local updmsg = "+Blue Moon Pool +Disable Vignette -Disable Crypt Gas"
+local updmsg = "+ Added egg hunt, will add undetermined later"
+local changelog = "+Egg Hunt Collect"
 local settingchanged = false
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
@@ -43,6 +44,26 @@ local sunkenchestcoords = {
 -- Forsaken Shores
     {x = -2460, y = 130, z = 2047},
 } -- coords sourced from Fisch Wiki
+
+local eggcoords1 = {
+    { name = "Cozy Cabin Egg", x = 499, y = 160, z = 235 },
+    { name = "Arch Egg", x = 1063, y = 303, z = -1218 },
+    { name = "Molten Egg", x = -1914, y = 189, z = 251 },
+    { name = "Fossil Egg", x = 5909, y = 171, z = 461 },
+    { name = "Coral Cluster Egg", x = -3486, y = -100, z = 498 },
+    { name = "Keeper's Egg", x = 1375, y = -803, z = -104 },
+    { name = "Terrapin Egg", x = 69, y = 215, z = 2048 },
+    { name = "Shroom Egg", x = 2607, y = 171, z = -756 },
+    { name = "Vertigo Egg", x = 102, y = -706, z = 1157 },
+    { name = "Baby Glow Egg", x = -13848, y = -11086, z = 193 },
+}
+
+local eggcoords2 = {
+    { name = "Hidden House Egg", x = 141, y = 127, z = 639 },
+    { name = "Lighthouse Egg", x = 1411, y = 206, z = 488 },
+    { name = "Lava Egg", x = 3388, y = 184, z = 208 },
+    { name = "Azure Egg", x = 1599, y = 72, z = 2381 },
+}
 
 local codes = {
     "THEKRAKEN",
@@ -493,6 +514,7 @@ local data = {
     version = version,
     versid = versid,
     updmsg = updmsg,
+    changelog = changelog,
     settingchanged = settingchanged,
     settingmsg = settingmsg,
     link = link,
@@ -506,6 +528,11 @@ local data = {
     ordered = ordered,
     defaultFishConfig = defaultFishConfig,
     defaultGuiConfig = defaultGuiConfig,
+
+    eggcoords = {
+        [1] = eggcoords1,
+        [2] = eggcoords2,
+    }
 }
 
 return data
