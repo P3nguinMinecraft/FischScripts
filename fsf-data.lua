@@ -51,7 +51,7 @@ local eggcoords1 = {
     {name = "Molten Egg", x = -1914, y = 189, z = 251},
     {name = "Fossil Egg", x = 5909, y = 171, z = 461},
     {name = "Coral Cluster Egg", x = -3486, y = -100, z = 498},
-    {name = "Keeper's Egg", x = 1375, y = -803, z = -104},
+    {name = "Keeper\226\128\153s Egg", x = 1375, y = -803, z = -104},
     {name = "Terrapin Egg", x = 69, y = 215, z = 2048},
     {name = "Shroom Egg", x = 2607, y = 171, z = -756},
     {name = "Vertigo Egg", x = 102, y = -706, z = 1157},

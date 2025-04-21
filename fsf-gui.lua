@@ -234,8 +234,8 @@ local ToolsButton2 = ToolsTab:CreateButton({
 
 local hunt = game:GetService("Workspace").EggHunt
 
-local function findEgg(name)
-    local obj = hunt.Eggs:WaitForChild(name, 2)
+local function findEgg(name, delay)
+    local obj = hunt.Eggs:WaitForChild(name, delay)
     if obj then
         if not obj:FindFirstChild("Highlight") then
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = obj:FindFirstChildWhichIsA("BasePart").CFrame
@@ -257,15 +257,17 @@ local ToolsButton3 = ToolsTab:CreateButton({
         for _, egg in pairs(coords) do
             local found = false
             game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(egg.x, egg.y, egg.z))
-            if findEgg(egg.name) then
+            if findEgg(egg.name, 3) then
                 found = true
             else 
                 if egg.spawns and hunt:FindFirstChild(egg.spawns) then
-                    for _, spawn in pairs(hunt:FindFirstChild(egg.spawns)) do
-                        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = spawn.CFrame
-                        if findEgg(egg.name) then
-                            found = tru
-                            break
+                    for _, spawn in pairs(hunt:FindFirstChild(egg.spawns):GetDescendants()) do
+                        if spawn:IsA("BasePart") then
+                            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = spawn.CFrame
+                            if findEgg(egg.name, 1) then
+                                found = true
+                                break
+                            end
                         end
                         task.wait()
                     end
@@ -280,7 +282,7 @@ local ToolsButton3 = ToolsTab:CreateButton({
                     Image = nil,
                 })
             end
-            task.wait(0.1)
+            task.wait()
         end
     end,
 })
