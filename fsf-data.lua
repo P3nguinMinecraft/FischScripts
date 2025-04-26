@@ -178,8 +178,8 @@ local zoneData = { -- Area Coords
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
-        ["LEGO"] = {x = 0, y = -3, z = 0},
-        ["LEGO - Studolodon"] = {x = 0, y = -3, z = 0},
+        ["LEGO"] = {x = 0, y = 0, z = 0},
+        ["LEGO - Studolodon"] = {x = 0, y = 0, z = 0},
     },
 
     zones2 = {
