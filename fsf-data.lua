@@ -1,8 +1,8 @@
-local version = "2.8.2"
-local versid = "K1gFwzNNmRd2PSbM"
-local updmsg = "+ Added egg hunt, will add undetermined later"
-local changelog = "+Egg Hunt Collect"
-local settingchanged = false
+local version = "2.8.3"
+local versid = "ZUGuSXdLaXCtwVwC"
+local updmsg = "+Added LEGO Event"
+local changelog = "+LEGO Event"
+local settingchanged = true
 local settingmsg = ""
 local link = "https://discord.gg/fWncS2vFx"
 
@@ -110,7 +110,7 @@ local zoneblacklist = {
     "Lava",
 }
 
-local zoneData = {
+local zoneData = { -- Area Coords
     zones1 = {
         ["Abyssal Zenith"] = {x = -230, y = -1, z = 3},
         ["Atlantean Storm"] = {x = 20, y = 53, z = -50},
@@ -178,7 +178,8 @@ local zoneData = {
         ["Ancient Orcas Pool"] = {x = 0, y = 60, z = 0},
         ["Whales Pool"] = {x = 0, y = 60, z = 0},
         ["Notes Island Pool"] = {x = 0, y = 10, z = 0},
-        ["Animal Pool"] = {x = 0, y = -3, z = 0},
+        ["LEGO"] = {x = 0, y = -10, z = 0}, -- Needs Testing
+        ["LEGO - Studolodon"] = {x = 0, y = -10, z = 0},
     },
 
     zones2 = {
@@ -196,9 +197,6 @@ local zoneData = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = {x = 0, y = 0, z = 0}, -- I AM PURELY GUESSING THAT THIS EXISTS
-        ["Animal Pool - Second Sea"] = {x = 0, y = -3, z = 0},
-        ["Octophant Pool Without Elephant"] = {x = 0, y = -3, z = 0},
-        ["Octophant Pool With Elephant"] = {x = 0, y = -3, z = 0},
     },
 }
 
@@ -285,7 +283,7 @@ local defaultConfig = {
         orLogic = true,
     },
 
-    zoneList = {
+    zoneList = { -- Server Hopper
         ["Megalodon Default"] = false,
         ["Megalodon Ancient"] = false,
         ["Forsaken Veil - Scylla"] = false,
@@ -301,10 +299,8 @@ local defaultConfig = {
         ["Whales Pool"] = false,
         ["Moby"] = false,
         ["Open Ocean - Sea Leviathan"] = false,
-        ["Animal Pool"] = false,
-        ["Animal Pool - Second Sea"] = false,
-        ["Octophant Pool Without Elephant"] = false,
-        ["Octophant Pool With Elephant"] = false,
+        ["LEGO"] = false,
+        ["LEGO - Studolodon"] = false,
     },
 
     meteorList = {
@@ -333,7 +329,7 @@ local ordered = {
     eventList = {"Night of the Fireflies", "Night of the Luminous", "Shiny Surge", "Mutation Surge",},
     seasonList = {"Spring", "Summer", "Fall", "Winter",},
     cycleList = {"Day", "Night",},
-    zoneList = {
+    zoneList = { -- Server Hopper
         "Megalodon Default", "Megalodon Ancient",
         "Forsaken Veil - Scylla",
         "The Kraken Pool", "Ancient Kraken Pool",
@@ -343,12 +339,11 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool", "Moby",
         "Open Ocean - Sea Leviathan",
-        "Animal Pool", "Animal Pool - Second Sea", "Octophant Pool Without Elephant", "Octophant Pool With Elephant",
-        "Open Ocean - Sea Leviathan",
+        "LEGO", "LEGO - Studolodon",
     },
     meteorList = {"Amethyst", "Ruby", "Opal", "Lapis Lazuli", "Moonstone"},
 
-    zones1 = {
+    zones1 = { -- Areas
         "Abyssal Zenith", "Atlantean Storm", "Ancient Archives", "Ancient Isle Ocean", "Ancient Isle Pond",
         "Blue Moon - First Sea", "Brine Pool", "Calm Zone", "Challengers Deep", "Cryogenic Canal", "Deep Ocean",
         "Desolate Deep", "Ethereal Abyss", "Forsaken Shores", "Forsaken Shores Ocean", "Forsaken Shores Pond",
@@ -369,7 +364,7 @@ local ordered = {
         "Orcas Pool", "Ancient Orcas Pool",
         "Whales Pool",
         "Notes Island Pool",
-        "Animal Pool",
+        "LEGO", "LEGO - Studolodon",
     },
 
     zones2 = {
@@ -492,7 +487,8 @@ local defaultGuiConfig = {
         ["Ancient Orcas Pool"] = false,
         ["Whales Pool"] = false,
         ["Notes Island Pool"] = false,
-        ["Animal Pool"] = false,
+        ["LEGO"] = false,
+        ["LEGO - Studolodon"] = false,
     },
 
     zones2 = {
@@ -510,9 +506,6 @@ local defaultGuiConfig = {
     },
     eventzones2 = {
         ["Open Ocean - Sea Leviathan"] = false,
-        ["Animal Pool - Second Sea"] = false,
-        ["Octophant Pool Without Elephant"] = false,
-        ["Octophant Pool With Elephant"] = false,
     },
 
     -- Auto
